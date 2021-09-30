@@ -14,20 +14,16 @@ def write():
 
 This an open source project and you are very welcome to **contribute** your awesome
 comments, questions, resources and apps as
-[issues](https://github.com/MarcSkovMadsen/awesome-streamlit/issues) or
-[pull requests](https://github.com/MarcSkovMadsen/awesome-streamlit/pulls)
-to the [source code](https://github.com/MarcSkovMadsen/awesome-streamlit).
-
-For more details see the [Contribute](https://github.com/marcskovmadsen/awesome-streamlit#contribute) section of the README file.
+[issues](https://github.com/jlastwood/project/issues) or
+[pull requests](https://github.com/jlastwood/project/pulls)
+to the [source code](https://github.com/jlastwood/project).
 
 ## The Developer
+For more details about the author Janet Astwood see [Author](https://bluezoneit.com).
 
-This project is developed by Marc Skov Madsen. You can learn more about me at
+## Credits
+This project is in part a result of the contributions to awesome streamlit by Marc Skov Madsen.  
 [datamodelsanalytics.com](https://datamodelsanalytics.com).
-
-Feel free to reach out if you wan't to join the project as a developer. You can find my contact details at [datamodelsanalytics.com](https://datamodelsanalytics.com).
-
-[<img src="https://github.com/MarcSkovMadsen/awesome-streamlit/blob/master/assets/images/datamodelsanalytics.png?raw=true" style="max-width: 700px">](https://datamodelsanalytics.com)
 """,
             unsafe_allow_html=True,
         )
