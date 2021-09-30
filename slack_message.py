@@ -46,8 +46,8 @@ def slack_messages_pm(slack_token, selectchannel):
   # Initialize
   # slack_token = "xoxb-"
   # selectchannel = "C01DKKPS5PY"
-  # xoxb-1468607639699-1492476234416-xbSeV6LGivaiXKwZf42RU0Cw  (bot)
-  # xoxp-1468607639699-1453660456023-2358821896773-f89fe9793027b3e22222dfd06d0e137b  user
+  # xoxb-
+  # xoxp-
   sc = WebClient(slack_token)
   commentdata = ""
   clientmessage = ""
