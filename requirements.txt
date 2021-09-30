@@ -204,7 +204,7 @@ st-radial==1.0.3
 stevedore==3.3.0
 streamlit==0.88.0
 tensorboard==2.0.2
-tensorflow==2.0.1
+tensorflow-cpu==2.6.0
 tensorflow-estimator==2.0.1
 termcolor==1.1.0
 terminado==0.10.1
