@@ -13,7 +13,7 @@ async-timeout==3.0.1
 attrs==21.2.0
 autoflake==1.4
 autopep8==1.5.2
--e git+https://github.com/jlastwood/pmstreamlit@9c4e3a119453317ee51c3c200444f8958ab74016#egg=awesome_streamlit&subdirectory=package
+-e git+https://github.com/jlastwood/pmstreamlit@8bbc2f8621e8d69e0a2fd07758b332301bc9aea5#egg=awesome_streamlit&subdirectory=package
 Babel==2.9.1
 backcall==0.2.0
 bandit==1.7.0
@@ -193,9 +193,14 @@ smmap==4.0.0
 sniffio==1.2.0
 snowballstemmer==2.1.0
 spacy==2.2.1
-Sphinx==1.8.4
+Sphinx==4.2.0
 sphinx-autobuild==2021.3.14
-sphinx-rtd-theme==0.5.2
+sphinx-rtd-theme==1.0.0
+sphinxcontrib-applehelp==1.0.2
+sphinxcontrib-devhelp==1.0.2
+sphinxcontrib-htmlhelp==2.0.0
+sphinxcontrib-jsmath==1.0.1
+sphinxcontrib-qthelp==1.0.3
 sphinxcontrib-serializinghtml==1.1.5
 sphinxcontrib-websupport==1.2.4
 sportsreference==0.4.6
