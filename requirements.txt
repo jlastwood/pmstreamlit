@@ -13,7 +13,7 @@ async-timeout==3.0.1
 attrs==21.2.0
 autoflake==1.4
 autopep8==1.5.2
--e git+https://github.com/jlastwood/pmstreamlit@9c11184db6118c5cef445d9d734d9befc943cba1#egg=awesome_streamlit&subdirectory=package
+-e git+https://github.com/jlastwood/pmstreamlit@9c4e3a119453317ee51c3c200444f8958ab74016#egg=awesome_streamlit&subdirectory=package
 Babel==2.9.1
 backcall==0.2.0
 bandit==1.7.0
@@ -214,7 +214,7 @@ thinc==7.1.1
 threadpoolctl==2.1.0
 toml==0.10.2
 toolz==0.11.1
-tornado==5.1.1
+tornado==6.1
 tqdm==4.61.1
 traitlets==5.0.5
 traittypes==0.2.1
