@@ -26,12 +26,12 @@ def write():
     with st.form("my_canvas"):
      st.markdown("<h4 style='text-align: center; color: white; background: grey;'>The PM Monitor</h4>", unsafe_allow_html=True)
      st.markdown("<h4 style='text-align: center; color: white; background: green;'>Goal Setting</h4>", unsafe_allow_html=True)
-     col6, col7 = st.beta_columns([3, 1])
+     col6, col7 = st.columns([3, 1])
      with col6:
       st.info("this is info :thought_balloon:")
      with col7:
       st.info("this is info :thought_balloon:")
-     col4, col5 = st.beta_columns(2)
+     col4, col5 = st.columns(2)
      with col4:
       st.info("this is info :thought_baloon:")
      with col5:
