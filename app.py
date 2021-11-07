@@ -40,7 +40,7 @@ def main():
     st.sidebar.write(
         "This an open source project, "
         "submit comments, questions, as  "
-        "[issues](https://github.com/jlastwood/namehere/issues) "
+        "[issues](https://github.com/jlastwood/pmstreamlit/issues) "
     )
     st.sidebar.title("About")
     st.sidebar.write(

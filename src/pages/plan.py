@@ -28,7 +28,7 @@ def write():
     with st.form("my_plan"):
 
      st.markdown("<h4 style='text-align: center; color: white; background: grey;'>The PM Monitor</h4>", unsafe_allow_html=True)
-     my_expander0 = st.expander("A project is finite, has a start and and end timeframe and is unique. A project is undertaken to implement change, deliver a new product, service or process.  Outline the timeline and the benefits in the Project Introduction.", expanded=True)
+     my_expander0 = st.expander("A project is finite, has a start and and end timeframe and is unique. A project is undertaken to implement change, deliver a new product, service or process.  The Project Introduction outlines the timeline and the benefits.", expanded=True)
      with my_expander0:
       col6, col7 = st.columns([1, 3])
       with col6:
@@ -77,24 +77,32 @@ def write():
      st.markdown(st.session_state.plcomments)
 
      st.markdown("<h4 style='text-align: center; color: white; background: grey;'>Scope</h4>", unsafe_allow_html=True)
-     my_expander2 = st.expander("The scope information outlines the features that the product should have, and how these features will be delivered, how many milestones, stories and releases are planned ", expanded=True)
+     my_expander2 = st.expander("The scope information outlines the features that the product should have. Scope also clarifies what is not in scope", expanded=True)
      with my_expander2:
       col4, col5 = st.columns(2)
       with col4:
-       plscopemusthave  = st.text_input ("Must Have", max_chars=30)
+       plscopemusthave  = st.text_area ("Must Have")
       with col5:
-       plscopenicetohave  = st.text_input ("Nice to Have", max_chars=30)
+       plscopenicetohave  = st.text_area ("Nice to Have")
       col4, col5 = st.columns(2)
       with col4:
-       plscopeifpossible  = st.text_input ("If Possible", max_chars=30)
+       plscopeifpossible  = st.text_area ("If Possible")
       with col5:
-       plscopeoutofscope  = st.text_input ("Out of Scope", max_chars=30)
+       plscopeoutofscope  = st.text_area ("Out of Scope")
+      with col4:
+       scopefunctionaloptions = st.multiselect(
+         'Select the non functional attributes',
+         ['Security', 'Availability', 'Usability', 'Maintainability','Documentation', 'Robustness'])
+      with col5:
+       scopetechnicaloptions = st.multiselect(
+         'Select the technical architecture attributes',
+         ['CMS', 'Framework', 'SEO', 'Search', 'Custom Theme'])
      st.markdown("<h4 style='text-align: center; color: white; background: grey;'>Schedule</h4>", unsafe_allow_html=True)
-     my_expander6 = st.expander("A project has 5 phases.  Milestones are point in time events that are used to verify if the project is on track.  This is shown using the milestone trend chart. Releases completed result in business value to the users and customer.  Features are defined as stories, stories are SMART,  Specific, Measurable, Achievable, Realistic and have a time frame.  ", expanded=True)
+     my_expander6 = st.expander("A project has 5 phases.  In your plan, these phases are tracked as milestones.  Your project will have no less than 5 milestones however you can define more. Milestones are point in time events that are used to verify if the project is on track.  This is shown using the milestone trend chart. Releases completed result in business value to the users and customer.  Features are defined as stories, stories are SMART,  Specific, Measurable, Achievable, Realistic and have a time frame. ", expanded=True)
      with my_expander6:
       col4, col5 = st.columns(2)
       with col4:
-       plmilestoneplanned  = st.slider ("Number of Milestones Planned", value=3, format="%i", min_value=1, max_value=20, step=1)
+       plmilestoneplanned  = st.slider ("Number of Milestones Planned", value=5, format="%i", min_value=1, max_value=20, step=1)
       with col5:
        plmilestonecompleted  = st.slider ("Number of Milestones Completed", value=0, format="%i", min_value=0, max_value=20, step=1)
       col1, col2, col3 = st.columns(3)
@@ -104,6 +112,13 @@ def write():
        plml1revised  = st.date_input ("Conception Revised", plstartdate)
       with col3:
        plml1complete  = st.date_input ("Conception Completed", plstartdate)
+      col1, col2, col3 = st.columns(3)
+      with col1:
+       plml2planned  = st.date_input ("Planning Planned", plstartdate)
+      with col2:
+       plml2revised  = st.date_input ("Planning Revised", plstartdate)
+      with col3:
+       plml2complete  = st.date_input ("Planning Completed", plstartdate)
       col4, col5 = st.columns(2)
       with col4:
        plstoriesplanned  = st.slider ("Number of Stories Planned", value=3, format="%i", min_value=1, max_value=20, step=1)
@@ -171,12 +186,21 @@ def write():
      submit = st.form_submit_button("Save")
      if submit:
         st.info("The information was updated, thank you for using the PM Monitor")
-     download = st.form_submit_button("Download Analysis")
-     df = pd.DataFrame({'numbers': [1, 2, 3], 'colors': ['red', 'white', 'blue']})
+   #  section to download the form for later use
+    st.write(st.session_state)
+    dform = pd.DataFrame(data=st.session_state)
      # d = {'Budget': [plbudget], 'Hours': [plhours]} 
      # st.markdown(get_table_download_link(df), unsafe_allow_html=True)
-     if download:
-        open('df.csv', 'w').write(df.to_csv())
+    csv = dform.to_csv().encode('utf-8')
+    download = st.download_button("Download Analysis", csv)
+    st.download_button(
+       label="Download data as CSV",
+       data=csv,
+       file_name='large_df.csv',
+       mime='text/csv',
+     )
+    if download:
+        open('df.csv', 'w').write(dform.to_csv())
         # st.success("The download is presented in another tab,  thank you for using the PM monitor")
         # https://discuss.streamlit.io/t/how-to-download-file-in-streamlit/1806/
 
