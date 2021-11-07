@@ -12,11 +12,11 @@ def write():
         st.markdown(
             """## Contributions
 
-This an open source project and you are very welcome to **contribute** your awesome
+This an open source project and you are very welcome to **contribute** your 
 comments, questions, resources and apps as
-[issues](https://github.com/jlastwood/project/issues) or
-[pull requests](https://github.com/jlastwood/project/pulls)
-to the [source code](https://github.com/jlastwood/project).
+[issues](https://github.com/jlastwood/pmstreamlit/issues) or
+[pull requests](https://github.com/jlastwood/pmstreamlit/pulls)
+to the [source code](https://github.com/jlastwood/pmstreamlit).
 
 ## The Developer
 For more details about the author Janet Astwood see [Author](https://bluezoneit.com).

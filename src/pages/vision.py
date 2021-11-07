@@ -13,7 +13,7 @@ def get_vision_markdown() -> str:
     Returns:
         str -- The vision as a string of MarkDown
     """
-    url = pathlib.Path(__file__).parent.parent.parent / "AWESOME-STREAMLIT.md"
+    url = pathlib.Path(__file__).parent.parent.parent / "thepmmonitor-vision.md"
     with open(url, mode="r") as file:
         readme_md_contents = "".join(file.readlines())
     return readme_md_contents.split("\n", 3)[-1]

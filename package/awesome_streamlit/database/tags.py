@@ -9,6 +9,7 @@ ARTICLE = Tag(name="Article")
 AWESOME_STREAMLIT_ORG = Tag(name="Awesome-Streamlit.org")
 AWESOMESTREAMLIT_COMPONENT_AUTHOR = Tag(name="The beginning")
 CODE = Tag("Code")
+RISKS = Tag("Risks")
 DEPLOYMENT = Tag(name="Deployment")
 FINANCE = Tag(name="Finance")
 GUIDE = Tag(name="Guide")
@@ -33,6 +34,7 @@ TAGS = [
     AWESOME_STREAMLIT_ORG,
     AWESOMESTREAMLIT_COMPONENT_AUTHOR,
     CODE,
+    RISKS,
     DEPLOYMENT,
     FINANCE,
     GUIDE,
