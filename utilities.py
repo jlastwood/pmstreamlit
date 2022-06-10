@@ -67,9 +67,15 @@ def evreport(projectrevenue, projectbudget, projecthours, projectrate, projectba
       pv = int(projectbudget * (timecomplete / 100))
       acwp = actualcost
       sv = ev - pv
-      spi = float(ev/pv)
+      if pv > 0:
+        spi = float(ev/pv)
+      else:
+        spi = 0
       cv = ev - acwp
-      cpi = ev/acwp
+      if acwp > 0:
+        cpi = ev/acwp
+      else:
+        cpi = 0
       if spi > 0 and cpi > 0:
         eac = float(acwp + ((projectbudget - ev)/(spi * cpi)))
       else:
@@ -99,7 +105,7 @@ def evreport(projectrevenue, projectbudget, projecthours, projectrate, projectba
       evsumm = f' :phone: {svcomment}<p>The project has a current Earned Value of {ev:,.0f} of a total spend to date of {acwp:,.0f}.  {timecomplete}% of the time has elapsed in the schedule.   Planned Value or the total cost of work that should have been done based on the schedule is {pv:,.0f}  <br/> Schedule Variance {sv:,.0f} is {scomment}. and Schedule Performance Index is {spi:.2f}% {spcomment} 1. The project is {bcomment} schedule.</p>{cvcomment}<p>Cost Variance is {cv} Cost Variance monitors budget.  The work can be ahead of schedule but over budget.  Cost Performance Index {cpi:.2f}% provides a guide as to the relative amount of the variance. The project is {cpicomment}.</p><p>Project Estimate at Completion is now {eac:,.0f} Estimate To Complete {etc:,.0f}</p>'
    else:
       evsumm = f'No Earned Value report,  missing budget'
-   return(evsumm)
+   return(evsumm, cpi, spi, etc)
 
 def switch_cadence(argument):
     switcher = {

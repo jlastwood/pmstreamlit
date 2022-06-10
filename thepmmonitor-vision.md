@@ -2,7 +2,7 @@
 
 ## Disclaimer
 
-THIS IS S A VISION and a HYPOTHESIS. NOT FACTS! MIGHT CHANGE A LOT.
+THIS IS S A VISION and a HYPOTHESIS. NOT FACTS! WE MIGHT CHANGE A LOT.
 
 ## Introduction
 
@@ -14,7 +14,7 @@ The project canvas is a visualization tool used to describe the project goals, b
 
 ## Risk template and automated probability
 
-Many project managers have difficulty identifying risks, convincing their stakeholders that they should identify risks in their projects early and have a strategy to address them.  Projects are about taking risks to achieve a new state, a new pproduct, process or goal.  
+Many project managers have difficulty identifying risks, convincing their stakeholders that they should identify risks in their projects early and have a strategy to address them.  Projects are about taking risks to achieve a new state, product, process or goal.  
 
 ## Earned Value Analysis
 
