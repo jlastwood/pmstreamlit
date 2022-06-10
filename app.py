@@ -1,5 +1,11 @@
 """Main module for the streamlit app"""
 import streamlit as st
+st.set_page_config(
+      page_title="The PM Monitor",
+      page_icon=None,
+      layout="wide",
+      initial_sidebar_state="collapsed",
+)
 
 import awesome_streamlit as ast
 import src.pages.about
@@ -8,18 +14,22 @@ import src.pages.home
 import src.pages.resources
 import src.pages.vision
 import src.pages.plan
-import src.pages.risks
+import src.pages.report
+import src.pages.change
+import src.pages.risk
 import src.pages.canvas
 import src.pages.messages
 
-ast.core.services.other.set_logging_format()
+# ast.core.services.other.set_logging_format()
 
 PAGES = {
     "Home": src.pages.home,
-    "Plan": src.pages.plan,
-    "Risks": src.pages.risks,
+    "Charter": src.pages.plan,
+    "Report": src.pages.report,
+    "Change": src.pages.change,
+    "Risk": src.pages.risk,
     "Canvas": src.pages.canvas,
-    "Messaging": src.pages.messages,
+    "Connect": src.pages.messages,
     "Resources": src.pages.resources,
     "Gallery": src.pages.gallery.index,
     "Vision": src.pages.vision,
@@ -29,11 +39,12 @@ PAGES = {
 
 def main():
     """Main function of the App"""
+
+
     st.sidebar.title("Navigation")
     selection = st.sidebar.radio("Go to", list(PAGES.keys()))
 
     page = PAGES[selection]
-
     with st.spinner(f"Loading {selection} ..."):
         ast.shared.components.write_page(page)
     st.sidebar.title("Contribute")
@@ -45,7 +56,7 @@ def main():
     st.sidebar.title("About")
     st.sidebar.write(
         """
-        This app is maintained by Janet Astwood. You can learn more about me at
+        Idea, Design and Development by Janet Astwood. More about me at
         [bluezoneit.com](https://bluezoneit.com).
 """
     )

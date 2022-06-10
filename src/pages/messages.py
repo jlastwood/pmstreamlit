@@ -25,7 +25,6 @@ def write():
     ast.shared.components.title_awesome("Messages")
     # with st.spinner("Loading  ..."):
     if 'plnumber' not in st.session_state:
-     #st.session_state.plnumber = ""
      st.error('Please create a plan')
      return()
     st.write("Project Number: ", st.session_state.plnumber)
