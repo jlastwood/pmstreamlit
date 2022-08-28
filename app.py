@@ -10,10 +10,8 @@ st.set_page_config(
 import awesome_streamlit as ast
 import src.pages.about
 import src.pages.gallery.index
-import src.pages.home
 import src.pages.resources
 import src.pages.vision
-import src.pages.plan
 import src.pages.report
 import src.pages.change
 import src.pages.risk
@@ -23,8 +21,6 @@ import src.pages.messages
 # ast.core.services.other.set_logging_format()
 
 PAGES = {
-    "Home": src.pages.home,
-    "Charter": src.pages.plan,
     "Report": src.pages.report,
     "Change": src.pages.change,
     "Risk": src.pages.risk,

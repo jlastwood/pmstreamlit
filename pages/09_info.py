@@ -1,0 +1,39 @@
+"""Home page shown when the user enters the application"""
+import streamlit as st
+import awesome_streamlit as ast
+
+# pylint: disable=line-too-long
+
+with st.spinner("Loading Home ..."):
+    st.write(
+            """
+
+The PM Monitor is an aid for Project Managers to monitor and control risks in projects. The PM Monitor presents the most common risks, uses earned value and sentiment analysis to predict issues and recommend a response strategy.  
+
+The project manager is a communication facilator, they communicate expectations,  and monitor outcomes, communications and risks in order to address negative impacts to project scope, time, cost or quality early.   
+
+The ability to assess, detect and predict issues is based on information obtained through engagement, sentiment, and subjectivity of written or spoken information.  This is combined with factual reports such as task completion status reports, time and cost reports. Using these two inputs a  model can be developed to recommend changes to the project. 
+
+Risk monitoring and control is an ongoing process for the life of the project.  Risks change as the project matures, new risks develop and anticipated risks disappear.  Risk monitoring provides processes to make effective decisions in advance of the risk occuring. 
+
+This application provides
+
+- Form to input a charter and plan
+- A project report or canvas including scope and benefits
+- Earned value analysis and reporting of CPI and SPI and ROI
+- Selection of project risks based on the project characteristics
+- Sentiment analysis of team and stakeholder communications
+- Probability of identified risks based on monitored threasholds
+- Engagement analysis based on team and stakeholder communications 
+- Wordcloud analysis reporting, what are the team talking about
+
+Pipeline
+
+- enter and save a copy of your plan, objectives and charter
+- enter your weekly cadence reporting updates to spend and progress
+- connect any communications channels
+- upload a task or activit list (if you are doing bottom up planning)
+- view risks, controls and monitors
+- analysis, report and communicate
+    """
+        )
