@@ -3,6 +3,7 @@
 from forex_python.converter import CurrencyRates
 import math
 import pandas as pd
+import datetime
 
 # https://forex-python.readthedocs.io/en/latest/usage.html
 # price of oil because USD is based on oil
@@ -129,3 +130,17 @@ def teamcomment(dateStart, dateEnd, stoday, timecomplete, coreteam):
    commentnote = f'There are {commchannel} communication channels in this project, with a team size of {coreteam}.  The project runs for x weeks'
    return(commentnote)
 # political events
+
+#  show where we are in terms of plan and calendar
+def datedifferences(startdate, enddate):
+    daytoday = datetime.date.today()
+    daysinplan = 0
+    if enddate > startdate:
+       daysinplan = (enddate-startdate).days
+    daysdoneplan = 0
+    if daytoday > startdate:
+       daysdoneplan = (daytoday-startdate).days
+    percentcomplete = 0
+    if daysinplan > 0:
+       percentcomplete = int(daysdoneplan / daysinplan * 100)
+    return (daysinplan, daysdoneplan, percentcomplete)
