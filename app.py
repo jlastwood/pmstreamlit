@@ -1,34 +1,35 @@
 """Main module for the streamlit app"""
 import streamlit as st
+from PIL import Image
+
+im = Image.open("assets/images/BlueZoneIT.ico")
 st.set_page_config(
       page_title="The PM Monitor",
-      page_icon=None,
+      page_icon=im,
       layout="wide",
       initial_sidebar_state="collapsed",
 )
 
 import awesome_streamlit as ast
+import src.pages.vision
 import src.pages.about
 import src.pages.gallery.index
 import src.pages.resources
-import src.pages.vision
 import src.pages.report
 import src.pages.change
-import src.pages.risk
 import src.pages.canvas
 import src.pages.messages
 
 # ast.core.services.other.set_logging_format()
 
 PAGES = {
+    "Vision": src.pages.vision,
     "Report": src.pages.report,
     "Change": src.pages.change,
-    "Risk": src.pages.risk,
     "Canvas": src.pages.canvas,
     "Connect": src.pages.messages,
     "Resources": src.pages.resources,
     "Gallery": src.pages.gallery.index,
-    "Vision": src.pages.vision,
     "About": src.pages.about,
 }
 
@@ -36,7 +37,7 @@ PAGES = {
 def main():
     """Main function of the App"""
 
-
+    st.image('assets/images/Blue Pink and White Project.jpg', caption='The PM Monitor Risk')
     st.sidebar.title("Navigation")
     selection = st.sidebar.radio("Go to", list(PAGES.keys()))
 
