@@ -83,11 +83,13 @@ def evreport(projectrevenue, projectbudget, projecthours, projectrate, projectba
         eac = 0
       etc = float(eac - acwp)
       if sv < 0:
-        svcomment = f'<p class="text-warning" ><i class="fas fa-level-down-alt"></i> Behind Schedule</p>'
+        #svcomment = f'<p class="text-warning" ><i class="fas fa-level-down-alt"></i> Behind Schedule</p>'
+        svcomment = 'Behind Schedule'
         bcomment = "behind "
         scomment = "negative "
       else:
-        svcomment = f'<p class="text-warning" ><i class="fas fa-level-up-alt"></i> On or ahead of Schedule</p>'
+        #svcomment = f'<p class="text-warning" ><i class="fas fa-level-up-alt"></i> On or ahead of Schedule</p>'
+        svcomment = 'On or ahead of Schedule'
         bcomment = "ahead of "
         scomment = "positive "
       if spi < 1:
@@ -95,15 +97,17 @@ def evreport(projectrevenue, projectbudget, projecthours, projectrate, projectba
       else:
         spcomment = "greater than "
       if cv < 0:
-        cvcomment = "<p class=\"text-warning\" ><i class=\"fas fa-level-down-alt\"></i> Over Budget</p>"
+        #cvcomment = "<p class=\"text-warning\" ><i class=\"fas fa-level-down-alt\"></i> Over Budget</p>"
+        cvcomment = "Over Budget"
       else:
-        cvcomment = "<p class=\"text-warning\" ><i class=\"fas fa-level-up-alt\"></i> On or Under Budget</p>"
+        #cvcomment = "<p class=\"text-warning\" ><i class=\"fas fa-level-up-alt\"></i> On or Under Budget</p>"
+        cvcomment = "On or under Budget"
       if cpi < 1:
         cpicomment = "over budget"
       else:
         cpicomment = "performing well on or under budget "
       #  use markdown
-      evsumm = f' :phone: {svcomment}<p>The project has a current Earned Value of {ev:,.0f} of a total spend to date of {acwp:,.0f}.  {timecomplete}% of the time has elapsed in the schedule.   Planned Value or the total cost of work that should have been done based on the schedule is {pv:,.0f}  <br/> Schedule Variance {sv:,.0f} is {scomment}. and Schedule Performance Index is {spi:.2f}% {spcomment} 1. The project is {bcomment} schedule.</p>{cvcomment}<p>Cost Variance is {cv} Cost Variance monitors budget.  The work can be ahead of schedule but over budget.  Cost Performance Index {cpi:.2f}% provides a guide as to the relative amount of the variance. The project is {cpicomment}.</p><p>Project Estimate at Completion is now {eac:,.0f} Estimate To Complete {etc:,.0f}</p>'
+      evsumm = f'**{svcomment} and {cvcomment}**<p>The project has a current Earned Value of {ev:,.0f} of a total spend to date of {acwp:,.0f}.  {timecomplete}% of the time has elapsed in the schedule.   Planned Value or the total cost of work that should have been done based on the schedule is {pv:,.0f}  <br/> Schedule Variance {sv:,.0f} is {scomment}. and Schedule Performance Index is {spi:.2f}% {spcomment} 1. The project is {bcomment} schedule.</p><p> Cost Variance is {cv} Cost Variance monitors budget.  The work can be ahead of schedule but over budget.  Cost Performance Index {cpi:.2f}% provides a guide as to the relative amount of the variance. The project is {cpicomment}.</p><p>Project Estimate at Completion is now {eac:,.0f} Estimate To Complete {etc:,.0f}</p>'
    else:
       evsumm = f'No Earned Value report,  missing budget'
    return(evsumm, cpi, spi, etc)
@@ -120,8 +124,9 @@ def switch_cadence(argument):
 def plancomment(dateStart, dateEnd, daystoday, daystoend, timecomplete, coreteam, projectid, projectname, benefits, cadence, prphase):
    weekstotal = (daystoday / 7) 
    weeksend = (daystoend / 7) 
-   cadnumber = switch_cadence(cadence) 
-   commentnote = f' :tada: Project {projectname} ({projectid}) to {benefits} is in the {prphase} phase and has been running for {weekstotal} weeks. Plans and status reports are updated every {cadnumber} weeks. '
+#   cadnumber = switch_cadence(cadence) 
+   cadnumber = cadence
+   commentnote = f' :fireworks: Project {projectname} ({projectid}) to {benefits} has been running for {weekstotal:.0g} week(s)$. Plans and status reports are updated every {cadnumber} weeks. '
    return(commentnote)
 
 # weather events

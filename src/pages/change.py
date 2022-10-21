@@ -5,7 +5,7 @@ import awesome_streamlit as ast
 import datetime
 import pandas as pd
 from utilities import currencyrisk, evreport, plancomment, get_table_download_link
-from st_radial import st_radial
+#from st_radial import st_radial
 
 @st.cache
 def get_plan_markdown() -> str:

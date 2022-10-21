@@ -2,11 +2,12 @@
 
 ## Disclaimer
 
-THIS IS S A VISION and a HYPOTHESIS. NOT FACTS! WE MIGHT CHANGE A LOT.
+Vision:  Provide a project manager with a tool and capability to manage project risks, assess risk probabilty and present risks that need to be addressed.  
+
 
 ## Introduction
 
-This article will discuss the evolution of ThePMMonitor.  
+Project risk management begins with a plan, outlining the benefits, costs, resources and objectives of the project.  The plan and key performance indicators such as milestone completion, resource sentiment and engagement are used to highlight risks.  
 
 ## Project Canvas
 

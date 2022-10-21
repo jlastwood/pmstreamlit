@@ -6,7 +6,7 @@ import datetime
 import pandas as pd
 from collections import Counter
 from utilities import currencyrisk, evreport, plancomment, get_table_download_link
-from st_radial import st_radial
+#from st_radial import st_radial
 from textblob import TextBlob
 from nltk.tokenize import sent_tokenize
 from youtube_transcript_api import YouTubeTranscriptApi
