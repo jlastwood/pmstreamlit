@@ -1,0 +1,25 @@
+Milestone,Description,Status,Effort,Actual,reportdate,Report,plandate,CostPlan,CostActual
+MS1,Initiation,Planned,0,0,12/01/22,Start,12/01/22,0,0
+MS1,Initiation,Complete,0,0,12/15/22,End,12/01/22,0,0
+MS2,Planning,Planned,0,0,12/01/22,Start,12/15/22,0,0
+MS2,Planning,In Progress,0,0,12/15/22,End,12/15/22,0,0
+MS2,Planning,In Progress,0,0,12/29/22,Report3,12/01/22,0,0
+MS3,Resources,Planned,0,0,12/01/22,Start,12/20/22,0,0
+MS3,Resources,In Progress,0,0,12/15/22,End,12/20/22,0,0
+MS3,Resources,In Progress,0,0,12/29/22,Report3,12/01/22,0,0
+MS4,Delivery1,Planned,0,0,12/01/22,Start,12/01/22,0,0
+MS4,Delivery1,Blocked,0,0,12/22/22,End,12/01/22,0,0
+MS4,Delivery1,Blocked,0,0,12/29/22,Report3,12/01/22,0,0
+MS5,Delivery2,Planned,0,0,12/01/22,Start,12/22/22,0,0
+MS5,Delivery2,Not Started,0,0,12/29/22,End,12/22/22,0,0
+MS6,Delivery3,Not Started,0,0,12/01/22,Start,12/15/22,0,0
+MS6,Delivery3,Not Started,0,0,12/19/22,End,12/22/22,0,0
+MS7,Launch,Planned,0,0,12/01/22,Start,12/01/22,0,0
+MS7,Launch,Not Started,0,0,12/29/22,End,12/01/22,0,0
+MS8,Closing,Not Started,0,0,12/01/22,Start,12/01/22,0,0
+MS8,Closing,Not Started,0,0,12/29/22,End,12/01/22,0,0
+Plan,Baseline,Planned,0,0,12/01/22,Start,12/01/22,0,0
+Plan,Baseline,In Progress,0,0,12/07/22,Start,12/07/22,0,0
+Plan,Baseline,In Progress,0,0,12/15/22,Start,12/15/22,0,0
+Plan,Baseline,In Progress,0,0,12/22/22,Start,12/22/22,0,0
+Plan,Baseline,Complete,0,0,12/29/22,Start,12/29/22,0,0
