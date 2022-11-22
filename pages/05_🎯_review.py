@@ -4,7 +4,7 @@ import streamlit as st
 import awesome_streamlit as ast
 import datetime
 import base64
-#import pandas as pd
+from utilities import reporttitle
 from annotated_text import annotated_text
 from PIL import Image
 import textwrap
@@ -86,7 +86,7 @@ def render_svg_example():
     render_svg(svg)
 
 set_media_print()
-set_bg_hack('background.png')
+# set_bg_hack('background.png')
     # initialize session state variables
 if 'plnumber' not in st.session_state:
       st.session_state.plnumber = ""
@@ -94,80 +94,65 @@ if 'plnumber' not in st.session_state:
 
 theme_scope = {'bgcolor': '#f9f9f9','title_color': 'orange','content_color': 'orange','icon_color': 'orange', 'icon': 'fa fa-check-circle'}
 font_fmt = {'font-class':'h4','font-size':'50%'}
-st.markdown("<h4 style='text-align: center; color: white; background: grey;'>The PM Monitor</h4>", unsafe_allow_html=True)
-st.markdown("<h4 style='text-align: center; color: white; background: green;'>Goal Setting</h4>", unsafe_allow_html=True)
-cc = st.columns(4)
+
+reporttitle("Canvas", st.session_state['thepmheader'])
+
+cc = st.columns(3)
 with cc[0]:
-      hc.info_card(title='Some heading GOOD', content=st.session_state.plscopenicetohave,theme_override=theme_scope)
-      annotated_text("is some text", "8ef")
+      planbenefit = ":key: **Benefits** \n\n- " + st.session_state['plsbenefits'] 
+      st.warning(planbenefit)
+      planroi = ":moneybag: **Benefits** \n\n- " + st.session_state['plsbenefits'] 
+      st.warning(planroi)
+      planscope = ":bulb: **Scope** \n\n- Nice to have " + st.session_state['plscopenicetohave'] + "\n- If Possible " + st.session_state['plscopeifpossible'] + "\n- Must Have " + st.session_state['plscopemusthave'] + "\n- Out of scope " + st.session_state['plscopeoutofscope'] 
+      st.warning(planscope)
 with cc[1]:
-      hc.info_card(title='Users', content=st.session_state.plscopenicetohave,theme_override=theme_scope)
+      # activities not completed due in next two weeks
+      st.success("**Activities**  next steps")
 with cc[2]:
-      hc.info_card(title='Benefits', content=st.session_state.plscopenicetohave,theme_override=theme_scope)
-with cc[3]:
-  wch_colour_box = (0,204,102)
-  wch_colour_font = (0,0,0)
-  fontsize = 18
-  valign = "left"
-  iconname = "fas fa-asterisk"
-  sline = "Observations"
-  lnk = '<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css" crossorigin="anonymous">'
-  i = 123
+      st.info(":exclamation: Assumptions and Risks")
+      st.success(":two_men_holding_hands: Sponsor")
+      st.success(":busts_in_silhouette: Stakeholders")
+st.markdown("##")
+cb = st.columns(3)
+with cb[0]:
+      st.info("Deliverables")
+with cb[1]:
+      milestones = " - " + st.session_state['thepmheader']
+      st.info(milestones)
+with cb[2]:
+      st.success("Resources")
+#with cc[3]:
+#  wch_colour_box = (0,204,102)
+#  wch_colour_font = (0,0,0)
+#  fontsize = 18
+#  valign = "left"
+#  iconname = "fas fa-asterisk"
+#  sline = "Observations"
+#  lnk = '<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css" crossorigin="anonymous">'
+#  i = 123
 
-  htmlstr = f"""<p style='background-color: rgb({wch_colour_box[0]}, 
-                                              {wch_colour_box[1]}, 
-                                              {wch_colour_box[2]}, 0.75); 
-                        color: rgb({wch_colour_font[0]}, 
-                                   {wch_colour_font[1]}, 
-                                   {wch_colour_font[2]}, 0.75); 
-                        font-size: {fontsize}px; 
-                        border-radius: 7px; 
-                        padding-left: 12px; 
-                        padding-top: 18px; 
-                        padding-bottom: 18px; 
-                        line-height:25px;'>
-                        <i class='{iconname} fa-xs'></i> {i}
-                        </style><BR><span style='font-size: 14px; 
-                        margin-top: 0;'>{sline}</style></span></p>"""
+#  htmlstr = f"""<p style='background-color: rgb({wch_colour_box[0]}, 
+#                                              {wch_colour_box[1]}, 
+#                                              {wch_colour_box[2]}, 0.75); 
+#                        color: rgb({wch_colour_font[0]}, 
+#                                   {wch_colour_font[1]}, 
+#                                   {wch_colour_font[2]}, 0.75); 
+#                        font-size: {fontsize}px; 
+#                        border-radius: 7px; 
+#                        padding-left: 12px; 
+#                        padding-top: 18px; 
+#                        padding-bottom: 18px; 
+#                        line-height:25px;'>
+#                        <i class='{iconname} fa-xs'></i> {i}
+#                        </style><BR><span style='font-size: 14px; 
+#                        margin-top: 0;'>{sline}</style></span></p>"""
+#  st.markdown(lnk + htmlstr, unsafe_allow_html=True)
 
-  st.markdown(lnk + htmlstr, unsafe_allow_html=True)
-col4, col5 = st.columns([4, 1])
-with col4:
-      st.info("Stakeholders :thought_balloon:")
-with col5:
-      st.success("Risks chart :grinning:")
-     # page break
-st.markdown("<div class='pagebreak'>Key Factors</div>", unsafe_allow_html=True)
-col4, col5 = st.columns(2)
-with col4:
-      st.info("Team :thought_balloon:")
-with col5:
-  st.success("Resources :grinning:")
-  st.markdown("<div style='break-after: left;'>Key Factors</div>", unsafe_allow_html=True)
-  st.markdown("<h1 style=text-align: center; color: white; background: green; break-before: always;'>Goal Setting</h1>", unsafe_allow_html=True)
-col4, col5 = st.columns(2)
-with col4:
-      st.info("Budget :thought_balloon:")
-with col5:
-      st.success("Actions :grinning:")
-st.write("Planning :grinning:")
+#  st.markdown("<h1 style=text-align: center; color: white; background: green; break-before: always;'>Goal Setting</h1>", unsafe_allow_html=True)
+#st.write("Planning :grinning:")
 color1 = '#1aa3ff'
 color2 = '#00ff00'
 color3 = '#ffffff'
 content = 'sample'
-st.markdown(f'<p style="text-align:center;background-image: linear-gradient(to right,{color1}, {color2});color:{color3};font-size:14px;border-radius:5px;">{content}</p>', unsafe_allow_html=True)
-
-st.markdown("<h4 style='text-align: center; color: white; background: blue'>Timeframe</h4>", unsafe_allow_html=True)
-st.write(":red_circle: :yellow_circle: :green_circle:", unsafe_allow_html=True)
-st.markdown("<h4 style='text-align: center; color: white; background: yellow'>Team</h4>", unsafe_allow_html=True)
-st.markdown("<h4 style='text-align: center; color: white; background: pink;'>Environment</h4>", unsafe_allow_html=True)
-     #download = st.form_submit_button("Download Analysis")
-     #df = pd.DataFrame({'numbers': [1, 2, 3], 'colors': ['red', 'white', 'blue']})
-     # d = {'Budget': [plbudget], 'Hours': [plhours]} 
-     # st.markdown(get_table_download_link(df), unsafe_allow_html=True)
-     #if download:
-     #   open('df.csv', 'w').write(df.to_csv())
-     # st.success("The download is presented in another tab,  thank you for using the PM monitor")
-     # https://discuss.streamlit.io/t/how-to-download-file-in-streamlit/1806/
-
+#st.markdown(f'<p style="text-align:center;background-image: linear-gradient(to right,{color1}, {color2});color:{color3};font-size:14px;border-radius:5px;">{content}</p>', unsafe_allow_html=True)
 

@@ -1,5 +1,6 @@
 # calculate currency risk, weather, political events for the plan analysis
 
+import streamlit as st
 from forex_python.converter import CurrencyRates
 import math
 import pandas as pd
@@ -64,6 +65,8 @@ def evreport(projectrevenue, projectbudget, projecthours, projectrate, projectba
 #  EAC = AC + [(BAC – EV)/(SPI x CPI)]
 #  etc = eac - ac
    if projectbudget > 0:
+      if milestoneplanned == 0:
+         milestoneplanned = 1
       ev = int(projectbudget * (milestonecomplete / milestoneplanned))
       pv = int(projectbudget * (timecomplete / 100))
       acwp = actualcost
@@ -126,7 +129,7 @@ def plancomment(dateStart, dateEnd, daystoday, daystoend, timecomplete, coreteam
    weeksend = (daystoend / 7) 
 #   cadnumber = switch_cadence(cadence) 
    cadnumber = cadence
-   commentnote = f' :fireworks: Project {projectname} ({projectid}) to {benefits} has been running for {weekstotal:.0g} week(s)$. Plans and status reports are updated every {cadnumber} weeks. '
+   commentnote = f'Project {projectname} ({projectid}) to {benefits} has been running for {weekstotal:.0g} week(s)$. Plans and status reports are updated every {cadnumber} weeks. '
    return(commentnote)
 
 # weather events
@@ -149,3 +152,23 @@ def datedifferences(startdate, enddate):
     if daysinplan > 0:
        percentcomplete = int(daysdoneplan / daysinplan * 100)
     return (daysinplan, daysdoneplan, percentcomplete)
+
+def reporttitle(reportname, reporttable):
+# CSS to inject contained in a string
+  hide_table_row_index = """
+            <style>
+            thead tr th:first-child {display:none}
+            tbody th {display:none}
+            </style>
+            """
+  st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: grey; font-size: 150%;'>The PM Monitor</p>", unsafe_allow_html=True)
+  st.table(reporttable)
+  header="<p style='text-align: center; vertical-align: bottom; color: white; background: green; font-size: 120%;'>" + reportname + "</p>"
+  st.markdown(header, unsafe_allow_html=True)
+  st.markdown("##")
+
+# Inject CSS with Markdown
+  st.markdown(hide_table_row_index, unsafe_allow_html=True)
+
+## output the header
+  return()
