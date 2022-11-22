@@ -262,7 +262,6 @@ xlrd==1.2.0
 yahooquery==1.0.11
 yapf==0.30.0
 yarl==1.6.3
-yarn==0.0.9
 yfinance==0.1.45
 youtube-transcript-api==0.4.4
 zipp==3.5.0
