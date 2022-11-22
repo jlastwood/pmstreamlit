@@ -7,10 +7,13 @@ import plotly.express as px
 from  PIL import Image
 import io 
 import base64
+from utilities import reporttitle
 
 # https://levelup.gitconnected.com/how-to-create-a-multi-layer-gantt-chart-using-plotly-e7d7f158938c
-#Main interface section 2
-st.markdown("<h4 style='text-align: center; color: white; background: grey;'>The PM Monitor</h4>", unsafe_allow_html=True)
+#Main interface section 
+
+reporttitle("Activity", st.session_state['thepmheader'])
+
 st.subheader('Gantt and WBS (Work Breakdown Structure)')
 uploaded_file = st.file_uploader("WBS is a deliverable orientied hierarchical decomposition of work to be executed by the project team.  Fill out the project plan activities and upload your file here. After you upload the file, you can edit your activities within the app.  If you are performing a fixed price or have a complex project to manage, you will want to create a WBS and map the related activities so that you can assign work concurrently to multiple team members and to link work and notify team members when their work can start.   The tasks are related to the project objectives and completion of the work will create the required deliverables. ", type=['csv'])
 if uploaded_file is not None:
@@ -25,7 +28,6 @@ if uploaded_file is not None:
         Tasks,
         editable=True, 
         height=300, 
-        width='100%',
         )
 
     updated = grid_response['data']
