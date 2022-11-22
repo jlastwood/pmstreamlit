@@ -13,7 +13,7 @@ async-timeout==3.0.1
 attrs==21.2.0
 autoflake==1.4
 autopep8==1.5.2
--e git+https://github.com/jlastwood/pmstreamlit@a9d03150e241ca958d0477830299959f8d41489c#egg=awesome_streamlit&subdirectory=package
+-e git+https://github.com/jlastwood/pmstreamlit@bae8cc7c34db92b6adb62c96e9ae9bed366cf436#egg=awesome_streamlit&subdirectory=package
 Babel==2.9.1
 backcall==0.2.0
 bandit==1.7.0
@@ -56,6 +56,7 @@ en-core-web-sm @ https://github.com/explosion/spacy-models/releases/download/en_
 entrypoints==0.3
 enum-compat==0.0.3
 Fiona==1.8.20
+fonttools==4.38.0
 forex-python==1.6
 gast==0.2.2
 geopandas==0.6.2
@@ -103,7 +104,7 @@ livereload==2.6.3
 lxml==4.4.1
 Markdown==3.3.4
 MarkupSafe==2.0.1
-matplotlib==3.1.1
+matplotlib==3.5.3
 matplotlib-inline==0.1.2
 mccabe==0.6.1
 mistune==0.8.4
@@ -121,7 +122,7 @@ nltk==3.6.2
 notebook==6.4.0
 numpy==1.21.0
 oauthlib==3.1.1
-opencv-python==4.1.1.26
+opencv-python==4.6.0.66
 opt-einsum==3.3.0
 packaging==21.0
 pandas==1.3.5
