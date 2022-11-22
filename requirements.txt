@@ -13,7 +13,7 @@ async-timeout==3.0.1
 attrs==21.2.0
 autoflake==1.4
 autopep8==1.5.2
--e git+https://github.com/jlastwood/pmstreamlit@bae8cc7c34db92b6adb62c96e9ae9bed366cf436#egg=awesome_streamlit&subdirectory=package
+-e git+https://github.com/jlastwood/pmstreamlit@84560ee91b625cb15f77f04497fc0ed4e1c8ca36#egg=awesome_streamlit&subdirectory=package
 Babel==2.9.1
 backcall==0.2.0
 bandit==1.7.0
@@ -120,7 +120,7 @@ nbformat==5.1.3
 nest-asyncio==1.5.1
 nltk==3.6.2
 notebook==6.4.0
-numpy==1.21.0
+numpy==1.21.6
 oauthlib==3.1.1
 opencv-python==4.6.0.66
 opt-einsum==3.3.0
