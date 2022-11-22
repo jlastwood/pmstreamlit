@@ -218,7 +218,6 @@ sphinxcontrib-websupport==1.2.4
 sportsreference==0.4.6
 srsly==1.0.5
 st-annotated-text==2.0.0
-st-radial==1.0.3
 stevedore==3.3.0
 streamlit==1.13.0
 streamlit-aggrid==0.2.3.post2
