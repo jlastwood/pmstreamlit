@@ -13,7 +13,7 @@ async-timeout==3.0.1
 attrs==21.2.0
 autoflake==1.4
 autopep8==1.5.2
--e git+https://github.com/jlastwood/pmstreamlit@84560ee91b625cb15f77f04497fc0ed4e1c8ca36#egg=awesome_streamlit&subdirectory=package
+-e git+https://github.com/jlastwood/pmstreamlit@671401e010a9dd55e389a12bc427442493aeb21b#egg=awesome_streamlit&subdirectory=package
 Babel==2.9.1
 backcall==0.2.0
 bandit==1.7.0
@@ -264,4 +264,3 @@ yarl==1.6.3
 yfinance==0.1.45
 youtube-transcript-api==0.4.4
 zipp==3.5.0
-setuptools=65.5.1
