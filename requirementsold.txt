@@ -1,4 +1,4 @@
-absl-py==0.13.0
+absl-py==1.2.0
 aiohttp==3.7.4.post0
 alabaster==0.7.12
 altair==4.1.0
@@ -8,17 +8,17 @@ appnope==0.1.2
 argon2-cffi==20.1.0
 astor==0.8.1
 astroid==2.6.2
+astunparse==1.6.3
 async-generator==1.10
 async-timeout==3.0.1
 attrs==21.2.0
 autoflake==1.4
 autopep8==1.5.2
--e git+https://github.com/jlastwood/pmstreamlit@a9d03150e241ca958d0477830299959f8d41489c#egg=awesome_streamlit&subdirectory=package
+-e git+https://github.com/jlastwood/pmstreamlit@8bbc2f8621e8d69e0a2fd07758b332301bc9aea5#egg=awesome_streamlit&subdirectory=package
 Babel==2.9.1
 backcall==0.2.0
 bandit==1.7.0
 base58==2.1.0
-beautifulsoup4==4.11.1
 black==21.6b0
 bleach==3.3.0
 blinker==1.4
@@ -27,10 +27,8 @@ bokeh==2.0.2
 boto3==1.17.105
 botocore==1.20.105
 bqplot==0.12.29
-bs4==0.0.1
 cached-property==1.5.2
 cachetools==4.2.2
-caching==0.1.dev8
 certifi==2021.5.30
 cffi==1.14.5
 chardet==4.0.0
@@ -44,6 +42,7 @@ coverage==5.5
 cssselect==1.1.0
 cycler==0.10.0
 cymem==2.0.5
+Cython==0.29.32
 de-core-news-sm @ https://github.com/explosion/spacy-models/releases/download/de_core_news_sm-2.2.0/de_core_news_sm-2.2.0.tar.gz
 debugpy==1.3.0
 decorator==5.0.9
@@ -51,11 +50,13 @@ defusedxml==0.7.1
 doc8==0.8.1
 docformatter==1.3.1
 docutils==0.17.1
+emoji==0.5.4
 en-core-web-md @ https://github.com/explosion/spacy-models/releases/download/en_core_web_md-2.2.0/en_core_web_md-2.2.0.tar.gz
 en-core-web-sm @ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-2.2.0/en_core_web_sm-2.2.0.tar.gz
 entrypoints==0.3
 enum-compat==0.0.3
 Fiona==1.8.20
+flatbuffers==1.12
 forex-python==1.6
 gast==0.2.2
 geopandas==0.6.2
@@ -66,11 +67,10 @@ google-auth-oauthlib==0.4.4
 google-pasta==0.2.0
 graphviz==0.13
 grpcio==1.38.1
+gunicorn==19.9.0
 h5py==3.3.0
 holoviews==1.14.4
-htbuilder==0.5.0
 hvplot==0.5.2
-hydralit-components==1.0.10
 idna==2.10
 imagesize==1.2.0
 importlib-metadata==3.10.1
@@ -81,7 +81,7 @@ ipython==7.25.0
 ipython-genutils==0.2.0
 ipywidgets==7.6.3
 isort==5.9.1
-iteration-utilities==0.11.0
+itsdangerous==0.24
 jedi==0.18.0
 Jinja2==3.0.1
 jmespath==0.10.0
@@ -94,14 +94,15 @@ jupyter-core==4.7.1
 jupyter-server==1.9.0
 jupyterlab-pygments==0.1.2
 jupyterlab-widgets==1.0.0
-Keras==2.3.1
+keras==2.9.0
 Keras-Applications==1.0.8
 Keras-Preprocessing==1.1.2
 kiwisolver==1.3.1
 lazy-object-proxy==1.6.0
+libclang==14.0.6
 livereload==2.6.3
-lxml==4.4.1
 Markdown==3.3.4
+markdown2==2.3.9
 MarkupSafe==2.0.1
 matplotlib==3.1.1
 matplotlib-inline==0.1.2
@@ -119,12 +120,12 @@ nbformat==5.1.3
 nest-asyncio==1.5.1
 nltk==3.6.2
 notebook==6.4.0
-numpy==1.21.0
+numpy==1.23.2
 oauthlib==3.1.1
-opencv-python==4.1.1.26
+opencv-python==4.6.0.66
 opt-einsum==3.3.0
 packaging==21.0
-pandas==1.3.5
+pandas==1.4.3
 pandocfilters==1.4.3
 panel==0.9.5
 param==1.11.1
@@ -136,7 +137,7 @@ pickleshare==0.7.5
 Pillow==8.3.0
 pkginfo==1.7.0
 plac==0.9.6
-plotly==5.8.1
+plotly==4.1.0
 pluggy==0.13.1
 preshed==3.0.5
 prometheus-client==0.11.0
@@ -158,7 +159,6 @@ pyformat==0.7
 Pygments==2.9.0
 pylint==2.9.3
 pylint2junit==1.0.1
-Pympler==1.0.1
 pyparsing==2.4.7
 pyproj==3.1.0
 pyquery==1.4.3
@@ -168,7 +168,6 @@ pytest-cov==2.12.1
 pytest-mock==3.6.1
 pytest-sugar==0.9.4
 python-dateutil==2.8.1
-python-dotenv==0.19.2
 pytz==2021.1
 pyviz-comms==2.1.0
 PyYAML==5.4.1
@@ -184,25 +183,24 @@ requests-toolbelt==0.9.1
 requests-unixsocket==0.2.0
 restructuredtext-lint==1.3.2
 retrying==1.3.3
-rich==12.4.4
 rope==0.19.0
 rsa==4.7.2
 s3transfer==0.4.2
 scikit-learn==0.24.2
-scipy==1.3.1
+scipy==1.9.1
 seaborn==0.9.0
 selenium==3.141.0
-semver==2.13.0
 Send2Trash==1.7.1
 Shapely==1.7.1
 simplejson==3.17.3
 six==1.16.0
 sklearn==0.0
+slack-export-viewer==1.0.3
 slackclient==2.9.3
+slacker==0.14.0
 smmap==4.0.0
 sniffio==1.2.0
 snowballstemmer==2.1.0
-soupsieve==2.3.2.post1
 spacy==2.2.1
 Sphinx==4.2.0
 sphinx-autobuild==2021.3.14
@@ -215,17 +213,16 @@ sphinxcontrib-qthelp==1.0.3
 sphinxcontrib-serializinghtml==1.1.5
 sphinxcontrib-websupport==1.2.4
 sportsreference==0.4.6
+SQLAlchemy==1.3.17
 srsly==1.0.5
-st-annotated-text==2.0.0
-st-radial==1.0.3
 stevedore==3.3.0
-streamlit==1.13.0
-streamlit-aggrid==0.2.3.post2
-streamlit-metrics==0.1.0
-tenacity==8.0.1
-tensorboard==2.0.2
-tensorflow==2.0.1
-tensorflow-estimator==2.0.1
+streamlit==0.88.0
+tensorboard==2.9.1
+tensorboard-data-server==0.6.1
+tensorboard-plugin-wit==1.8.1
+tensorflow==2.9.1
+tensorflow-estimator==2.9.0
+tensorflow-io-gcs-filesystem==0.26.0
 termcolor==1.1.0
 terminado==0.10.1
 testpath==0.5.0
@@ -240,7 +237,7 @@ traitlets==5.0.5
 traittypes==0.2.1
 twine==2.0.0
 typed-ast==1.4.3
-typing_extensions==4.2.0
+typing-extensions==3.10.0.0
 tzlocal==2.1
 unify==0.5
 untokenize==0.1.1
@@ -255,7 +252,9 @@ webencodings==0.5.1
 websocket-client==1.1.0
 Werkzeug==2.0.1
 widgetsnbextension==3.5.1
+wordcloud==1.7.0
 wrapt==1.12.1
+WTForms==2.2.1
 xlrd==1.2.0
 yahooquery==1.0.11
 yapf==0.30.0
