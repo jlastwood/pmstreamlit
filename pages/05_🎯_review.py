@@ -19,6 +19,10 @@ def get_base64_of_bin_file(bin_file):
         data = f.read()
     return base64.b64encode(data).decode()
 
+def wrapbox(color1, color2, align, text, title, icon):
+   text = "<p style='text-align: " + align + "; border-radius: 10px; color: " + color1 + "; background: " + color2 + ";opacity:0.6;<i class='fa " + icon + "'></i>" + title + "<br/>" + text + "</p>"
+   return text
+
 def set_bg_hack(main_bg):
     '''
     A function to unpack an image from root folder and set as bg.
@@ -87,7 +91,8 @@ def render_svg_example():
 
 set_media_print()
 # set_bg_hack('background.png')
-    # initialize session state variables
+# initialize session state variables
+
 if 'plnumber' not in st.session_state:
       st.session_state.plnumber = ""
       st.error('Please enter a plan')
@@ -99,19 +104,24 @@ reporttitle("Canvas", st.session_state['thepmheader'])
 
 cc = st.columns(3)
 with cc[0]:
-      planbenefit = ":key: **Benefits** \n\n- " + st.session_state['plsbenefits'] 
-      st.warning(planbenefit)
-      planroi = ":moneybag: **Benefits** \n\n- " + st.session_state['plsbenefits'] 
-      st.warning(planroi)
-      planscope = ":bulb: **Scope** \n\n- Nice to have " + st.session_state['plscopenicetohave'] + "\n- If Possible " + st.session_state['plscopeifpossible'] + "\n- Must Have " + st.session_state['plscopemusthave'] + "\n- Out of scope " + st.session_state['plscopeoutofscope'] 
-      st.warning(planscope)
+      planbenefit = wrapbox('darkgrey', '#DAD870', 'left', st.session_state['plsbenefits'] + "<br>", "Benefits", "fa-home")
+      st.markdown(planbenefit, unsafe_allow_html=True)
+      planroi = wrapbox('darkgrey', '#DAD870', 'left', st.session_state['plsbenefits'] + "<br>", "Return on Investment", "fa-home")
+      st.markdown(planroi, unsafe_allow_html=True)
+      planscope = "<br>- Nice to have " + st.session_state['plscopenicetohave'] + "<br>- If Possible " + st.session_state['plscopeifpossible'] + "<br>- Must Have " + st.session_state['plscopemusthave'] + "<br>- Out of scope " + st.session_state['plscopeoutofscope'] 
+      planout = wrapbox('darkgrey', '#DAD870', 'left', planscope, "Scope", "fa-home")
+      st.markdown(planout, unsafe_allow_html=True)
+      #st.warning(planscope)
 with cc[1]:
       # activities not completed due in next two weeks
       st.success("**Activities**  next steps")
 with cc[2]:
-      st.info(":exclamation: Assumptions and Risks")
-      st.success(":two_men_holding_hands: Sponsor")
-      st.success(":busts_in_silhouette: Stakeholders")
+      planrisk = wrapbox('darkgrey', 'orange', 'left', planscope, "Assumptions and Risks", "fa-home")
+      st.markdown(planrisk, unsafe_allow_html=True)
+      planres = wrapbox('darkgrey', 'lightblue', 'left', planscope, "Sponsor", "fa-home")
+      st.markdown(planres, unsafe_allow_html=True)
+      planres = wrapbox('darkgrey', 'lightblue', 'left', planscope, "Stakeholders", "fa-home")
+      st.markdown(planres, unsafe_allow_html=True)
 st.markdown("##")
 cb = st.columns(3)
 with cb[0]:
@@ -120,7 +130,8 @@ with cb[1]:
       milestones = " - " + st.session_state['thepmheader']
       st.info(milestones)
 with cb[2]:
-      st.success("Resources")
+      planres = wrapbox('black', 'blue', 'left', planscope, "Resources", "fa-home")
+      st.markdown(planres, unsafe_allow_html=True)
 #with cc[3]:
 #  wch_colour_box = (0,204,102)
 #  wch_colour_font = (0,0,0)
@@ -147,8 +158,6 @@ with cb[2]:
 #                        </style><BR><span style='font-size: 14px; 
 #                        margin-top: 0;'>{sline}</style></span></p>"""
 #  st.markdown(lnk + htmlstr, unsafe_allow_html=True)
-
-#  st.markdown("<h1 style=text-align: center; color: white; background: green; break-before: always;'>Goal Setting</h1>", unsafe_allow_html=True)
 #st.write("Planning :grinning:")
 color1 = '#1aa3ff'
 color2 = '#00ff00'
