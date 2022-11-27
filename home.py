@@ -11,44 +11,38 @@ st.set_page_config(
 )
 
 import awesome_streamlit as ast
-import src.pages.vision
-import src.pages.about
-import src.pages.gallery.index
-import src.pages.resources
-import src.pages.report
-import src.pages.change
-import src.pages.canvas
-import src.pages.messages
+#import src.pages.messages
 
 # ast.core.services.other.set_logging_format()
 
-PAGES = {
-    "Vision": src.pages.vision,
-    "Report": src.pages.report,
-    "Change": src.pages.change,
-    "Canvas": src.pages.canvas,
-    "Connect": src.pages.messages,
-    "Resources": src.pages.resources,
-    "Gallery": src.pages.gallery.index,
-    "About": src.pages.about,
-}
+#PAGES = {
+#    "Connect": src.pages.messages,
+#}
 
 def main():
     """Main function of the App"""
 
     st.image('assets/images/The PM Monitor Plan.png', caption='The PM Monitor Risk')
 
-    st.write("getting started with The PM Monitor")
+    st.markdown("---")
+    url1 = "/plan"
+    st.markdown(f'''
+<a href={url1}><button style="background-color:#F4A261;text-align: center;">  Start Planning  </button></a>
+''',
+unsafe_allow_html=True)
+    #url2 = "/identify"
+    #st.write("Review Risks [link](%s)" % url2)
+
 #    st.sidebar.title("Navigation")
 #    selection = st.sidebar.radio("Go to", list(PAGES.keys()))
 
 #    page = PAGES[selection]
 #    with st.spinner(f"Loading {selection} ..."):
 #        ast.shared.components.write_page(page)
+
     st.sidebar.title("Contribute")
     st.sidebar.write(
-        "This an open source project, "
-        "submit comments, questions, as  "
+        "This an open source project, submit comments, questions, as  "
         "[issues](https://github.com/jlastwood/pmstreamlit/issues) "
     )
     st.sidebar.title("About")

@@ -86,18 +86,18 @@ with st.container():
      dataframe = pd.DataFrame.from_dict(myrisks, orient="columns")
      groupscore = dataframe.groupby(['riskscore', 'risktype']).size().groupby(level=1).max()
 
-     st.write(dataframe['riskprobability'].value_counts())    
- 
      totalrisks = len(startframe)
      startmetric5 = startframe.riskselect.value_counts().checked
+     startmetric4 = len(startframe['riskresponse'] == 'Avoid')
      endmetric5 = len(dataframe['riskprobability'] == '0')
+     endmetric4 = 0
 
      col1, col2, col3, col4, col5 = st.columns(5)
      col1.metric("Highest", "70 °F", "1.2 °F")
      col2.metric("High", "9 mph", "-8%")
      col3.metric("Moderate", "86%", "4%")
-     col4.metric("Low", "86%", "4%")
-     col5.metric("Closed", startmetric, int(totalrisks - endmetric5))
+     col4.metric("Avoid", startmetric4, endmetric4)
+     col5.metric("Closed", startmetric5, int(totalrisks - endmetric5))
 
      # st.table(dataframe)
      charttype = dataframe['risktype'].value_counts()

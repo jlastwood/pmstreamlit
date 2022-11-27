@@ -64,6 +64,10 @@ def evreport(projectrevenue, projectbudget, projecthours, projectrate, projectba
 #  when past cost and schedule performace will continue
 #  EAC = AC + [(BAC – EV)/(SPI x CPI)]
 #  etc = eac - ac
+   cpi = 0
+   eac = 0
+   spi = 0
+   etc = 0
    if projectbudget > 0:
       if milestoneplanned == 0:
          milestoneplanned = 1
@@ -73,17 +77,11 @@ def evreport(projectrevenue, projectbudget, projecthours, projectrate, projectba
       sv = ev - pv
       if pv > 0:
         spi = float(ev/pv)
-      else:
-        spi = 0
       cv = ev - acwp
       if acwp > 0:
         cpi = ev/acwp
-      else:
-        cpi = 0
       if spi > 0 and cpi > 0:
         eac = float(acwp + ((projectbudget - ev)/(spi * cpi)))
-      else:
-        eac = 0
       etc = float(eac - acwp)
       if sv < 0:
         #svcomment = f'<p class="text-warning" ><i class="fas fa-level-down-alt"></i> Behind Schedule</p>'
@@ -127,9 +125,9 @@ def switch_cadence(argument):
 def plancomment(dateStart, dateEnd, daystoday, daystoend, timecomplete, coreteam, projectid, projectname, benefits, cadence, prphase):
    weekstotal = (daystoday / 7) 
    weeksend = (daystoend / 7) 
-#   cadnumber = switch_cadence(cadence) 
+#  cadnumber = switch_cadence(cadence) 
    cadnumber = cadence
-   commentnote = f'Project {projectname} ({projectid}) to {benefits} has been running for {weekstotal:.0g} week(s)$. Plans and status reports are updated every {cadnumber} weeks. '
+   commentnote = f'Project {projectname} ({projectid}) to {benefits} in the {prphase} and completed {weekstotal:.0g} week(s)$. Plans and status reports are updated every {cadnumber} weeks. '
    return(commentnote)
 
 # weather events
@@ -161,14 +159,33 @@ def reporttitle(reportname, reporttable):
             tbody th {display:none}
             </style>
             """
-  st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: grey; font-size: 150%;'>The PM Monitor</p>", unsafe_allow_html=True)
+  st.markdown("<h3 style='text-align: center; vertical-align: bottom; color: white; background: grey; '>The PM Monitor</h3>", unsafe_allow_html=True)
   st.table(reporttable)
-  header="<p style='text-align: center; vertical-align: bottom; color: white; background: green; font-size: 120%;'>" + reportname + "</p>"
-  st.markdown(header, unsafe_allow_html=True)
-  st.markdown("##")
 
 # Inject CSS with Markdown
   st.markdown(hide_table_row_index, unsafe_allow_html=True)
-
+  url1 = "/plan"
+  url2 = "/canvas"
+  url3 = "/stoplight"
+  col1, col2, col3  = st.columns(3)
+  with col1:
+   st.markdown(f'''
+<a target="_self" href={url1}><button style="background-color:#F4A261;text-align:border-radius: 12px; border: 2px solid #4CAF50;center;">Update Plan</button></a>
+''',
+unsafe_allow_html=True)
+  with col2:
+   st.markdown(f'''
+<a target="_self" href={url2}><button style="background-color:#F4A261;text-align:border-radius: 12px; border: 2px solid #4CAF50;center;">Canvas Report</button></a>
+''',
+unsafe_allow_html=True)
+  with col3:
+   st.markdown(f'''
+<a target="_self" href={url3}><button style="background-color:#F4A261;text-align:border-radius: 12px; border: 2px solid #4CAF50;center;">Stoplight Report</button></a>
+''',
+unsafe_allow_html=True)
+  st.markdown("---")
 ## output the header
+  if reportname > " ":
+   header="<p style='text-align: center; vertical-align: bottom; color: white; background: green; font-size: 120%;'>" + reportname + "</p>"
+   st.markdown(header, unsafe_allow_html=True)
   return()
