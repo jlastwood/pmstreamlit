@@ -56,10 +56,7 @@ cola, colb, colc, cold = st.columns([2,1,1,4])
 with cola:
   st.write("Scope")
 with colb:
-  if st.session_state['plnfeaturescompleted'] > 0:
-    scopebar =  int (st.session_state['plnfeaturescompleted'] / st.session_state['plnfeaturesplanned'] *100 )
-  else:
-    scopebar = 0
+  scopebar =  st.session_state['thepmdelivery']
   hc.progress_bar(scopebar,'Features',key='pascope',sentiment='good',override_theme=bar_theme_2)
 with colc:
   st.write(scopebar)
