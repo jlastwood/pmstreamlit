@@ -1,4 +1,9 @@
 Milestone,Description,Status,Effort,Actual,reportdate,Report,plandate,CostPlan,CostActual
+Plan,Baseline,Planned,0,0,12/01/22,Start,12/01/22,0,0
+Plan,Baseline,Complete,0,0,12/07/22,Start,12/07/22,0,0
+Plan,Baseline,,0,0,12/15/22,Start,12/15/22,0,0
+Plan,Baseline,,0,0,12/22/22,Start,12/22/22,0,0
+Plan,Baseline,,0,0,12/29/22,Start,12/29/22,0,0
 MS1,Initiation,Planned,0,0,12/01/22,Start,12/01/22,0,0
 MS1,Initiation,Complete,0,0,12/15/22,End,12/01/22,0,0
 MS2,Planning,Planned,0,0,12/01/22,Start,12/15/22,0,0
@@ -18,8 +23,3 @@ MS7,Launch,Planned,0,0,12/01/22,Start,12/01/22,0,0
 MS7,Launch,Not Started,0,0,12/29/22,End,12/01/22,0,0
 MS8,Closing,Not Started,0,0,12/01/22,Start,12/01/22,0,0
 MS8,Closing,Not Started,0,0,12/29/22,End,12/01/22,0,0
-Plan,Baseline,Planned,0,0,12/01/22,Start,12/01/22,0,0
-Plan,Baseline,In Progress,0,0,12/07/22,Start,12/07/22,0,0
-Plan,Baseline,In Progress,0,0,12/15/22,Start,12/15/22,0,0
-Plan,Baseline,In Progress,0,0,12/22/22,Start,12/22/22,0,0
-Plan,Baseline,Complete,0,0,12/29/22,Start,12/29/22,0,0

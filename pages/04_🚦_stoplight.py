@@ -16,8 +16,10 @@ from youtube_transcript_api.formatters import TextFormatter
 #@st.cache
 #with st.spinner("Loading  ..."):
     # initialize session state variables
-if 'plnumber' not in st.session_state:
- st.session_state.plnumber = ""
+if 'thepmheader' not in st.session_state:
+ st.warning("Sorry, plan is missing.  Please enter or import a plan")
+ st.stop()
+
 if 'plcsmcomment' not in st.session_state:
  st.session_state.plcsmcomment = ""
 
@@ -39,20 +41,20 @@ bar_theme_2 = {'bgcolor': 'lightgrey','content_color': 'grey','progress_color': 
 
 reporttitle("Stoplight Report", st.session_state['thepmheader'])
 
-cola, colb, colc, cold = st.columns([2,1,1,4])
+cola, colb, colc, cole = st.columns([1,2,1,4])
 with cola:
   st.write("Schedule")
 with colb:
   hc.progress_bar(st.session_state['thepmtimecomplete'],'Time',key='paschedule',sentiment='good')
 with colc:
-  st.write(st.session_state['thepmtimecomplete'])
-with cold:
+  st.write(int(st.session_state['thepmspi']*100), st.session_state['thepmtimecomplete'])
+with cole:
   if st.session_state['thepmspi'] < 1:
-    notes = "<font color='grey'>:warning:" + "behind schedule " + st.session_state['plptimecontingency'] + "</font>"
+    notes = "<font color='grey'>:warning:" + " Behind schedule - Contingency: " + st.session_state['plptimecontingency'] + "</font>"
   else:
-    notes = "<font color='grey'>:warning:" + "on schedule" + "</font>"
+    notes = "<font color='grey'>" + "On or ahead of schedule" + "</font>"
   st.markdown("{}".format(notes), unsafe_allow_html=True)
-cola, colb, colc, cold = st.columns([2,1,1,4])
+cola, colb, colc, cole = st.columns([1,2,1,4])
 with cola:
   st.write("Scope")
 with colb:
@@ -60,34 +62,52 @@ with colb:
   hc.progress_bar(scopebar,'Features',key='pascope',sentiment='good',override_theme=bar_theme_2)
 with colc:
   st.write(scopebar)
-with cold:
+with cole:
   if st.session_state['plscopechangeadd'] != "None":
-    notex = "scope changes"
     notec = "<font color='grey'>:warning:" + st.session_state['plpscopecontingency'] + "</font>"
   else:
     notec = ""
   st.markdown("{}".format(notec), unsafe_allow_html=True)
-cola, colb, colc, cold = st.columns([2,1,1,4])
+cola, colb, colc, cole = st.columns([1,2,1,4])
+with cola:
+  st.write("Quality")
+with colb:
+  qualbar = 0
+  if int(st.session_state['plntests']) > 0:
+   qualbar = int(st.session_state['plntestsfailed'] / st.session_state['plntests'] * 100)
+  hc.progress_bar(qualbar,'Quality',key='paqual',sentiment='good',override_theme=bar_theme_2)
+with colc:
+  st.write(qualbar)
+with cole:
+  if int(st.session_state['thepminspectionflag']) == 1:
+    notec = "<font color='grey'>:warning:" + st.session_state['thepminspectionwarning'] + st.session_state['plpscopecontingency'] + "</font>"
+  else:
+    notec = ""
+  st.markdown("{}".format(notec), unsafe_allow_html=True)
+cola, colb, colc, cole = st.columns([1,2,1,4])
 with cola:
   st.write("Cost")
 with colb:
-  hc.progress_bar(35,'Something something - 2a',key='pacost',sentiment='good',override_theme=bar_theme_2)
-with cold:
-  st.markdown("<font color='red'>THIS TEXT WILL CHANGE COLOR</font>", unsafe_allow_html=True)
-cola, colb, colc, cold = st.columns([2,1,1,4])
+  hc.progress_bar(st.session_state['thepmbudgetcomplete'],'Cost',key='pabudget',sentiment='good')
+with colc:
+  st.write(st.session_state['thepmbudgetcomplete'], st.session_state['thepmcpi'])
+with cole:
+  if st.session_state['thepmcpi'] < 1:
+    notes = "<font color='grey'>:warning:" + "Over Budget - Contingency:  " + st.session_state['plpbudgetcontingency'] + "</font>"
+  else:
+    notes = "<font color='grey'>" + "On or ahead of budget" + "</font>"
+  st.markdown("{}".format(notes), unsafe_allow_html=True)
+cola, colb, colc, cole = st.columns([1,2,1,4])
 with cola:
   st.write("Risk")
 with colb:
-  hc.progress_bar(35,'Something something - 2a',key='parisk',sentiment='good',override_theme=bar_theme_2)
-with cold:
-  st.markdown("<font color='red'>There are 6 high risk probable risks</font>", unsafe_allow_html=True)
-cola, colb, colc, cold = st.columns([2,1,1,4])
-with cola:
-  st.write("Issues")
-with colb:
-  hc.progress_bar(35,'Something something - 2a',key='paissues',sentiment='good',override_theme=bar_theme_2)
-with cold:
-  st.markdown("<font color='red'>There are 2 issues related to risk or contingency activities in force</font>", unsafe_allow_html=True)
+  riskbar = 15
+  hc.progress_bar(riskbar,'Risk',key='parisk',sentiment='good',override_theme=bar_theme_2)
+with colc:
+  st.write(riskbar)
+with cole:
+  # if there are open risks, and probability is 100 and impact is high
+  st.markdown("<font color='grey'>Risks have become issues and require management action</font>", unsafe_allow_html=True)
 st.markdown("---")
 cola, colb, colc = st.columns([2,2,4])
 with cola:
@@ -97,7 +117,7 @@ with colb:
 with colc:
   st.markdown("<font color='red'></font>", unsafe_allow_html=True)
 with cola:
-  st.write("Estimated Completion")
+  st.write("Estimate to Complete")
 with colb:
   st.session_state['thepmtimecomplete']
 with colc:

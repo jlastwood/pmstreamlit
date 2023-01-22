@@ -84,12 +84,10 @@ def evreport(projectrevenue, projectbudget, projecthours, projectrate, projectba
         eac = float(acwp + ((projectbudget - ev)/(spi * cpi)))
       etc = float(eac - acwp)
       if sv < 0:
-        #svcomment = f'<p class="text-warning" ><i class="fas fa-level-down-alt"></i> Behind Schedule</p>'
         svcomment = 'Behind Schedule'
         bcomment = "behind "
         scomment = "negative "
       else:
-        #svcomment = f'<p class="text-warning" ><i class="fas fa-level-up-alt"></i> On or ahead of Schedule</p>'
         svcomment = 'On or ahead of Schedule'
         bcomment = "ahead of "
         scomment = "positive "
@@ -98,10 +96,8 @@ def evreport(projectrevenue, projectbudget, projecthours, projectrate, projectba
       else:
         spcomment = "greater than "
       if cv < 0:
-        #cvcomment = "<p class=\"text-warning\" ><i class=\"fas fa-level-down-alt\"></i> Over Budget</p>"
         cvcomment = "Over Budget"
       else:
-        #cvcomment = "<p class=\"text-warning\" ><i class=\"fas fa-level-up-alt\"></i> On or Under Budget</p>"
         cvcomment = "On or under Budget"
       if cpi < 1:
         cpicomment = "over budget"
@@ -122,12 +118,11 @@ def switch_cadence(argument):
     }
     return switcher.get(argument, 1)
 
-def plancomment(dateStart, dateEnd, daystoday, daystoend, timecomplete, coreteam, projectid, projectname, benefits, cadence, prphase):
+def plancomment(dateStart, dateEnd, daystoday, daystoend, timecomplete, coreteam, projectid, projectname, benefits, cadence, prphase, pmname, pmclass):
    weekstotal = (daystoday / 7) 
    weeksend = (daystoend / 7) 
-#  cadnumber = switch_cadence(cadence) 
    cadnumber = cadence
-   commentnote = f'Project {projectname} ({projectid}) to {benefits} in the {prphase} and completed {weekstotal:.0g} week(s)$. Plans and status reports are updated every {cadnumber} weeks. '
+   commentnote = f'Project {projectname} ({projectid}) monitored by {pmname} is a {pmclass} project. The benefits are {benefits}. The project is currently in the {prphase} phase with planned completion in {weeksend:.0g} week(s). Plans are updated and status reports are updated every {cadnumber} week(s). '
    return(commentnote)
 
 # weather events
@@ -159,31 +154,31 @@ def reporttitle(reportname, reporttable):
             tbody th {display:none}
             </style>
             """
-  st.markdown("<h3 style='text-align: center; vertical-align: bottom; color: white; background: grey; '>The PM Monitor</h3>", unsafe_allow_html=True)
+  st.markdown("<h3 style='text-align: center; vertical-align: bottom; color: white; background: grey; '>The PM Monitor</h3><br/>", unsafe_allow_html=True)
   st.table(reporttable)
 
 # Inject CSS with Markdown
   st.markdown(hide_table_row_index, unsafe_allow_html=True)
-  url1 = "/plan"
-  url2 = "/canvas"
-  url3 = "/stoplight"
-  col1, col2, col3  = st.columns(3)
-  with col1:
-   st.markdown(f'''
-<a target="_self" href={url1}><button style="background-color:#F4A261;text-align:border-radius: 12px; border: 2px solid #4CAF50;center;">Update Plan</button></a>
-''',
-unsafe_allow_html=True)
-  with col2:
-   st.markdown(f'''
-<a target="_self" href={url2}><button style="background-color:#F4A261;text-align:border-radius: 12px; border: 2px solid #4CAF50;center;">Canvas Report</button></a>
-''',
-unsafe_allow_html=True)
-  with col3:
-   st.markdown(f'''
-<a target="_self" href={url3}><button style="background-color:#F4A261;text-align:border-radius: 12px; border: 2px solid #4CAF50;center;">Stoplight Report</button></a>
-''',
-unsafe_allow_html=True)
-  st.markdown("---")
+  url1 = "http://localhost:8501/plan"
+  url2 = "http://localhost:8501/canvas"
+  url3 = "http://localhost:8501/stoplight"
+#  col1, col2, col3  = st.columns(3)
+#  with col1:
+#   st.markdown(f'''
+#<a target="_self" href={url1}><button style="background-color:#F4A261;text-align:border-radius: 12px; border: 2px solid #4CAF50;center;">Update Plan</button></a>
+#''',
+#unsafe_allow_html=True)
+#  with col2:
+#   st.markdown(f'''
+#<a target="_self" href={url2}><button style="background-color:#F4A261;text-align:border-radius: 12px; border: 2px solid #4CAF50;center;">Canvas Report</button></a>
+#''',
+#unsafe_allow_html=True)
+#  with col3:
+#   st.markdown(f'''
+#<a target="_self" href={url3}><button style="background-color:#F4A261;text-align:border-radius: 12px; border: 2px solid #4CAF50;center;">Stoplight Report</button></a>
+#''',
+#unsafe_allow_html=True)
+#  st.markdown("---")
 ## output the header
   if reportname > " ":
    header="<p style='text-align: center; vertical-align: bottom; color: white; background: green; font-size: 120%;'>" + reportname + "</p>"

@@ -3,6 +3,10 @@ import streamlit as st
 import awesome_streamlit as ast
 from utilities import reporttitle
 
+if 'thepmheader' not in st.session_state:
+ st.warning("Sorry, plan is missing.  Please enter or import a plan")
+ st.stop()
+
 # pylint: disable=line-too-long
 reporttitle("Information", st.session_state['thepmheader'])
 
