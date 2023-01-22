@@ -2,6 +2,11 @@
 import streamlit as st
 from PIL import Image
 
+primaryColor="#264653"
+backgroundColor="#FFFFFF"
+secondaryBackgroundColor="#F4A261"
+textColor="#2A9D8F"
+
 im = Image.open("assets/images/BlueZoneIT.ico")
 st.set_page_config(
       page_title="The PM Monitor",
@@ -11,34 +16,22 @@ st.set_page_config(
 )
 
 import awesome_streamlit as ast
-#import src.pages.messages
-
-# ast.core.services.other.set_logging_format()
-
-#PAGES = {
-#    "Connect": src.pages.messages,
-#}
 
 def main():
     """Main function of the App"""
-
-    st.image('assets/images/The PM Monitor Plan.png', caption='The PM Monitor Risk')
+    st.session_state.update(st.session_state)
+    st.image('assets/images/The PM Monitor Plan.png', caption='The PM Monitor Planner and Risk Management')
 
     st.markdown("---")
+    columns = st.columns((2,1,2))
     url1 = "/plan"
-    st.markdown(f'''
-<a href={url1}><button style="background-color:#F4A261;text-align: center;">  Start Planning  </button></a>
+    with columns[1]:
+     st.markdown(f'''
+<a href={url1} target = "_self"><button style="background-color:#F4A261;text-align: center;">  Start Planning  </button></a>
 ''',
 unsafe_allow_html=True)
     #url2 = "/identify"
     #st.write("Review Risks [link](%s)" % url2)
-
-#    st.sidebar.title("Navigation")
-#    selection = st.sidebar.radio("Go to", list(PAGES.keys()))
-
-#    page = PAGES[selection]
-#    with st.spinner(f"Loading {selection} ..."):
-#        ast.shared.components.write_page(page)
 
     st.sidebar.title("Contribute")
     st.sidebar.write(

@@ -16,8 +16,9 @@ reporttitle("Activity", st.session_state['thepmheader'])
 
 st.subheader('Gantt and WBS (Work Breakdown Structure)')
 uploaded_file = st.file_uploader("WBS is a deliverable orientied hierarchical decomposition of work to be executed by the project team.  Fill out the project plan activities and upload your file here. After you upload the file, you can edit your activities within the app.  If you are performing a fixed price or have a complex project to manage, you will want to create a WBS and map the related activities so that you can assign work concurrently to multiple team members and to link work and notify team members when their work can start.   The tasks are related to the project objectives and completion of the work will create the required deliverables. ", type=['csv'])
+st.write("Analyse the results and update the plan and status.  Monitor activities that are late and on the critical path, activities that are late and not assigned, monitor the load of resources.  If you are tracking time, monitor overall estimate to completion rates")
 if uploaded_file is not None:
-    Tasks=pd.read_csv(uploaded_file)
+    Tasks=pd.read_csv(uploaded_file, quotechar='"', delimiter=',', skipinitialspace=True)
     Tasks['Start'] = Tasks['Start'].astype('datetime64')
     Tasks['Finish'] = Tasks['Finish'].astype('datetime64')
    
@@ -42,9 +43,9 @@ if uploaded_file is not None:
                         df, 
                         x_start="Start", 
                         x_end="Finish", 
-                        y="Task",
+                        y="id",
                         color=Options,
-                        hover_name="Task Description"
+                        hover_name="name"
                         )
 
         fig.update_yaxes(autorange="reversed")          #if not specified as 'reversed', the tasks will be listed from bottom up       

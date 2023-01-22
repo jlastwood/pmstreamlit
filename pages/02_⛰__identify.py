@@ -14,7 +14,7 @@ from utilities import reporttitle
 
 timeline = 20
 phase = 'Planning'
-phasenumber = '2'
+phasenumber = st.session_state['plnlistphase']
 engagementscoresponsor = 70
 sentimentscoresponsor = 70
 retentionscoresponsor = 70
@@ -30,6 +30,9 @@ SPI = 4
 def calculate_risks_json(risks):
    for d in risks:
         d['riskselect'] = 'Y'
+        #  when phase exceeds timeline setting, then probability is 0, risk is closed
+        if phasenumber > int( d['risktimeline'] ):
+           d['riskprobability'] = '0'
         # timeframe when risk will have an impact
         # the risk probablility can be 0 when risk has elapsed
         if d['risktimeline'] > '4':
@@ -38,9 +41,6 @@ def calculate_risks_json(risks):
            d['riskselect'] = 'Y'
         if d['risktimeline'] < '3' and timeline < 50:
            d['riskselect'] = 'Y'
-        #   d['riskprobability'] = '0'
-        #   d['riskimpact'] = '0'
-        #   d['riskscore'] = '0'
 
    selectedrisks = [d for d in risks if d['riskselect'] == 'Y']
            
@@ -64,40 +64,43 @@ def calculate_risks_json(risks):
            d['riskscore'] = '4'
         if d['riskimpact'] == '2' and d['riskprobability'] == '2':
            d['riskscore'] = 'Moderate'
+        if d['riskprobability'] == '0':
+           d['riskscore'] = 'Closed'
         if d['riskimpact'] == '' and d['riskprobability'] == '':
            d['riskimpact'] = '2'
-           d['riskprobability'] = '2'
            d['riskscore'] = 'Moderate'
         return(selectedrisks) 
 
-
-    # with st.spinner("Loading  ..."):
-if 'plnumber' not in st.session_state:
-     #st.session_state.plnumber = ""
+if 'plpnumber' not in st.session_state:
      st.error('Please enter a plan')
 
 reporttitle("Risk Analysis", st.session_state['thepmheader'])
 
 with st.container():
-
      startrisks = getrisks()
      startframe = pd.DataFrame.from_dict(startrisks, orient="columns")
      myrisks = calculate_risks_json(startrisks)
      dataframe = pd.DataFrame.from_dict(myrisks, orient="columns")
      groupscore = dataframe.groupby(['riskscore', 'risktype']).size().groupby(level=1).max()
 
-     totalrisks = len(startframe)
-     startmetric5 = startframe.riskselect.value_counts().checked
+     totalmetric = startframe.shape[0]
+     startmetric1 = len(startframe['riskprobability'] == '1')
+     endmetric1 = len(dataframe['riskprobability'] == '2')
+     startmetric2 = len(startframe['riskimpact'] == '3')
+     endmetric2 = len(dataframe['riskimpact'] == '3')
+     startmetric3 = len(startframe['riskprobability'] == '3')
+     endmetric3 = len(dataframe['riskprobability'] == '3')
      startmetric4 = len(startframe['riskresponse'] == 'Avoid')
-     endmetric5 = len(dataframe['riskprobability'] == '0')
-     endmetric4 = 0
+     endmetric4 = len(dataframe['riskresponse'] == 'Avoid')
+     endmetric5 = sum(dataframe['riskprobability'] == '0')
+     startmetric5 = int(totalmetric - endmetric5) 
 
      col1, col2, col3, col4, col5 = st.columns(5)
-     col1.metric("Highest", "70 °F", "1.2 °F")
-     col2.metric("High", "9 mph", "-8%")
-     col3.metric("Moderate", "86%", "4%")
-     col4.metric("Avoid", startmetric4, endmetric4)
-     col5.metric("Closed", startmetric5, int(totalrisks - endmetric5))
+     col1.metric("Low", endmetric1, startmetric1)
+     col2.metric("Impact", endmetric2, startmetric2)
+     col3.metric("Issues", endmetric3, startmetric3)
+     col4.metric("Avoid", endmetric4, startmetric4)
+     col5.metric("Closed", endmetric5, startmetric5)
 
      # st.table(dataframe)
      charttype = dataframe['risktype'].value_counts()
