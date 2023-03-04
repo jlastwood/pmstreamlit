@@ -8,9 +8,18 @@ from  PIL import Image
 import io 
 import base64
 from utilities import reporttitle
+import graphviz
 
 # https://levelup.gitconnected.com/how-to-create-a-multi-layer-gantt-chart-using-plotly-e7d7f158938c
 #Main interface section 
+
+im = Image.open("assets/images/BlueZoneIT.ico")
+st.set_page_config(
+      page_title="The PM Monitor Work Breakdown Activities",
+      page_icon=im,
+      layout="wide",
+      initial_sidebar_state="collapsed",
+)
 
 reporttitle("Activity", st.session_state['thepmheader'])
 
@@ -33,6 +42,18 @@ if uploaded_file is not None:
 
     updated = grid_response['data']
     df = pd.DataFrame(updated) 
+
+    st.subheader("Mindmap Critical path")
+
+    # Create a graphlib graph object
+    graph = graphviz.Digraph()
+    for index, row in Tasks.iterrows():
+      graph.edge(str(row['id']), str(row['dependencies']))
+    st.graphviz_chart(graph)
+
+    st.subheader("Late tasks")
+    st.subheader("Missing Estimate")
+    st.subheader("Team Members")
     
     #Main interface - section 3
     st.subheader('Step 3: Generate the Gantt chart')

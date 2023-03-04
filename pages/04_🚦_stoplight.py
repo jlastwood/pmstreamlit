@@ -1,18 +1,42 @@
 """Page for nlp of the project report"""
 import pathlib
+from PIL import Image
 import streamlit as st
 import awesome_streamlit as ast
 import datetime
 import pandas as pd
 import hydralit_components as hc
+import heapq
+import random
 from collections import Counter
+from pandas import *
 from utilities import currencyrisk, evreport, plancomment, get_table_download_link, reporttitle
+from deepmultilingualpunctuation import PunctuationModel
 #from st_radial import st_radial
 from textblob import TextBlob
-from nltk.tokenize import sent_tokenize
+import nltk
+from nltk.tokenize import sent_tokenize, word_tokenize
 from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api.formatters import TextFormatter
- 
+from youtube_transcript_api.formatters import PrettyPrintFormatter 
+from wordcloud import WordCloud, STOPWORDS
+import matplotlib.pyplot as plt
+
+im = Image.open("assets/images/BlueZoneIT.ico")
+st.set_page_config(
+      page_title="The PM Monitor Stoplight Report",
+      page_icon=im,
+      layout="wide",
+      initial_sidebar_state="collapsed",
+)
+
+hide_table_row_index = """
+            <style>
+            thead tr th:first-child {display:none}
+            tbody th {display:none}
+            </style>
+            """
+
 #@st.cache
 #with st.spinner("Loading  ..."):
     # initialize session state variables
@@ -27,16 +51,22 @@ if "visibility" not in st.session_state:
     st.session_state.visibility = "collapsed"
     st.session_state.disabled = False
 
-videopmreport="https://www.youtube.com/watch?v=c4fEms85NQQ"
-videoidreport="c4fEms85NQQ"
-    #videopmreport="https://www.youtube.com/watch?v=qWdyhFiyH0Y&t=10s"
-transcript=YouTubeTranscriptApi.get_transcript(videoidreport)
-formatter = TextFormatter()
-text_formatted = formatter.format_transcript(transcript)
-textcsm = TextBlob(text_formatted) #sentiment for each sentence
+videopmreport=st.session_state.plpmreport
+videoidreport=st.session_state.plpmid
+#videoidreport="c4fEms85NQQ"
+#videopmreport="https://www.youtube.com/watch?v=qWdyhFiyH0Y&t=10s"
+if videoidreport:
+ transcript=YouTubeTranscriptApi.get_transcript(videoidreport)
+ formatter = TextFormatter()
+ text_formatted = formatter.format_transcript(transcript)
+ model = PunctuationModel(model="oliverguhr/fullstop-punctuation-multilingual-sonar-base")
+ textresult = model.restore_punctuation(text_formatted)
+ textcsm = TextBlob(textresult) #sentiment for each sentence
+
 daytoday = datetime.date.today()
-cpi = int(st.session_state.thepmcpi)
-spi = int(st.session_state.thepmspi)
+cpi = round(st.session_state.thepmcpi,1)
+spi = round(st.session_state.thepmspi,1)
+
 bar_theme_2 = {'bgcolor': 'lightgrey','content_color': 'grey','progress_color': 'green'}
 
 reporttitle("Stoplight Report", st.session_state['thepmheader'])
@@ -47,9 +77,9 @@ with cola:
 with colb:
   hc.progress_bar(st.session_state['thepmtimecomplete'],'Time',key='paschedule',sentiment='good')
 with colc:
-  st.write(int(st.session_state['thepmspi']*100), st.session_state['thepmtimecomplete'])
+  st.write(st.session_state['thepmtimecomplete'], spi)
 with cole:
-  if st.session_state['thepmspi'] < 1:
+  if spi < 1:
     notes = "<font color='grey'>:warning:" + " Behind schedule - Contingency: " + st.session_state['plptimecontingency'] + "</font>"
   else:
     notes = "<font color='grey'>" + "On or ahead of schedule" + "</font>"
@@ -90,9 +120,9 @@ with cola:
 with colb:
   hc.progress_bar(st.session_state['thepmbudgetcomplete'],'Cost',key='pabudget',sentiment='good')
 with colc:
-  st.write(st.session_state['thepmbudgetcomplete'], st.session_state['thepmcpi'])
+  st.write(st.session_state['thepmbudgetcomplete'], cpi)
 with cole:
-  if st.session_state['thepmcpi'] < 1:
+  if cpi < 1:
     notes = "<font color='grey'>:warning:" + "Over Budget - Contingency:  " + st.session_state['plpbudgetcontingency'] + "</font>"
   else:
     notes = "<font color='grey'>" + "On or ahead of budget" + "</font>"
@@ -123,32 +153,85 @@ with colb:
 with colc:
   st.markdown("<font color='red'><font>", unsafe_allow_html=True)
 st.markdown("---")
+if not videopmreport:
+  st.warning("Sorry, PM report is missing.  Please create report with transcript")
+  st.stop
+
 col1, col2, col3, col4, col5 = st.columns(5)
-col1.metric("Polarity", textcsm.sentiment.polarity, round(.5-textcsm.sentiment.polarity,2))
-col2.metric("Objectivity", textcsm.sentiment.subjectivity, "")
-col3.metric("Cost Performance", cpi, round(cpi-1,1) )
-col4.metric("Schedule Performance", spi, round(spi-1,1) )
+col1.metric("Polarity", round(textcsm.sentiment.polarity,2), round(1-textcsm.sentiment.polarity,2))
+col2.metric("Objectivity", round(textcsm.sentiment.subjectivity,2), 1-textcsm.sentiment.subjectivity)
+col3.metric("Cost Performance", cpi, cpi-1 )
+col4.metric("Schedule Performance", spi, spi-1 )
 col5.metric("Engagement", "86%", "4%")
+st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: green; font-size: 120%;'>Stakeholder Action</p>", unsafe_allow_html=True)
+actions = DataFrame({'a': [1,2,3], 'b': [2,3,4]})
+st.table(actions)
 col1, col2 = st.columns(2)
 with col1:
  st.video(videopmreport, format='video/mp4', start_time=0)
 with col2:
- st.markdown("<h4 style='text-align: center; color: white; background: grey;'>Management Report</h4>", unsafe_allow_html=True)
- #plcommentsummary = "#### Product Owner says:\n" + plcsmcomment + "\n#### Project Manager says:\n" + plpmcomment + "\n#### Stakeholder action items:\n" + plmgmtactions + "\n\nReport date:" + daytoday.strftime("%Y %m %d")
+ st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: green; font-size: 120%;'>Management Report </p>", unsafe_allow_html=True)
+
  #st.markdown(plcommentsummary)
  #st.write(plcsmcomment) #sentiment for each sentence
  #st.write(textcsm.noun_phrases) #extracting polarity of each sentence
  #st.write(textcsm.np_counts) #extracting polarity of each sentence
  #https://textblob.readthedocs.io/en/dev/classifiers.html#classifying-text
- tags = textcsm.tags
  #st.write("text sentiment", textcsm.sentiment_assessments)
  #st.write(Counter(tags).most_common(5))
- nouns = list()
- for word, tag in textcsm.tags:
-   if tag == 'NN':
-     nouns.append(word.lemmatize())
- st.write ("This report theme is ...")
- st.write(str(dict(Counter(nouns).most_common(5))))
- #for item in nouns:
-   #word = Word(item)
- #  st.write (item)
+ wordtoken = word_tokenize(textresult)
+ is_noun = lambda pos: pos[:2] == 'NN'
+ nouns = [word for (word, pos) in nltk.pos_tag(wordtoken) if is_noun(pos)] 
+ #for word, tag in wordtoken:
+ #  if tag == 'NN':
+ #    nouns.append(word.lemmatize())
+ # st.write(str(dict(Counter(nouns).most_common(5))))
+ sentence_list = nltk.sent_tokenize(textresult)
+ stopwords = nltk.corpus.stopwords.words('english')
+ # st.write(sentence_list)
+ word_frequencies = {}
+ for word in nltk.word_tokenize(textresult):
+    if word not in stopwords:
+        if word not in word_frequencies.keys():
+            word_frequencies[word] = 1
+        else:
+            word_frequencies[word] += 1
+ maximum_frequncy = max(word_frequencies.values())
+
+ #for word in word_frequencies.keys():
+ #   word_frequencies[word] = (word_frequencies[word]/maximum_frequncy)
+    # st.write(word)
+
+ sentence_scores = {}
+ for sent in sentence_list:
+    for word in nltk.word_tokenize(sent.lower()):
+        if word in word_frequencies.keys():
+            if len(sent.split(' ')) < 30:
+                if sent not in sentence_scores.keys():
+                    sentence_scores[sent] = word_frequencies[word]
+                else:
+                    sentence_scores[sent] += word_frequencies[word]
+
+ summary_sentences = heapq.nlargest(5, sentence_scores, key=sentence_scores.get)
+
+ summary = ' '.join(summary_sentences)
+
+ # https://stackoverflow.com/questions/49566756/creating-wordclouds-with-altair
+ # create the WordCloud object
+ wordcloud = WordCloud(min_word_length =3,
+                      background_color='white', stopwords=stopwords, max_words=20)
+
+ # generate the word cloud
+ stopwords = set(STOPWORDS)
+ # wordcloud.generate_from_frequencies(word_frequencies)
+ wordcloud.generate(text_formatted)
+
+ #plot
+ plt.imshow(wordcloud, interpolation='bilinear')
+ plt.axis('off')
+ plt.show()
+ st.pyplot(plt)
+st.write(summary)
+st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: green; font-size: 120%;'>Deliverables</p>", unsafe_allow_html=True)
+deliverables = DataFrame({'a': [1,2,3], 'b': [2,3,4]})
+st.table(deliverables)

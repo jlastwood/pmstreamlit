@@ -41,7 +41,7 @@ unsafe_allow_html=True)
     st.sidebar.title("About")
     st.sidebar.write(
         """
-        Idea, Design and Development by Janet Astwood. More about me at
+        Idea, Design and Development by Janet Astwood. More about Janet at
         [bluezoneit.com](https://bluezoneit.com).
 """
     )
