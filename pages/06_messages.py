@@ -1,5 +1,6 @@
 """Page for viewing the awesome Project slackmessages"""
 import pathlib
+from PIL import Image
 import streamlit as st
 import awesome_streamlit as ast
 import datetime
@@ -9,16 +10,24 @@ import altair as alt
 from slack_message import slack_messages_pm
 from textblob import TextBlob
 from nltk.tokenize import sent_tokenize
+from utilities import reporttitle
 
 # https://ruarfff.com/slack-sentiment/
-    # with st.spinner("Loading  ..."):
 if 'thepmheader' not in st.session_state:
      st.error('Please create a plan')
      st.stop()
 
+im = Image.open("assets/images/BlueZoneIT.ico")
+st.set_page_config(
+      page_title="The PM Monitor Team Monitor",
+      page_icon=im,
+      layout="wide",
+      initial_sidebar_state="collapsed",
+)
+
+reporttitle("Team Communication Analysis", st.session_state['thepmheader'])
+
 with st.form("my_messages"):
-     st.markdown("<h4 style='text-align: center; color: white; background: grey;'>The PM Monitor</h4>", unsafe_allow_html=True)
-     st.markdown("<h4 style='text-align: center; color: white; background: grey;'>Project Information</h4>", unsafe_allow_html=True)
 
      st.header("Slack Connection Details")
      slacktoken  = st.text_input ("Token", help="A slack token", key="slacktoken")
@@ -36,7 +45,6 @@ with st.form("my_messages"):
          sentScores.append(score) 
 
     #Plotting sentiment scores per sentencein line graph
-
         st.write("output engagement score, sentiment, top 5 words, top 3 people")
         st.line_chart(sentScores) #using line_chart st call to plot polarity for each 
         (commentdata, clientmessage) = slack_messages_pm(slacktoken, slackchannel)

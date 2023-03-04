@@ -2,6 +2,15 @@
 import streamlit as st
 import awesome_streamlit as ast
 from utilities import reporttitle
+from PIL import Image
+
+im = Image.open("assets/images/BlueZoneIT.ico")
+st.set_page_config(
+      page_title="The PM Monitor Information",
+      page_icon=im,
+      layout="wide",
+      initial_sidebar_state="collapsed",
+)
 
 if 'thepmheader' not in st.session_state:
  st.warning("Sorry, plan is missing.  Please enter or import a plan")

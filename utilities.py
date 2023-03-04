@@ -1,4 +1,4 @@
-# calculate currency risk, weather, political events for the plan analysis
+#calculate currency risk, weather, political events for the plan analysis
 
 import streamlit as st
 from forex_python.converter import CurrencyRates
@@ -120,9 +120,9 @@ def switch_cadence(argument):
 
 def plancomment(dateStart, dateEnd, daystoday, daystoend, timecomplete, coreteam, projectid, projectname, benefits, cadence, prphase, pmname, pmclass):
    weekstotal = (daystoday / 7) 
-   weeksend = (daystoend / 7) 
+   weeksend = int(daystoend / 7) 
    cadnumber = cadence
-   commentnote = f'Project {projectname} ({projectid}) monitored by {pmname} is a {pmclass} project. The benefits are {benefits}. The project is currently in the {prphase} phase with planned completion in {weeksend:.0g} week(s). Plans are updated and status reports are updated every {cadnumber} week(s). '
+   commentnote = f'Project {projectname} ({projectid}) monitored by {pmname} is a {pmclass} project. The benefits are {benefits}. The project is currently in the {prphase} phase with planned completion in {weeksend:.0f} week(s). Plans are updated and status reports are updated every {cadnumber} week(s). '
    return(commentnote)
 
 # weather events

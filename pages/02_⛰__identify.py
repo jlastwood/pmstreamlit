@@ -8,13 +8,13 @@ import pandas as pd
 import altair as alt
 from st_aggrid import AgGrid
 from utilities import reporttitle
+from riskgenerate import calculate_risks_json
 
     # set value for score in dictionary for selected risks
     # using timeline decide which risks are closed and probability
 
 timeline = 20
 phase = 'Planning'
-phasenumber = st.session_state['plnlistphase']
 engagementscoresponsor = 70
 sentimentscoresponsor = 70
 retentionscoresponsor = 70
@@ -27,112 +27,78 @@ sentimenttscoreuer = 0
 CPI = 3
 SPI = 4
 
-def calculate_risks_json(risks):
-   for d in risks:
-        d['riskselect'] = 'Y'
-        #  when phase exceeds timeline setting, then probability is 0, risk is closed
-        if phasenumber > int( d['risktimeline'] ):
-           d['riskprobability'] = '0'
-        # timeframe when risk will have an impact
-        # the risk probablility can be 0 when risk has elapsed
-        if d['risktimeline'] > '4':
-           d['riskselect'] = 'Y'
-        if d['risktimeline'] < '5' and timeline < 90:
-           d['riskselect'] = 'Y'
-        if d['risktimeline'] < '3' and timeline < 50:
-           d['riskselect'] = 'Y'
-
-   selectedrisks = [d for d in risks if d['riskselect'] == 'Y']
-           
-    #  set the score value and count scores and risktable
-   for d in selectedrisks:
-        if d['riskimpact'] == '3' and d['riskprobability'] == '3':
-           d['riskscore'] = 'Highest'
-        if d['riskimpact'] == '1' and d['riskprobability'] == '3':
-           d['riskscore'] = 'Moderate'
-        if d['riskimpact'] == '3' and d['riskprobability'] == '1':
-           d['riskscore'] = 'Moderate'
-        if d['riskimpact'] == '1' and d['riskprobability'] == '1':
-           d['riskscore'] = 'Lowest'
-        if d['riskimpact'] == '3' and d['riskprobability'] == '2':
-           d['riskscore'] = '4'
-        if d['riskimpact'] == '1' and d['riskprobability'] == '2':
-           d['riskscore'] = '2'
-        if d['riskimpact'] == '2' and d['riskprobability'] == '1':
-           d['riskscore'] = '2'
-        if d['riskimpact'] == '2' and d['riskprobability'] == '3':
-           d['riskscore'] = '4'
-        if d['riskimpact'] == '2' and d['riskprobability'] == '2':
-           d['riskscore'] = 'Moderate'
-        if d['riskprobability'] == '0':
-           d['riskscore'] = 'Closed'
-        if d['riskimpact'] == '' and d['riskprobability'] == '':
-           d['riskimpact'] = '2'
-           d['riskscore'] = 'Moderate'
-        return(selectedrisks) 
-
-if 'plpnumber' not in st.session_state:
+    # with st.spinner("Loading  ..."):
+if 'thepmheader' not in st.session_state:
+     #st.session_state.plnumber = ""
      st.error('Please enter a plan')
-
 reporttitle("Risk Analysis", st.session_state['thepmheader'])
 
+phasenumber = st.session_state['plnlistphase']
 with st.container():
+
      startrisks = getrisks()
      startframe = pd.DataFrame.from_dict(startrisks, orient="columns")
-     myrisks = calculate_risks_json(startrisks)
+     st.write(phasenumber)
+     myrisks = calculate_risks_json(startrisks, phasenumber)
      dataframe = pd.DataFrame.from_dict(myrisks, orient="columns")
      groupscore = dataframe.groupby(['riskscore', 'risktype']).size().groupby(level=1).max()
 
-     totalmetric = startframe.shape[0]
-     startmetric1 = len(startframe['riskprobability'] == '1')
-     endmetric1 = len(dataframe['riskprobability'] == '2')
-     startmetric2 = len(startframe['riskimpact'] == '3')
-     endmetric2 = len(dataframe['riskimpact'] == '3')
-     startmetric3 = len(startframe['riskprobability'] == '3')
-     endmetric3 = len(dataframe['riskprobability'] == '3')
-     startmetric4 = len(startframe['riskresponse'] == 'Avoid')
-     endmetric4 = len(dataframe['riskresponse'] == 'Avoid')
-     endmetric5 = sum(dataframe['riskprobability'] == '0')
-     startmetric5 = int(totalmetric - endmetric5) 
+     startresponse = startframe['riskresponse'].value_counts()
+     chartresponse = dataframe['riskresponse'].value_counts()
+     chartprobability = dataframe['riskprobability'].value_counts()
+     chartscore = dataframe['riskscore'].value_counts()
+     totalrisks = len(startframe)
+     #startmetric5 = startframe.riskselect.value_counts().checked
+     startmetric4 = int(startresponse['Avoid'])
+     endmetric4 = int(chartresponse['Avoid'])
+     startmetric5 = sum(dataframe['riskselect'] == 'N')
+     startmetric3 = sum(dataframe['riskprobability'] == '3')
+     endmetric3 = sum(dataframe['riskprobability'] == 3)
 
+     st.write(chartresponse)
+     st.write(chartprobability)
+     st.write(chartscore)
+ 
      col1, col2, col3, col4, col5 = st.columns(5)
-     col1.metric("Low", endmetric1, startmetric1)
-     col2.metric("Impact", endmetric2, startmetric2)
-     col3.metric("Issues", endmetric3, startmetric3)
-     col4.metric("Avoid", endmetric4, startmetric4)
-     col5.metric("Closed", endmetric5, startmetric5)
+     col1.metric("Highest", "70 °F", "1.2 °F")
+     col2.metric("High", "9 mph", "-8%")
+     col3.metric("Issues", int(endmetric3/startmetric3), endmetric3)
+     col4.metric("Avoid", startmetric4, int(endmetric4/startmetric4))
+     col5.metric("Closed", startmetric5, int(startmetric5/totalrisks))
+ 
 
      # st.table(dataframe)
      charttype = dataframe['risktype'].value_counts()
      chartscore = dataframe['riskscore'].value_counts()
      chartowner = dataframe['riskowner'].value_counts()
-     chartresponse = dataframe['riskresponse'].value_counts()
-     st.header("Risk by group Score")
+
+     st.subheader("Risk by group Score and Impact")
      st.bar_chart(groupscore)
-     st.header("Risk by Type and Impact")
-     c = alt.Chart(dataframe).mark_bar().encode(
+     st.subheader("Risk by Type and Impact")
+     c = alt.Chart(dataframe.dropna()).mark_bar().encode(
        x='risktype',
        y='count(riskimpact)',
        color='riskimpact'
      )
      st.altair_chart(c, use_container_width=True)
 
-     st.header("Risk by Owner and Impact")
-     d = alt.Chart(dataframe).mark_bar().encode(
+     st.subheader("Risk by Owner and Score")
+     d = alt.Chart(dataframe.dropna()).mark_bar().encode(
        x='riskowner',
        y='count(riskscore)',
        color='riskscore'
      )
      st.altair_chart(d, use_container_width=True)
 
-     st.header("Risk by Probability and Response")
-     e = alt.Chart(dataframe).mark_bar().encode(
+     st.subheader("Risk by Response and Score")
+     e = alt.Chart(dataframe.dropna()).mark_bar().encode(
        x='riskresponse',
        y='count(riskscore)',
        color='riskprobability'
      )
      st.altair_chart(e, use_container_width=True)
 
+     st.subheader("Heatmap Impact and Probability")
      heatmap = alt.Chart(dataframe).mark_rect().encode(
        alt.X('riskimpact'),
        alt.Y('riskprobability'),
@@ -153,14 +119,17 @@ with st.container():
      #st.write(dataframe)
      #st.json(myrisks)
      
-     df = dataframe
-
      grid_response = AgGrid(
         dataframe,
-        editable=True,
+        editable=False,
         height=300,
         )
 
-     updated = grid_response['data']
-     df = pd.DataFrame(updated)
+     grid_response = AgGrid(
+        startframe,
+        editable=False,
+        height=300,
+        )
+     #updated = grid_response['data']
+     #df = pd.DataFrame(updated)
 

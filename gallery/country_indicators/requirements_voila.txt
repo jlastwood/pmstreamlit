@@ -1,4 +1,0 @@
-jupyter # For comparisons with voila
-voila # For comparisons with voila
-matplotlib
-pandas
