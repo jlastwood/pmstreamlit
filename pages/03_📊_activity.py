@@ -9,6 +9,7 @@ import io
 import base64
 from utilities import reporttitle
 import graphviz
+import altair as alt
 
 # https://levelup.gitconnected.com/how-to-create-a-multi-layer-gantt-chart-using-plotly-e7d7f158938c
 #Main interface section 
@@ -21,6 +22,10 @@ st.set_page_config(
       initial_sidebar_state="collapsed",
 )
 
+if 'thepmheader' not in st.session_state:
+      st.error('Plan is missing. Please enter or import a plan')
+      st.stop()
+
 reporttitle("Activity", st.session_state['thepmheader'])
 
 st.subheader('Gantt and WBS (Work Breakdown Structure)')
@@ -30,18 +35,24 @@ if uploaded_file is not None:
     Tasks=pd.read_csv(uploaded_file, quotechar='"', delimiter=',', skipinitialspace=True)
     Tasks['Start'] = Tasks['Start'].astype('datetime64')
     Tasks['Finish'] = Tasks['Finish'].astype('datetime64')
-   
-    #st.dataframe(Tasks)
+    Tasks['duration'] = Tasks['duration'].astype('int')
+    Tasks['duration'] = Tasks['duration'].fillna(0)
+# force type to int
+    firstdate = Tasks['Start'].iloc[0].date()
+    daysoffset = (st.session_state['pldstartdate']-firstdate).days
+    # get diff startdate and firstdate
+    Tasks['Start'] = Tasks['Start'] + pd.Timedelta(days=daysoffset)
+    Tasks['Finish'] = Tasks['Start'] + pd.to_timedelta(Tasks['duration'], unit='D') 
     df = Tasks
  
     grid_response = AgGrid(
         Tasks,
-        editable=True, 
+        editable=False, 
         height=300, 
         )
 
-    updated = grid_response['data']
-    df = pd.DataFrame(updated) 
+    #updated = grid_response['data']
+    #df = pd.DataFrame(updated) 
 
     st.subheader("Mindmap Critical path")
 
@@ -108,6 +119,15 @@ if uploaded_file is not None:
         ) 
     else:
         st.write('---') 
+
+    st.subheader("Heatmap Impact and Probability")
+    heatmap = alt.Chart(Tasks).mark_rect().encode(
+       alt.Y('Team'),
+       alt.X('monthdate(finish):O'),
+       alt.Color('sum(duration)', scale=alt.Scale(scheme='redyellowblue'))
+    ) 
+    st.write(heatmap)
+
    
 else:
     st.warning('Upload a csv file.')

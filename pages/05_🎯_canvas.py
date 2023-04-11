@@ -9,6 +9,7 @@ from annotated_text import annotated_text
 from PIL import Image
 import textwrap
 import hydralit_components as hc
+from os.path import join
 
 im = Image.open("assets/images/BlueZoneIT.ico")
 st.set_page_config(
@@ -104,67 +105,69 @@ if 'thepmheader' not in st.session_state:
 
 theme_scope = {'bgcolor': '#f9f9f9','title_color': 'orange','content_color': 'orange','icon_color': 'orange', 'icon': 'fa fa-check-circle'}
 font_fmt = {'font-class':'h4','font-size':'50%'}
-
+mySep = ","
 reporttitle("", st.session_state['thepmheader'])
 gradiant_header ('#1aa3ff', '#00ff00', '#ffffff', 'Project Canvas')
 
-cc = st.columns(5)
+cc = st.columns(4)
 with cc[0]:
    p1intro = "<br>Project Introduction"
-   p1summary = "<sup>" + p1intro + "</sup><br><br>" + st.session_state['thepmplannote']
+   p1summary = "<sup>" + p1intro + "</sup><br><br>" + st.session_state['thepmplannote'].replace('\n', '<br />')   
    fancy_box ("0,204,102,.15", "0,0,0,.75", "fas fa-book", p1summary, "Introduction")
    scopeintro = "<br>What exactly should the project deliver for CUSTOMERS?  What is it most likely to deliver?  ... a new product/a new service ... new findings/knowledge When is the project successful?  "
-   scopesummary = "<sup>" + scopeintro + "</sup><br><br>" + st.session_state['thepmplanscope']  
+   scopesummary = "<sup>" + scopeintro + "</sup><br><br>" + st.session_state['thepmplanscope'].replace('\n', '<br />')  
    fancy_box ("0,204,102,.15", "0,0,0,.75", "fas fa-shopping-cart", scopesummary, "Outcome")
 with cc[1]:
    p3intro = "<br>What is the intention behind the project?(Also challenge, cause) Why is the project important - and for whom?  What will be different a year after the project?  What would be missing if we did not do the project?"
-   p3summary = "<sup>" + p3intro + "</sup><br><br>" + st.session_state['plspurpose'] + ". " + st.session_state['plsbenchmarks']
+   p3summary = "<sup>" + p3intro + "</sup><br><br>" + st.session_state['plspurpose'].replace('\n', '<br />') + ". " + st.session_state['plsbenchmarks'].replace('\n', '<br />')
    fancy_box ("0,204,102,.15", "0,0,0,.75", "fas fa-file-code", p3summary, "Purpose")
    p4intro = "<br>Are there comparable or similar products or services (benchmarks)?  Which are they?  What do you like about these benchmarks?  What distinguishes this project from them?> "
-   p4summary = "<sup>" + p4intro + "</sup><br><br>" + st.session_state['plsbenchmarks'] 
+   p4summary = "<sup>" + p4intro + "</sup><br><br>" + st.session_state['plsbenchmarks'].replace('\n', '<br />') 
    fancy_box ("0,204,102,.15", "0,0,0,.75", "fas fa-gavel", p4summary, "Benchmarks")
 with cc[3]:
    riskintro = "<br>Which uncertain events, if they were to occur, would jeopardize or inspire the success of the project? Events that can be influenced are to be considered as ENVIRONMENTAL conditions.  In your risk plan these would be classified as Avoid assuming you have plans in place."
-   risksummary = "<sup>" + riskintro + "</sup><br><br>" + 'Project start is ' + 'End is ' + ' Go live is '  + st.session_state['plptimecontingency']  
+   risksummary = "<sup>" + riskintro + "</sup><br><br>" + 'Project start is ' + 'End is ' + ' Go live is '  + st.session_state['plptimecontingency'].replace('\n', '<br />')  
    fancy_box ("244,140,148,.25", "0,0,0,.75", "fas fa-crosshairs", risksummary, "Risks and Opportunities")
-   flexintro = "<br>Which characteristics of the project do you consider to be the most flexible? (most flexible on top)"
+   flexintro = "<br>Which characteristics of the project do you consider to be the most flexible?  Projects that have flexibilty to adjust to constraints or unexpected issues are more successful.  When risks are high it is important to have contingency plans. "
    flexsummary = "<sup>" + flexintro + "</sup><br><br>" + 'flex array'
    fancy_box ("244,140,148,.25", "0,0,0,.75", "fas fa-check", flexsummary, "Flexibility of Project Constraints")
 st.markdown("---")
-with cc[4]:
+with cc[3]:
    custintro = "<br>Who is a customer? People who...  ... finance the project (sponsor) ... start & finish the project (owner) ... receive the project results (recipient, user) Are there foreseeable conflicts?  "
-   custsummary = "<sup>" + custintro + "</sup><br><br>" + 'Project start is ' + 'End is ' + ' Go live is '  + st.session_state['plptimecontingency']  
+   custsummary = "<sup>" + custintro + "</sup><br><br>" + 'Project start is ' + 'End is ' + ' Go live is '  + st.session_state['plptimecontingency'].replace('\n', '<br />')  
    fancy_box ("239,209,100,.25", "0,0,0,.75", "fas fa-paper-plane", custsummary, "Users")
-with cc[1]:
+with cc[2]:
    msintro = "<br>Which milestones are important? What are the deadlines for ...  ... intermediate results ... important decisions ... visible and measurable successes "
-   milestones = st.session_state['thepmmilestones']
-   mssummary = "<sup>" + msintro + "</sup><br><br>" + milestones
+   milestones = st.session_state['thepmmilestones'] 
+   #mssummary = "<sup>" + msintro + "</sup><br><br>" + " ".join(milestones.values.tolist())
+   mssummary = "<sup>" + msintro + "</sup><br><br>" 
    fancy_box ("120,173,214,.25", "0,0,0,.75", "fas fa-tasks", mssummary, "Milestones")
 with cc[2]:
    quintro = "<br>What makes the CUSTOMERS really happy in terms of ...  ... the OUTCOME of the project?  ... the MILESTONES on the way there?  ... the kind of information/cooperation in the project?  "
-   qusummary = "<sup>" + quintro + "</sup><br><br>" + st.session_state['plsqualitygoal'] + st.session_state['thepmquality'] 
-   fancy_box ("0,204,102,.15", "0,0,0,.75", "fas fa-signal", qusummary, "Quality")
+   qusummary = "<sup>" + quintro + "</sup><br><br>" + st.session_state['plsqualitygoal'].replace('\n', '<br>') + "<br><br>"+  st.session_state['thepmquality'] 
+   fancy_box ("120,173,214,.2", "0,0,0,.75", "fas fa-signal", qusummary, "Quality")
 
 with cc[2]:
    timeintro = "<br>When does the project actually start? What is needed? (e.g. preparations, documents, approvals) When is the project really completed? What is needed? (e.g. documents, releases) How flexible are the start and end dates?  "
-   timesummary = "<sup>" + timeintro + "</sup><br><br>" + 'Project start is ' + st.session_state['pldstartdate'].isoformat() + 'End is ' + st.session_state['pldenddate'].isoformat() + ' Benefits begin ' + ' Schedule contingency ' + st.session_state['plptimecontingency']  
+   timesummary = "<sup>" + timeintro + "</sup><br><br>" + 'Project start is ' + st.session_state['pldstartdate'].isoformat() + '  End is ' + st.session_state['pldenddate'].isoformat() + ' Inspection date is ' + ' Schedule contingency ' + st.session_state['plptimecontingency']  
    fancy_box ("120,173,214,.25", "0,0,0,.75", "fas fa-calendar", timesummary, "Schedule")
 with cc[3]:
+   risklist = ["High", "Low", "Low", "Moderate", "High", "High"]
    envintro = "<br>Known forces, conditions, events and people influencing the project.  Who/what supports the project?  Who/what obstructs the project?"
-   envsummary = "<sup>" + envintro + "</sup><br><br>" + 'Project start is ' + st.session_state['pldstartdate'].isoformat() + 'End is ' + st.session_state['pldenddate'].isoformat() + ' Benefits begin ' + ' Schedule contingency ' + st.session_state['plptimecontingency']  
+   envsummary = "<sup>" + envintro + "</sup><br><br>" + 'Project start is ' + st.session_state['pldstartdate'].isoformat() + '  End is ' + st.session_state['pldenddate'].isoformat() + '. Scope risk is ' + risklist[int(st.session_state.plnscoperange)] + '. Resource risk is ' + risklist[int(st.session_state.plnresourcerange)] + '. Schedule risk is ' + risklist[int(st.session_state.plnschedulerange)] + '. Team risk is ' + risklist[int(st.session_state.plnteamrange)] + '. Budget risk is ' + risklist[int(st.session_state.plnbudgetrange)] + "."
    fancy_box ("244,140,148,.25", "0,0,0,.75", "fas fa-thermometer", envsummary, "Environment")
-with cc[0]:
+with cc[2]:
    costintro = "<br>iHow much money is needed or available...  ... for the implementation?  ... for possibly necessary resources (e.g. server, people)?"
    costsummary = "<sup>" + costintro + "</sup><br><br>" + 'Project start is '
-   fancy_box ("0,204,102,.15", "0,0,0,.75", "fas fa-bolt", costsummary, "Budget")
-with cc[4]:
+   fancy_box ("120,173,214,.25", "0,0,0,.75", "fas fa-bolt", costsummary, "Budget")
+with cc[3]:
    teamintro = "<br>Who is in it/should be there?  ... in the Core-Team ... in the extended team ... as external partner ... as contact person & decision maker"
    teamsummary = "<sup>" + teamintro + "</sup><br><br>" + st.session_state['thepmteam']
    fancy_box ("239,209,100,.25", "0,0,0,.75", "fas fa-handshake", teamsummary, "Team")
    resintro = "<br>What resources does the project need to be implemented? (excl. time and knowledge)"
-   mySep = ","
    ressummary = "<sup>" + resintro + "</sup><br><br>" + mySep.join(st.session_state.plmlistscopelist) + "<br>" + mySep.join(st.session_state.plmlistscopeoption)
-   fancy_box ("239,209,100,.25", "0,0,0,.75", "fas fa-space-shuttle", ressummary, "Resources")
+   fancy_box ("239,209,100,.25", "0,0,0,.75", "fas fa-space-shuttle", ressummary.replace(',', '<br />'), "Resources")
 
 st.write("##")
-st.success("The PM Monitor project canvas project poster was generated by PM on date.  Thank you for using The PM Monitor.")
+successmsg = f'The PM Monitor project canvas project poster presented by {st.session_state.plpmname} on {st.session_state.pldcharterdate}.  Thank you for using The PM Monitor. thepmmonitor.streamlit.app'
+st.success(successmsg)

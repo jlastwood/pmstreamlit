@@ -55,7 +55,7 @@ videopmreport=st.session_state.plpmreport
 videoidreport=st.session_state.plpmid
 #videoidreport="c4fEms85NQQ"
 #videopmreport="https://www.youtube.com/watch?v=qWdyhFiyH0Y&t=10s"
-if videoidreport:
+if len(videoidreport) > 10:
  transcript=YouTubeTranscriptApi.get_transcript(videoidreport)
  formatter = TextFormatter()
  text_formatted = formatter.format_transcript(transcript)
@@ -153,9 +153,9 @@ with colb:
 with colc:
   st.markdown("<font color='red'><font>", unsafe_allow_html=True)
 st.markdown("---")
-if not videopmreport:
-  st.warning("Sorry, PM report is missing.  Please create report with transcript")
-  st.stop
+if len(videopmreport) < 10:
+  st.warning("PM status report is missing.  Please create report with transcript to get the remaining stoplight report analysis")
+  st.stop()
 
 col1, col2, col3, col4, col5 = st.columns(5)
 col1.metric("Polarity", round(textcsm.sentiment.polarity,2), round(1-textcsm.sentiment.polarity,2))

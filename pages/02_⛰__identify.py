@@ -9,6 +9,7 @@ import altair as alt
 from st_aggrid import AgGrid
 from utilities import reporttitle
 from riskgenerate import calculate_risks_json
+from PIL import Image
 
     # set value for score in dictionary for selected risks
     # using timeline decide which risks are closed and probability
@@ -26,11 +27,20 @@ engagementscoreuser = 0
 sentimenttscoreuer = 0
 CPI = 3
 SPI = 4
+risklist = ['none', 'High', 'Moderate', 'Low']
 
+im = Image.open("assets/images/BlueZoneIT.ico")
+st.set_page_config(
+      page_title="The PM Monitor Risks",
+      page_icon=im,
+      layout="wide",
+      initial_sidebar_state="collapsed",
+)             
     # with st.spinner("Loading  ..."):
 if 'thepmheader' not in st.session_state:
-     #st.session_state.plnumber = ""
      st.error('Please enter a plan')
+     st.stop()
+
 reporttitle("Risk Analysis", st.session_state['thepmheader'])
 
 phasenumber = st.session_state['plnlistphase']
@@ -100,9 +110,9 @@ with st.container():
 
      st.subheader("Heatmap Impact and Probability")
      heatmap = alt.Chart(dataframe).mark_rect().encode(
-       alt.X('riskimpact'),
-       alt.Y('riskprobability'),
-       alt.Color('count()', scale=alt.Scale(scheme='redyellowblue'))
+       alt.X('riskimpact', title="Impact"),
+       alt.Y('riskprobability', title="Probability"),
+       alt.Color('count()', scale=alt.Scale(scheme='lightgreyred'))
      )
 
      points = alt.Chart(dataframe).mark_circle(
