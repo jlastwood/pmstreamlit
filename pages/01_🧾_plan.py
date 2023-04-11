@@ -11,14 +11,16 @@ import altair as alt
 from st_aggrid import AgGrid
 import io
 import base64
+from askchatgpt import askme
 
 # 3. Apply Settings
 def upload_saved_settings(saved_settings):
         #st.write(saved_settings)
+        #st.write(len(saved_settings))
         """Set session state values to what specified in the saved_settings."""
         for i in range(len(saved_settings)):
-          if isinstance(saved_settings.iloc[i, 2],type(str)):
-            # st.write(st.session_state[saved_settings.iloc[i, 1]])
+          #st.write(saved_settings.iloc[i, 2])
+          #if isinstance(saved_settings.iloc[i, 2],type(str)):
             if saved_settings.iloc[i, 1].startswith('plp'):
               st.session_state[saved_settings.iloc[i, 1]] = saved_settings.iloc[i, 2]
             if saved_settings.iloc[i, 1].startswith('pls'):
@@ -50,7 +52,6 @@ def setvalue(var):
            return 0
           else:
            return int(st.session_state[var])
-           #return int(st.session_state[var])-1
         else:
          return 0
     if var.startswith('pld'):
@@ -76,7 +77,7 @@ st.set_page_config(
 
 st.markdown("<h3 style='text-align: center; color: white; background: grey;'>The PM Monitor</h3>", unsafe_allow_html=True)
 
-tab0, tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9, tabr = st.tabs(["Start", "Info", "Scope", "Cost", "Schedule", "Communication", "Quality", "Constraints", "ROI", "Save", "Restore"])
+tab0, tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9, tabr = st.tabs(["Start", "Info", "Scope", "Cost", "Schedule", "Team", "Quality", "Constraints", "ROI", "Save", "Restore"])
 with st.form(key="pmmonitorplan", clear_on_submit=False):
 
      ##  Introduction to Planning
@@ -101,9 +102,15 @@ with st.form(key="pmmonitorplan", clear_on_submit=False):
        st.session_state['plpmname'] = st.text_input ("Project Manager Name", max_chars=30, value=setvalue('plpmname'))
       with col5:
        st.session_state['plspname']  = st.text_input ("Product Owner or Sponsor Name", max_chars=30, value=setvalue('plspname'))
-      st.session_state['plspurpose']  = st.text_area ("What is the purpose?", value=setvalue('plspurpose'))
-      st.session_state['plsbenefits']  = st.text_area ("What are the benefits?", value=setvalue('plsbenefits'))
-      st.session_state['plsbenchmarks']  = st.text_area ("Are there comparable benchmarks or services?", value=setvalue('plsbenchmarks'))
+      st.session_state['plspurpose']  = st.text_area ("What is the purpose of this project (askme)?", value=setvalue('plspurpose'))
+      if st.session_state.plspurpose.startswith('askme'):
+          st.session_state.plspurpose = askme("What is the purpose of " + st.session_state.plpname + " project?")
+      st.session_state['plsbenefits']  = st.text_area ("What are three benefits of this project (askme)?", value=setvalue('plsbenefits'))
+      if st.session_state.plsbenefits.startswith("askme"):
+          st.session_state.plsbenefits = askme("What are three benefits of " + st.session_state.plpname + " project?")
+      st.session_state['plsbenchmarks']  = st.text_area ("Are there comparable benchmarks or services for this project (askme)?", value=setvalue('plsbenchmarks'))
+      if st.session_state['plsbenchmarks'] == "askme":
+          st.session_state.plsbenchmarks = askme("Are there comparable benchmarks for a  " + st.session_state.plpname + " project?")
 
      # set some dates
       week  = timedelta(days = 7)
@@ -129,17 +136,17 @@ with st.form(key="pmmonitorplan", clear_on_submit=False):
       with col6:
        st.session_state['plncadence'] = st.slider('Cadence', min_value=0, max_value=12, value=setvalue('plncadence'), help="Cadence is the frequency that the project replans and reports on progress.  In a maintenance project you should plan and report quarterly.  In active development projects when investment is higher, you should be planning and reporting weekly")
       with col7:
-       phasechoice = {"None", "Initiation", "Planning", "Execution", "Launch and Training", "Closure"}
-       phaselist = ["None", "Initiation", "Planning", "Execution", "Launch and Training", "Closure"]
-       st.session_state['plnlistphase'] = st.slider('Project Phase', min_value=0, max_value=5, help="The phase of the project will determine which risks are higher or may be closed.  In the early phases of the project you have higher technology and cost risks and in later phases you can have engagement and resource risks. A project has 5 phases, 1 initiation, 2 planning, 3 execution, 4 monitor and review, 5 closure", value=setvalue('plnlistphase'))
-       st.session_state['thepmphase'] = phaselist[int(st.session_state['plnlistphase'])]
+       phasechoice = {"None", "Plan", "Design", "Build", "Inspect", "Accept", "Close"}
+       phaselist = ("None", "Plan", "Design", "Build", "Inspect", "Accept", "Close")
+       st.session_state['plnlistphase'] = st.slider('Project Phase', min_value=0, max_value=5, help="The phase of the project will determine which risks are higher or may be closed.  In the early phases of the project you have higher technology and cost risks and in later phases you can have engagement and resource risks. A project has 6 phases, 0 Initiation, 1 plan, 3 design,  4 build, 5 inspect, accept and  6 close", value=setvalue('plnlistphase'))
+       st.session_state['thepmphase'] = phaselist[int(st.session_state.plnlistphase)]
       with col8:
-       classchoice = pd.DataFrame({'Item': ['None', 'Software Build', 'Software Design', 'Brand Marketing', 'Process Automation', 'Scheduled Maintenance', 'Content Migration'], 'Value': [0, 1, 2, 3, 4, 5, 6]})
+       classchoice = pd.DataFrame({'Item': ['None', 'Software Build', 'Software Design', 'Brand Marketing', 'Process Automation', 'Scheduled Maintenance', 'Content Migration', 'Decommision'], 'Value': [0, 1, 2, 3, 4, 5, 6, 7]})
        selected_class = st.selectbox("Project Classification", classchoice.Item, index=setvalue('pllisttype'), help="The type of project will be used to determine risks, a physical build can be impacted by weather.  Changes to procedures or pipelines require more focus on communication activities")
        st.session_state['pllisttype'] = classchoice.loc[classchoice.Item == selected_class]["Value"].iloc[0]
 
      ##  output information and create header block
-       st.session_state['thepmplannote'] = plancomment(st.session_state['pldstartdate'], st.session_state['pldenddate'], daystoday, daystoend, st.session_state['thepmtimecomplete'], 3, st.session_state['plpnumber'], st.session_state['plpname'], st.session_state['plsbenefits'], st.session_state['plncadence'], st.session_state['thepmphase'], st.session_state['plpmname'], selected_class)
+       st.session_state['thepmplannote'] = plancomment(st.session_state['pldstartdate'], st.session_state['pldenddate'], daystoday, daystoend, st.session_state['thepmtimecomplete'], 3, st.session_state['plpnumber'], st.session_state['plpname'], st.session_state['plsbenefits'], st.session_state['plncadence'], st.session_state['thepmphase'], st.session_state['plspname'], selected_class)
       st.success(st.session_state['thepmplannote'])
 
      ndays = st.session_state['plncadence']*7
@@ -154,19 +161,20 @@ with st.form(key="pmmonitorplan", clear_on_submit=False):
       st.subheader("Scope")
       st.write("The scope information outlines the features that the product should have. Scope also clarifies what is not planned and what may be negotiable")
       col4, col5 = st.columns(2)
-      with col4:
-       st.session_state['plscopemusthave']  = st.text_area ("Must Have", value=setvalue('plscopemusthave'))
-      with col5:
-       st.session_state['plscopenicetohave']  = st.text_area ("Nice to Have", value=setvalue('plscopenicetohave'))
+      st.session_state['plscopemusthave']  = st.text_area ("What are the must have Features? (askme)", value=setvalue('plscopemusthave'))
+      if st.session_state['plscopemusthave'] == "askme":
+          st.session_state.plscopemusthave = askme("What are three must have features in a" + st.session_state.plpname + " project?")
       col4, col5 = st.columns(2)
       with col4:
-       st.session_state['plscopeifpossible']  = st.text_area ("If Possible", value=setvalue('plscopeifpossible'))
+       st.session_state['plscopenicetohave']  = st.text_area ("What are some features that are negotiable or nice to have? (askme)", value=setvalue('plscopenicetohave'))
+       if st.session_state['plscopenicetohave'] == "askme":
+          st.session_state.plscopenicetohave = askme("What are three nice to have features in a" + st.session_state.plpname + " project?")
       with col5:
-       st.session_state['plscopeoutofscope']  = st.text_area ("Out of Scope", value=setvalue('plscopeoutofscope'))
+       st.session_state['plscopeoutofscope']  = st.text_area ("What is out of scope?", value=setvalue('plscopeoutofscope'))
       with col4:
-       st.session_state['plscopechangeadd']  = st.text_area ("Scope Additions", value=setvalue('plscopechangeadd'))
+       st.session_state['plscopechangeadd']  = st.text_area ("What scope has been added after the start of this project? ", value=setvalue('plscopechangeadd'))
       with col5:
-       st.session_state['plscopechangedel']  = st.text_area ("Scope Removal", value=setvalue('plscopechangedel'))
+       st.session_state['plscopechangedel']  = st.text_area ("What scope was removed after the start of the project?", value=setvalue('plscopechangedel'))
       with col4:
        st.session_state['plmlistscopelist'] = st.multiselect(
          'Select non functional attributes',
@@ -174,21 +182,24 @@ with st.form(key="pmmonitorplan", clear_on_submit=False):
          default=setvalue('plmlistscopelist'))
       with col5:
        st.session_state['plmlistscopeoption'] = st.multiselect(
-         'Select technical architecture attributes or resources',
-         ['CMS', 'Web Framework', 'SEO', 'Search', 'Cloud Hosting', 'Automation',  'ERP', 'CDN', 'CI/CD', 'Custom Theme', 'No Code', 'Native Mobile App', 'Process Model', 'Database', 'Testing', 'None'], default=setvalue('plmlistscopeoption'))
+         'Select technical architecture attributes and resources',
+         ['CMS', 'Web Framework', 'SEO', 'Search', 'Cloud Hosting', 'OnPrem Hosting', 'Automation',  'ERP', 'CDN', 'CI/CD', 'Custom Theme', 'No/Low Code', 'Native Mobile App', 'Process Model', 'Database', 'Testing', 'Decommission', 'Data Migration', 'SAAS', 'None'], default=setvalue('plmlistscopeoption'))
       scopechange = ""
       if len(st.session_state['plscopechangeadd']) > 5 or len(st.session_state['plscopechangedel']) > 5:
          st.session_state['thepmcopechanged'] = True
          scopechange = f'There are scope changes. {st.session_state.plscopechangeadd} {st.session_state.plscopechangedel}'
       else:
          st.session_state['thepmcopechanged'] = False
-      st.session_state['thepmplanscope'] = f'{st.session_state.plscopenicetohave} {st.session_state.plscopeifpossible} {st.session_state.plscopemusthave} {st.session_state.plscopeoutofscope} {scopechange}'
+      st.session_state['thepmplanscope'] = f'{st.session_state.plscopenicetohave} {st.session_state.plscopemusthave} {st.session_state.plscopeoutofscope} {scopechange}'
       st.success(st.session_state['thepmplanscope'])
-     ##  Schedule
+
+
+##  Schedule
      milestonestatus = {0: "Not started", 1: "In Progress", 2: "On Hold", 3: "Complete"}
      with tab4:
       st.subheader("Schedule")
-      st.write("Our plan is managed and controlled by the defined milestones.  Your project should have no less than 5 milestones however you can define more. Milestones are point in time events that are used to verify if the project is on track.  Releases completed result in business value to the users and customer.  Features are decomposed into unique stories, stories are SMART,  Specific, Measurable, Achievable, Realistic and have a time frame. ")
+      st.write("The plan is managed and controlled by the defined milestones.  Your project should have no less than 6 milestones however you can define more. Milestones are point in time events that are used to verify if the project is on track.  Completing a phase in the plan is a milestone.  Features can be decomposed into unique stories, stories are SMART,  Specific, Measurable, Achievable, Realistic and completion of a feature can be tracked as a milestone. ")
+
       dfm = pd.DataFrame()
       sdate = st.session_state['pldstartdate']
       #[sdate+timedelta(days=x) for x in range((edate-sdate).days)]
@@ -197,42 +208,67 @@ with st.form(key="pmmonitorplan", clear_on_submit=False):
       else:
        reportsinplan = 1
 
-      for i in range(1, reportsinplan + 1):
-         ldays = ndays*i
-         data = {'Milestone': 'Baseline', 'reportdate': sdate+timedelta(days=ldays), 'plandate': sdate+timedelta(days=ldays)}
-         #dfm.loc[len(dfm.index)] = data
+      msstatus = 'Planned'
+      rdays = (ndays * (reportsinplan - 1))
+      for i in range(reportsinplan - 4, reportsinplan - 1):
+         ldays = (1 + i)  * ndays
+         data = {'Milestone': '5-Accept', 'reportdate': sdate+timedelta(days=ldays), 'plandate': sdate+timedelta(days=rdays), 'Status': msstatus}
          dfm = dfm.append(data, ignore_index=True)
 
-      milestones_file = st.file_uploader("own milestones",type=['csv'])
-      if milestones_file is not None:
-       dfmilestone = pd.read_csv(milestones_file, parse_dates=['reportdate','plandate'])
-      else:
-       dfmilestone = pd.read_csv(r'milestones.csv', parse_dates=['reportdate','plandate'])
-      for index, row in dfmilestone.iterrows():
-         xdays = int((row['MSStart']+1)*7*st.session_state['plncadence'])
-         str = row['MSDisplace']
-         #  set the end point on baseline (eg. 2,2)
-         data = {'Milestone': row['Milestone'], 'reportdate': sdate+timedelta(days=xdays), 'plandate': sdate+timedelta(days=xdays)}
+      msstatus = 'Planned'
+      rdays = (ndays * (reportsinplan - 2))
+      for i in range(reportsinplan - 5, reportsinplan - 2):
+         ldays = (1 + i)  * ndays
+         data = {'Milestone': '4-Inspect', 'reportdate': sdate+timedelta(days=ldays), 'plandate': sdate+timedelta(days=rdays), 'Status': msstatus}
          dfm = dfm.append(data, ignore_index=True)
-         #split string
-         splits = str.split(";")
-         #for loop to iterate over words array
-         for i in range(1, len(splits)):
-           xsplit=int(splits[i-1])
-           ndays = xdays + (xsplit*7*st.session_state['plncadence'])
-           vdays=int(i*7*st.session_state['plncadence'])
-           data = {'Milestone': row['Milestone'], 'reportdate': sdate+timedelta(days=vdays), 'plandate': sdate+timedelta(days=ndays)}
-           dfm = dfm.append(data, ignore_index=True)
-      dfresponse = AgGrid(dfmilestone, height=200, theme='streamlit', editable=True, fit_columns_on_grid_load=True)
+
+      msstatus = 'Planned'
+      rdays = (ndays * (reportsinplan - 3))
+      for i in range(3, (reportsinplan - 4)):
+         ldays = (2 + i)  * ndays
+         data = {'Milestone': '3-Build', 'reportdate': sdate+timedelta(days=ldays), 'plandate': sdate+timedelta(days=rdays), 'Status': msstatus}
+         dfm = dfm.append(data, ignore_index=True)
+
+      msstatus = 'In Progress'
+      rdays = (ndays * 6)
+      for i in range(1, 5):
+         ldays = (2 + i)  * ndays
+         data = {'Milestone': '2-Design', 'reportdate': sdate+timedelta(days=ldays), 'plandate': sdate+timedelta(days=rdays), 'Status': msstatus}
+         dfm = dfm.append(data, ignore_index=True)
+
+      msstatus = 'In Progress'
+      rdays = (ndays * 4)
+      for i in range(0, 3):
+         ldays = (1 + i)  * ndays
+         data = {'Milestone': '1-Plan', 'reportdate': sdate+timedelta(days=ldays), 'plandate': sdate+timedelta(days=rdays), 'Status': msstatus}
+         dfm = dfm.append(data, ignore_index=True)
+         # st.write(rdays, ndays, ldays)
+
+      msstatus = 'Planned'
+      rdays = (ndays * reportsinplan)
+      for i in range(reportsinplan - 3, reportsinplan):
+         ldays = (1 + i)  * ndays
+         data = {'Milestone': '6-Close', 'reportdate': sdate+timedelta(days=ldays), 'plandate': sdate+timedelta(days=rdays), 'Status': msstatus}
+         dfm = dfm.append(data, ignore_index=True)
+  
+      # get status from phase
+      msstatus = 'Baseline'
+      for i in range(1, reportsinplan + 1):
+         ldays = ndays*i
+         data = {'Milestone': 'Baseline', 'reportdate': sdate+timedelta(days=ldays), 'plandate': sdate+timedelta(days=ldays), 'Status': msstatus}
+         dfm = dfm.append(data, ignore_index=True)
+
+      #dfresponse = AgGrid(dfm, height=200, theme='streamlit', editable=True, fit_columns_on_grid_load=True)
+
       chart = alt.Chart(dfm).mark_line(point = True).encode(
           alt.X('monthdate(reportdate):O', title='Report Date'),
           alt.Y('monthdate(plandate):O', title='Plan Date', scale=alt.Scale(reverse=True)),
           color="Milestone", text="Milestone")
       st.altair_chart(chart, use_container_width=True)
-      st.session_state['thepmmilestones'] = dfmilestone[dfmilestone['Status'] == "Planned"]['Description'].to_string()
+      st.session_state['thepmmilestones'] = dfm
 
      with tab5:
-      st.subheader("Communication")
+      st.subheader("Team")
       st.write("Projects are executed and implemented by people, the team, the stakeholders and are implemented to provide benefit to users or customers.  The communication plan outlines the needs of the stakeholders, team and users. The complexity maintaining good communication and establishing trust between the team and the stakeholders is a factor of the size of the team, and how long they have been working together.  Trust is earned, not given, and as trust increases, performance will improve and quality will follow.  Typically engagement and team sentiment is high at the beginning of the project and decreases over time, and engagement of the stakeholders follows the opposite pattern  ")
       col1, col2, col3, col4 = st.columns(4)
       with col1:
@@ -277,14 +313,16 @@ with st.form(key="pmmonitorplan", clear_on_submit=False):
       with col4:
        st.session_state['plpmid'] = st.text_input ("PM report ID", value=setvalue('plpmid'))
       plancommunication = f' There are {planchannels:.0f} communication channels. The team has a message formum at {st.session_state.plpstanduplink} and a task activity board at {st.session_state.plpactivitylink}'
-      st.session_state['thepmteam'] = f'The team is composed of {st.session_state.plnteam:.0f}  members and have collaborated together for {st.session_state.plnteamweeks:.0f} weeks.  The solution architect is {st.session_state.plpsolutionname}. The Operations Lead is {st.session_state.plpoperationname}. '
+      st.session_state['thepmteam'] = f'The team is composed of {st.session_state.plnteam:.0f}  members and have collaborated together for {st.session_state.plnteamweeks:.0f} weeks.  The solution architect is {st.session_state.plpsolutionname}. The Operations Lead is {st.session_state.plpoperationname}. The inspector is {st.session_state.plpinspectorname}.  There are currently {st.session_state.plnopenroles:.0f} open roles.  The team contingengy is {st.session_state.plpteamcontingency}.'
       st.markdown('##') 
       st.success(st.session_state['thepmteam'])
       st.success(plancommunication)
 
      with tab6:
       st.subheader("Quality")
-      st.session_state['plsqualitygoal']  = st.text_input ("Describe Quality Goal", value=setvalue('plsqualitygoal'))
+      st.session_state['plsqualitygoal']  = st.text_area ("Describe Quality Goal? (askme) ", value=setvalue('plsqualitygoal'))
+      if st.session_state.plsqualitygoal.startswith('askme'):
+          st.session_state.plsqualitygoal = askme("What would make customers happey in terms of the outcome of the" + st.session_state.plpname + " project?")
       col1, col2, col3, col4, col5 = st.columns(5)
       with col1:
        st.session_state['plntests']  = st.slider ("Number of Tests", value=setvalue('plntests'), format="%i", min_value=0, max_value=100, step=1 )
@@ -297,9 +335,13 @@ with st.form(key="pmmonitorplan", clear_on_submit=False):
       with col5:
        st.session_state['pldinspectdate']  = st.date_input ("Inspection Report Date", setvalue('pldinspectdate'))
 
+      st.session_state['plmlistqualitytypes'] = st.multiselect(
+         'Select types of quality inspection attributes',
+         ['Component Testing', 'Pre Production Testing', 'Pre Shipment/Final Inspection', 'None'],
+         default=setvalue('plmlistqualitytypes'))
      #  test results, test not done, test run less than tolerance of 70% test failed more than 20 or critical test failed is positive
-       st.session_state['thepminspectionwarning'] = "Inspection planned or passed." 
-       st.session_state['thepminspectionflag'] = 0 
+      st.session_state['thepminspectionwarning'] = "Inspection planned or passed." 
+      st.session_state['thepminspectionflag'] = 0 
       if st.session_state['plntests'] == 0 or st.session_state['plntestscritical'] > 0 or (st.session_state['plntestsrun'] == 0 and st.session_state['pldinspectdate'] < daytoday ):
         st.session_state['thepminspectionwarning'] = "Inspection plan missing or failed." 
         st.session_state['thepminspectionflag'] = 1 
@@ -338,8 +380,8 @@ with st.form(key="pmmonitorplan", clear_on_submit=False):
        st.session_state['plnhoursconfidence'] = st.slider('Estimate Confidence', min_value=0, max_value=100, value=setvalue('plnhoursconfidence'), step=5)
       plbudget = st.session_state['plnbudget'] + (st.session_state['plnhours'] * st.session_state['plnavgrate'])
       plspend = st.session_state['plnspend'] + (st.session_state['plnhoursused'] * st.session_state['plnavgrate'])
-      mcomplete = len(dfmilestone[dfmilestone.Status == 'Complete'])
-      mplanned = len(dfmilestone.index)
+      mcomplete = len(dfm[dfm.Status == 'Complete'])
+      mplanned = len(dfm.index)
       st.session_state['thepmdelivery'] = int (mcomplete / mplanned * 100)
       (evsummary, st.session_state['thepmcpi'], st.session_state['thepmspi'], etc)  = evreport((plbudget + (plbudget *.3)), plbudget, st.session_state['plnhours'], st.session_state['plnavgrate'], "EUR" , st.session_state['pldstartdate'], st.session_state['pldenddate'], plspend, mplanned, mcomplete, daystoend, daystoday, st.session_state['thepmtimecomplete'])
       st.session_state['thepmbudgetcomplete'] = 0
@@ -380,12 +422,16 @@ with st.form(key="pmmonitorplan", clear_on_submit=False):
       with col1:
        st.session_state['plnscoperange']  = st.slider ("Scope Risk", value=setvalue('plnscoperange'), format="%i", min_value=0, max_value=5, step=1 )
       with col2:
-       st.session_state['plpscopecontingency']  = st.text_area ("Scope Contingency", value=setvalue('plpscopecontingency'))
+       st.session_state['plpscopecontingency']  = st.text_area ("What are three ways to mitigate the impact of scope changes in a project? (askme)", value=setvalue('plpscopecontingency'))
+       if st.session_state.plpscopecontingency.startswith('askme'):
+          st.session_state.plpscopecontingency = askme("What are three ways to mitigate the impact of scope changes in a " + st.session_state.plpname + " project?")
       col1, col2 = st.columns([1,5])
       with col1:
        st.session_state['plnschedulerange']  = st.slider ("Schedule Risk", value=setvalue('plnschedulerange'), format="%i", min_value=0, max_value=5, step=1 )
       with col2:
-       st.session_state['plptimecontingency']  = st.text_area ("Schedule Contingency", value=setvalue('plptimecontingency'))
+       st.session_state['plptimecontingency']  = st.text_area ("Schedule Contingency? (askme)", value=setvalue('plptimecontingency'))
+       if st.session_state.plptimecontingency.startswith('askme'):
+          st.session_state.plptimecontingency = askme("What are three ways to mitigate the impact of schedule changes in a " + st.session_state.plpname + " project?")
       col1, col2 = st.columns([1,5])
       with col1:
        st.session_state['plnbudgetrange']  = st.slider ("Budget Risk", value=setvalue('plnbudgetrange'), format="%i", min_value=0, max_value=5, step=1 )
@@ -411,12 +457,12 @@ with st.form(key="pmmonitorplan", clear_on_submit=False):
      with col1:
        submit = st.form_submit_button("Update Plan")
      if submit:
-       st.info("The information was updated, thank you for using the PM Monitor.  Use Save Plan to save a copy of your plan offline.  Go to Canvas or Stoplight reports")
+        st.info("The information was updated, thank you for using the PM Monitor.  Use Save Plan to save a copy of your plan offline.  Go to Canvas or Stoplight reports")
      with col2:
-       clear = st.form_submit_button("Clear Plan", on_click=clear_form)
+       clear = st.form_submit_button("Clear Plan")
      if clear:
-      clear_form()
-      st.info("The information was cleared, thank you for using the PM Monitor.  Use Save Plan to save a copy of your plan offline")
+       clear_form()
+       st.info("The information was cleared, thank you for using the PM Monitor.  Use Save Plan to save a copy of your plan offline")
 
 with tabr:
  # 1. Download Settings Button convert dataframe to list

@@ -21,7 +21,7 @@ def calculate_risks_json(risks, phasenumber):
         if d['riskimpact'] == '' and d['riskprobability'] == '':
            d['riskscore'] = 'Moderate'
 
-        if d['risktimeline'] < '4' and phasenumber > 3:
+        if d['risktimeline'] < '4' and phasenumber > 2:
            d['riskprobability'] = pd.NA
            d['riskimpact'] = pd.NA
            d['riskresponse'] = pd.NA
