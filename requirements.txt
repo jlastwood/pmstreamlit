@@ -107,7 +107,7 @@ mypy==0.910
 mypy-extensions==0.4.3
 nest-asyncio==1.5.1
 nltk==3.6.2
-numpy==1.24.3
+numpy
 oauthlib==3.1.1
 openai==0.27.4
 opencv-python==4.6.0.66
