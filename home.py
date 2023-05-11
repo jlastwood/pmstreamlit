@@ -36,7 +36,7 @@ import awesome_streamlit as ast
 
 def main():
     """Main function of the App"""
-    ip = Image.open("assets/images/Homeimage.jpg")
+    ip = Image.open("assets/images/HomeImage.jpg")
     st.session_state.update(st.session_state)
     st.header("6 Steps to Better Project Planning and Controlling")
     st.markdown("---")
