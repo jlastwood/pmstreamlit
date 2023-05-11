@@ -40,7 +40,7 @@ This application provides
 - Sentiment analysis of team and stakeholder communications
 - Probability of identified risks based on monitored threasholds
 - Engagement analysis based on team and stakeholder communications 
-- Wordcloud analysis reporting, what are the team talking about
+- Wordcloud analysis reporting to assess what are the topics of the week
 
 Pipeline
 

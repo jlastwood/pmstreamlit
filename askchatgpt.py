@@ -25,10 +25,13 @@ def askme(question):
      except openai.error.APIError as e:
       return(f'Open API returns an API Error: {e}')
       pass
+     except openai.error.APIError as e:
+      return(f'Open API returns an API Error: {e}')
+      pass
      except openai.error.APIConnectionError as e:
       return(f'Open API returns an API Error: {e}')
       pass
-     except openai.error.APIReteLimitError as e:
+     except openai.error.RateLimitError as e:
       return(f'Open API returns an API Error: {e}')
       pass
     return response
