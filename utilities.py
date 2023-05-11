@@ -20,7 +20,7 @@ def get_table_download_link(df):
     href = f'<a href="data:file/csv;base64,{b64}">Download csv file</a>'
 
 # commented out module
-def CurrencyRates:
+def CurrencyRates():
   return
 
 def currencyrisk(projectrevenue, projectcost, projecthours, projectcountries, projectbasecurrency, dateStart, dateEnd):
