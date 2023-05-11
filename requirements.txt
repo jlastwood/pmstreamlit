@@ -134,7 +134,7 @@ preshed==3.0.5
 progressbar2==4.2.0
 prometheus-client==0.11.0
 prompt-toolkit==3.0.19
-protobuf==3.20.1
+protobuf
 psutil==5.9.4
 ptvsd==4.3.2
 ptyprocess==0.7.0
