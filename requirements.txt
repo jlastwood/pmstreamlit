@@ -209,7 +209,6 @@ sphinxcontrib-serializinghtml==1.1.5
 sphinxcontrib-websupport==1.2.4
 srsly==1.0.5
 st-annotated-text==3.0.0
-st-pages
 statsmodels==0.13.2
 stevedore==3.3.0
 streamlit==1.22.0
