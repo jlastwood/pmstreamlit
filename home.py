@@ -36,6 +36,7 @@ import awesome_streamlit as ast
 
 def main():
     """Main function of the App"""
+    ip = Image.open("assets/images/Homeimage.jpg")
     st.session_state.update(st.session_state)
     st.header("6 Steps to Better Project Planning and Controlling")
     st.markdown("---")
@@ -54,7 +55,7 @@ Initiation and Planning \n
 	• Know the risks, challenges and opportunities and plan mitigation 
 """)
     with colr[1]:
-     st.image("assets/images/Homeimage.jpg", caption="Step 1 - The PM Monitor Initiation, Planning, Set Goals and Objectives")
+     st.image(ip, caption="Step 1 - The PM Monitor Initiation, Planning, Set Goals and Objectives")
     st.markdown("---")
     coll = st.columns(2)
     with coll[1]:
@@ -70,7 +71,7 @@ Execute, Monitor and Control \n
 
 """)
     with coll[0]:
-     st.image('assets/images/Homeimage.jpg', caption='Step 2 - The PM Monitor Execution Monitoring, Controlling and Reporting')
+     st.image(ip, caption='Step 2 - The PM Monitor Execution Monitoring, Controlling and Reporting')
     st.markdown("---")
     colr = st.columns(2)
     with colr[0]:
@@ -82,7 +83,7 @@ Closure \n
 	• Generate final stoplight report
 """)
     with colr[1]:
-     st.image('assets/images/Homeimage.jpg', caption='Step 3 - The PM Monitor Closing')
+     st.image(ip, caption='Step 3 - The PM Monitor Closing')
     st.markdown("---")
     columns = st.columns((2,1,2))
     url1 = "/Plan"
