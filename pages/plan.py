@@ -6,7 +6,6 @@ from datetime import datetime
 from datetime import timedelta, date
 import pandas as pd
 from utilities import currencyrisk, evreport, plancomment, get_table_download_link, datedifferences
-from annotated_text import annotated_text
 import altair as alt
 from st_aggrid import AgGrid
 import io
