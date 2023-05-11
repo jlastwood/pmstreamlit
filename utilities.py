@@ -1,7 +1,7 @@
 #calculate currency risk, weather, political events for the plan analysis
 
 import streamlit as st
-from forex_python.converter import CurrencyRates
+#  from forex_python.converter import CurrencyRates
 import math
 import pandas as pd
 import datetime
@@ -18,6 +18,10 @@ def get_table_download_link(df):
     csv = df.to_csv(index=False)
     b64 = base64.b64encode(csv.encode()).decode()  # some strings <-> bytes conversions necessary here
     href = f'<a href="data:file/csv;base64,{b64}">Download csv file</a>'
+
+# commented out module
+def CurrencyRates:
+  return
 
 def currencyrisk(projectrevenue, projectcost, projecthours, projectcountries, projectbasecurrency, dateStart, dateEnd):
   #
