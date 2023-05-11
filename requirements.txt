@@ -14,7 +14,7 @@ bs4==0.0.1
 cachetools==4.2.2
 certifi==2021.5.30
 chardet==4.0.0
-click
+click==8.0.0
 commonmark==0.9.1
 contourpy
 cycler==0.10.0
@@ -37,6 +37,7 @@ lxml==4.4.1
 matplotlib
 nltk==3.6.2
 numpy
+protobuf==3.20.1
 packaging==21.3
 pandas==1.2.4
 plotly==5.14.1
