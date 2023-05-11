@@ -54,7 +54,7 @@ Initiation and Planning \n
 	• Know the risks, challenges and opportunities and plan mitigation 
 """)
     with colr[1]:
-     st.image('assets/images/Homeimage.jpg', caption='Step 1 - The PM Monitor Initiation, Planning, Set Goals and Objectives')
+     st.image("assets/images/Homeimage.jpg", caption="Step 1 - The PM Monitor Initiation, Planning, Set Goals and Objectives")
     st.markdown("---")
     coll = st.columns(2)
     with coll[1]:
