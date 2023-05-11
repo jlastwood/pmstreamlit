@@ -11,6 +11,7 @@ import textwrap
 import hydralit_components as hc
 from os.path import join
 
+#  https://canvanizer.com/
 im = Image.open("assets/images/BlueZoneIT.ico")
 st.set_page_config(
       page_title="The PM Monitor Project Canvas",
@@ -165,7 +166,8 @@ with cc[3]:
    teamsummary = "<sup>" + teamintro + "</sup><br><br>" + st.session_state.thepmteam.replace('\n', '<br />')   
    fancy_box ("239,209,100,.25", "0,0,0,.75", "fas fa-handshake", teamsummary, "Team")
    resintro = "<br>What resources does the project need to be implemented? (excl. time and knowledge)"
-   ressummary = "<sup>" + resintro + "</sup><br><br>" + mySep.join(st.session_state.plmlistscopelist) + "<br>" + mySep.join(st.session_state.plmlistscopeoption)
+   ressummary = "<sup>" + resintro + "</sup><br><br>" + "<br>" + mySep.join(st.session_state.plmlistscopeoption)
+   #ressummary = "<sup>" + resintro + "</sup><br><br>" + mySep.join(st.session_state.plmlistscopelist) + "<br>" + mySep.join(st.session_state.plmlistscopeoption)
    fancy_box ("239,209,100,.25", "0,0,0,.75", "fas fa-space-shuttle", ressummary.replace(',', '<br />'), "Resources")
 
 st.write("##")
