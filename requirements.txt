@@ -14,9 +14,9 @@ bs4==0.0.1
 cachetools==4.2.2
 certifi==2021.5.30
 chardet==4.0.0
-click==7.1.2
+click
 commonmark==0.9.1
-contourpy==1.0.7
+contourpy
 cycler==0.10.0
 decorator==5.0.9
 deepmultilingualpunctuation==1.0.1
