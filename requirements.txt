@@ -8,6 +8,7 @@ Pympler==1.0.1
 altair==4.2.0
 attrs==21.2.0
 awesome-streamlit==20200728.1
+streamlit-aggrid==0.3.4.post3
 beautifulsoup4==4.11.1
 blinker==1.4
 bs4==0.0.1
