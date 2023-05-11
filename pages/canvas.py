@@ -5,7 +5,6 @@ import awesome_streamlit as ast
 import datetime
 import base64
 from utilities import reporttitle
-from annotated_text import annotated_text
 from PIL import Image
 import textwrap
 import hydralit_components as hc
