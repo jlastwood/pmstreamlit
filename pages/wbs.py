@@ -11,6 +11,7 @@ from utilities import reporttitle
 import graphviz
 import altair as alt
 
+# https://github.com/sanatsingh/Critical-Path-Method-SE/blob/master/ca_2.py
 # https://levelup.gitconnected.com/how-to-create-a-multi-layer-gantt-chart-using-plotly-e7d7f158938c
 #Main interface section 
 
@@ -31,6 +32,7 @@ reporttitle("Activity", st.session_state['thepmheader'])
 st.subheader('Gantt and WBS (Work Breakdown Structure)')
 uploaded_file = st.file_uploader("WBS is a deliverable orientied hierarchical decomposition of work to be executed by the project team.  Fill out the project plan activities and upload your file here. After you upload the file, you can edit your activities within the app.  If you are performing a fixed price or have a complex project to manage, you will want to create a WBS and map the related activities so that you can assign work concurrently to multiple team members and to link work and notify team members when their work can start.   The tasks are related to the project objectives and completion of the work will create the required deliverables. ", type=['csv'])
 st.write("Analyse the results and update the plan and status.  Monitor activities that are late and on the critical path, activities that are late and not assigned, monitor the load of resources.  If you are tracking time, monitor overall estimate to completion rates")
+
 if uploaded_file is not None:
     Tasks=pd.read_csv(uploaded_file, quotechar='"', delimiter=',', skipinitialspace=True)
     Tasks['Start'] = Tasks['Start'].astype('datetime64')
@@ -44,22 +46,27 @@ if uploaded_file is not None:
     Tasks['Start'] = Tasks['Start'] + pd.Timedelta(days=daysoffset)
     Tasks['Finish'] = Tasks['Start'] + pd.to_timedelta(Tasks['duration'], unit='D') 
     df = Tasks
- 
+    no_axis_title = axis = alt.Axis(title="")
+    x_scale = alt.Scale(domain=(st.session_state.pldstartdate.isoformat(), st.session_state.pldenddate.isoformat()), nice=10) 
+
+    st.write("Filter or view activities") 
     grid_response = AgGrid(
         Tasks,
         editable=False, 
         height=300, 
+        filter=True,
         )
-
-    #updated = grid_response['data']
-    #df = pd.DataFrame(updated) 
 
     st.subheader("Mindmap Critical path")
 
     # Create a graphlib graph object
     graph = graphviz.Digraph()
+    graph.attr('edge', shape='box', style='filled', color='lightgrey')
     for index, row in Tasks.iterrows():
-      graph.edge(str(row['id']), str(row['dependencies']))
+      dep = str(row['dependencies']).split()
+      for xdep in dep:
+        graph.node(str(row['id']), shape = "box", fillcolor = "lightgrey", style = "filled")
+        graph.edge(xdep, str(row['id']), label=str(row['duration']))
     st.graphviz_chart(graph)
 
     st.subheader("Late tasks")
@@ -120,7 +127,7 @@ if uploaded_file is not None:
     else:
         st.write('---') 
 
-    st.subheader("Heatmap Impact and Probability")
+    st.subheader("Heatmap Team by Month")
     heatmap = alt.Chart(Tasks).mark_rect().encode(
        alt.Y('Team'),
        alt.X('monthdate(finish):O'),
@@ -128,6 +135,29 @@ if uploaded_file is not None:
     ) 
     st.write(heatmap)
 
+    alt_work = alt.Chart(Tasks).mark_point().encode(
+     x=alt.X('duration', axis=alt.Axis(title="Duration task")),
+     y=alt.X('name', axis=alt.Axis(title="Phase Name")),
+     tooltip='name',
+     color=alt.Color('Team', legend=None)
+     )
+   
+    st.write(alt_work)
+
+    alt_util = alt.Chart(Tasks).mark_area(interpolate="monotone").encode(
+     x=alt.X('Start', scale=x_scale, axis=no_axis_title),
+     y=alt.Y('sum(duration)',
+            axis=alt.Axis(title="Sum hours required")),
+     color='Team'
+    )
+    st.write(alt_util)
+
+    alt_cat = alt_util.mark_line().encode(
+     y=alt.Y('sum(duration)', axis=alt.Axis(title="FTE required")),
+     color='Team'
+    )
+
+    st.write(alt_cat)
    
 else:
     st.warning('Upload a csv file.')

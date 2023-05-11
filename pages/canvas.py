@@ -162,12 +162,12 @@ with cc[2]:
    fancy_box ("120,173,214,.25", "0,0,0,.75", "fas fa-bolt", costsummary, "Budget")
 with cc[3]:
    teamintro = "<br>Who is in it/should be there?  ... in the Core-Team ... in the extended team ... as external partner ... as contact person & decision maker"
-   teamsummary = "<sup>" + teamintro + "</sup><br><br>" + st.session_state['thepmteam']
+   teamsummary = "<sup>" + teamintro + "</sup><br><br>" + st.session_state.thepmteam.replace('\n', '<br />')   
    fancy_box ("239,209,100,.25", "0,0,0,.75", "fas fa-handshake", teamsummary, "Team")
    resintro = "<br>What resources does the project need to be implemented? (excl. time and knowledge)"
    ressummary = "<sup>" + resintro + "</sup><br><br>" + mySep.join(st.session_state.plmlistscopelist) + "<br>" + mySep.join(st.session_state.plmlistscopeoption)
    fancy_box ("239,209,100,.25", "0,0,0,.75", "fas fa-space-shuttle", ressummary.replace(',', '<br />'), "Resources")
 
 st.write("##")
-successmsg = f'The PM Monitor project canvas project poster presented by {st.session_state.plpmname} on {st.session_state.pldcharterdate}.  Thank you for using The PM Monitor. thepmmonitor.streamlit.app'
+successmsg = f'The PM Monitor project canvas project poster presented by {st.session_state.plpmname} on {st.session_state.pldcharterdate}.  Thank you for using The PM Monitor. thepmmonitor.streamlit.app.  To print and share this canvas we recommend markuphero or gofullpage chrome extensions'
 st.success(successmsg)

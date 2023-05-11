@@ -93,8 +93,8 @@ with colb:
 with colc:
   st.write(scopebar)
 with cole:
-  if st.session_state['plscopechangeadd'] != "None":
-    notec = "<font color='grey'>:warning:" + st.session_state['plpscopecontingency'] + "</font>"
+  if len(st.session_state['plscopechange']) > 10:
+    notec = "<font color='grey'>:warning: " + st.session_state['plpscopecontingency'] + "</font>"
   else:
     notec = ""
   st.markdown("{}".format(notec), unsafe_allow_html=True)
@@ -110,7 +110,7 @@ with colc:
   st.write(qualbar)
 with cole:
   if int(st.session_state['thepminspectionflag']) == 1:
-    notec = "<font color='grey'>:warning:" + st.session_state['thepminspectionwarning'] + st.session_state['plpscopecontingency'] + "</font>"
+    notec = "<font color='grey'>:warning: " + st.session_state['thepminspectionwarning'] + st.session_state['plpscopecontingency'] + "</font>"
   else:
     notec = ""
   st.markdown("{}".format(notec), unsafe_allow_html=True)
@@ -123,7 +123,7 @@ with colc:
   st.write(st.session_state['thepmbudgetcomplete'], cpi)
 with cole:
   if cpi < 1:
-    notes = "<font color='grey'>:warning:" + "Over Budget - Contingency:  " + st.session_state['plpbudgetcontingency'] + "</font>"
+    notes = "<font color='grey'>:warning: " + "Over Budget - Contingency:  " + st.session_state['plpbudgetcontingency'] + "</font>"
   else:
     notes = "<font color='grey'>" + "On or ahead of budget" + "</font>"
   st.markdown("{}".format(notes), unsafe_allow_html=True)
