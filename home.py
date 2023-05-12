@@ -1,7 +1,7 @@
 """Main module for the streamlit app"""
 import streamlit as st
 from PIL import Image
-#from st_pages import Page, Section, show_pages, add_page_title
+from st_pages import Page, Section, show_pages, add_page_title
 
 primaryColor="#264653"
 backgroundColor="#FFFFFF"
@@ -19,20 +19,22 @@ st.set_page_config(
 import awesome_streamlit as ast
 
 # removed st_pages did not deploy
-#show_pages(
-#    [
-#        Page("home.py", "Home", "🏠"),
-#        Page("pages/plan.py", "Plan", ":spiral_note_pad:"),
-#        Page("pages/stoplight.py", "StopLight", ":books:"),
-#        Page("pages/risk.py", "Risk", ":books:"),
-#        Page("pages/canvas.py", "Canvas", ":books:"),
-#        Page("pages/wbs.py", "WBS", ":books:"),
-#        Page("pages/info.py", "Info", ":information_source:"),
-#        Page("pages/communication.py", "Comms", ":left_speech_bubble:"),
-#        Page("pages/saveplan.py", "Save", ":left_speech_bubble:"),
-#        Page("pages/about.py", "About", ":books:"),
-#    ]
-#)
+show_pages(
+    [
+        Page("home.py", "Home", "🏠"),
+        Page("pages/plan.py", "Plan", ":spiral_note_pad:"),
+        Page("pages/saveplan.py", "Save", ":left_speech_bubble:"),
+        Section(name="Reports", icon=":books:"),
+        Page("pages/stoplight.py", "  StopLight", ":books:"),
+        Page("pages/canvas.py", "  Canvas", ":books:"),
+        Page("pages/info.py", "  Info", ":information_source:"),
+        Section(name="Analysis", icon=":books:"),
+        Page("pages/risk.py", "  Risk", ":books:"),
+        Page("pages/wbs.py", "  WBS", ":books:"),
+        Page("pages/communication.py", "  Comms", ":left_speech_bubble:"),
+        Page("pages/about.py", "About", ":books:", in_section=False),
+    ]
+)
 
 def main():
     """Main function of the App"""
@@ -86,7 +88,7 @@ Closure \n
      st.image(ip, caption='Step 3 - The PM Monitor Closing')
     st.markdown("---")
     columns = st.columns((2,1,2))
-    url1 = "/Plan"
+    url1 = "/plan"
     with columns[1]:
      st.markdown(f'''
 <a href={url1} target = "_self"><button style="background-color:#F4A261;text-align: center;">  Start Planning  </button></a>

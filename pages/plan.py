@@ -13,42 +13,12 @@ import base64
 from askchatgpt import askme
 from streamlit_tags import st_tags
 
-# 3. Apply Settings
-def upload_saved_settings(saved_settings):
-        #st.write(saved_settings)
-        #st.write(len(saved_settings))
-        """Set session state values to what specified in the saved_settings."""
-        for i in range(len(saved_settings)):
-          #st.write(saved_settings.iloc[i, 2])
-          #if isinstance(saved_settings.iloc[i, 2],type(str)):
-            if saved_settings.iloc[i, 1].startswith('plp'):
-              st.session_state[saved_settings.iloc[i, 1]] = saved_settings.iloc[i, 2]
-            if saved_settings.iloc[i, 1].startswith('pls'):
-              st.session_state[saved_settings.iloc[i, 1]] = saved_settings.iloc[i, 2]
-            if saved_settings.iloc[i, 1].startswith('pln'):
-              st.session_state[saved_settings.iloc[i, 1]] = int(saved_settings.iloc[i, 2])
-            if saved_settings.iloc[i, 1].startswith('plrlist'):
-              st.session_state[saved_settings.iloc[i, 1]] = int(saved_settings.iloc[i, 2])
-            if saved_settings.iloc[i, 1].startswith('pllist'):
-              st.session_state[saved_settings.iloc[i, 1]] = int(saved_settings.iloc[i, 2])
-            if saved_settings.iloc[i, 1].startswith('plmlist'):
-              string_without_brackets = saved_settings.iloc[i, 2].strip("[]")
-              string_without_brackets = string_without_brackets.replace("'", "")
-              string_list = string_without_brackets.split(", ")
-              for x in string_list:
-               if x != "":
-                 if x not in st.session_state[saved_settings.iloc[i, 1]]:  # prevent duplicates
-                    st.session_state[saved_settings.iloc[i, 1]].append(x)
-            if saved_settings.iloc[i, 1].startswith('pld') and len(saved_settings.iloc[i, 2]) > 6:
-              datetime1 = saved_settings.iloc[i, 2]
-              datetime2 = datetime.strptime(datetime1, '%Y-%m-%d').date()
-              st.session_state[saved_settings.iloc[i, 1]] = datetime2
-        return
+st.session_state.update(st.session_state)
 
 def setvalue(var):
-
     if var.startswith('pllist'):
         if var in st.session_state:
+          st.write("insetvalue", var, st.session_state[var])
           if st.session_state[var] == "":
            return 0
           else:
@@ -101,10 +71,10 @@ def on_askme12_clicked():
           st.session_state.plproigoal = askme("What is the return on investment for a project with an investment of 30000 and estimated benefit of 20000? " + st.session_state.plpname + " project?")
 
 
-def clear_form():
-  for key in st.session_state.keys():
-    del st.session_state[key]
-#@st.cache
+#def clear_form():
+#  for key in st.session_state.keys():
+#    del st.session_state[key]
+# @st.cache
 
 im = Image.open("assets/images/BlueZoneIT.ico")
 st.set_page_config(
@@ -122,10 +92,9 @@ tab0, tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs(["Start", "Info",
      ##  Introduction to Planning
 with tab0:
       st.subheader("How to Create a Plan")
-     
       st.write("Meet with stakeholders, gather information, identify and document the goal, deliverables, budget and schedule.  Identify resources and constraints. Create an activity list and validate the resources and schedule.   Review the risks and make contingency plans. Moving one tab at a time, fill in the information in the form, update and check the summary.  Fill in all information, then publish and share the canvas poster with the team.  ")
 
-      st.subheader("How to Update and Run Stoplight Report")
+      st.subheader("How to Report")
       st.write("Restore your plan from backup.  Update Cost, spend to date, and work hours performed.  Update project phase if needed.   Were there scope changes this period?  In schedule, note if milestone delivery dates are changing.  Has the team changed?  What is the active member and engagement score for the period? Was there a quality report.  Create your brief video/audio report and save.  Following these questions, save and go to the Stoplight report.  ")
      ##  The basic intro information 
 with tab1:
@@ -135,7 +104,7 @@ with tab1:
       with col4:
        st.text_input ("Project ID", max_chars=10, value=setvalue('plpnumber'), help="A unique id to identify this project", key='plpnumber')
       with col5:
-       st.text_input ("Project Name", help="A short project name, use key words to describe the project. ", max_chars=50, value=setvalue('plpname'), key='plpname')
+       st.text_input ("Project Name", help="A short project name, use key words to describe the project. ", max_chars=50, key='plpname', value=setvalue('plname'))
       col4, col5 = st.columns(2)
       with col4:
        st.text_input ("Project Manager Name", max_chars=30, value=setvalue('plpmname'), key='plpmname')

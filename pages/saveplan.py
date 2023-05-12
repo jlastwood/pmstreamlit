@@ -9,6 +9,8 @@ from st_aggrid import AgGrid
 import io
 import base64
 
+st.session_state.update(st.session_state)
+
 # 3. Apply Settings
 def upload_saved_settings(saved_settings):
         #st.write(saved_settings)
@@ -85,7 +87,8 @@ clear = st.button("Clear Plan")
 if clear:
    st.info("The information was cleared, thank you for using the PM Monitor.  Use Save Plan to save a copy of your plan offline")
    clear_form()
- # 1. Download Settings Button convert dataframe to list
+
+# 1. Download Settings Button convert dataframe to list
 dataitems = st.session_state.items()
 datalist = list(dataitems)
 df = pd.DataFrame(datalist)
