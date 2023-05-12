@@ -10,6 +10,8 @@ import textwrap
 import hydralit_components as hc
 from os.path import join
 
+st.session_state.update(st.session_state)
+
 #  https://canvanizer.com/
 im = Image.open("assets/images/BlueZoneIT.ico")
 st.set_page_config(

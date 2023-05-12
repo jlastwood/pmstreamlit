@@ -15,6 +15,8 @@ import altair as alt
 # https://levelup.gitconnected.com/how-to-create-a-multi-layer-gantt-chart-using-plotly-e7d7f158938c
 #Main interface section 
 
+st.session_state.update(st.session_state)
+
 im = Image.open("assets/images/BlueZoneIT.ico")
 st.set_page_config(
       page_title="The PM Monitor Work Breakdown Activities",

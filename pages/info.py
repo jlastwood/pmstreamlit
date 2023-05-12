@@ -4,6 +4,8 @@ import awesome_streamlit as ast
 from utilities import reporttitle
 from PIL import Image
 
+st.session_state.update(st.session_state)
+
 im = Image.open("assets/images/BlueZoneIT.ico")
 st.set_page_config(
       page_title="The PM Monitor Information",

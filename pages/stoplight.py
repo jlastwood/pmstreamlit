@@ -22,6 +22,8 @@ from youtube_transcript_api.formatters import PrettyPrintFormatter
 from wordcloud import WordCloud, STOPWORDS
 import matplotlib.pyplot as plt
 
+st.session_state.update(st.session_state)
+
 im = Image.open("assets/images/BlueZoneIT.ico")
 st.set_page_config(
       page_title="The PM Monitor Stoplight Report",

@@ -22,6 +22,8 @@ sentimenttproductteam = 0
 engagementscoreuser = 0
 sentimenttscoreuser = 0
 
+st.session_state.update(st.session_state)
+
 im = Image.open("assets/images/BlueZoneIT.ico")
 st.set_page_config(
       page_title="The PM Monitor Risks",
