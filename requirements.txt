@@ -73,3 +73,4 @@ validators==0.18.2
 wordcloud==1.8.2.2
 youtube-transcript-api==0.4.4
 zipp==3.5.0
+st_pages==0.4.1
