@@ -10,7 +10,7 @@ import heapq
 import random
 from collections import Counter
 from pandas import *
-from utilities import currencyrisk, evreport, plancomment, get_table_download_link, reporttitle
+from utilities import currencyrisk, evreport, plancomment, get_table_download_link, reporttitle, reporttitleonly
 from deepmultilingualpunctuation import PunctuationModel
 #from st_radial import st_radial
 from textblob import TextBlob
@@ -155,24 +155,27 @@ with colb:
 with colc:
   st.markdown("<font color='red'><font>", unsafe_allow_html=True)
 st.markdown("---")
-if len(videopmreport) < 10:
-  st.warning("PM status report is missing.  Please create report with transcript to get the remaining stoplight report analysis")
-  st.stop()
 
-col1, col2, col3, col4, col5 = st.columns(5)
-col1.metric("Polarity", round(textcsm.sentiment.polarity,2), round(1-textcsm.sentiment.polarity,2))
-col2.metric("Objectivity", round(textcsm.sentiment.subjectivity,2), 1-textcsm.sentiment.subjectivity)
-col3.metric("Cost Performance", cpi, cpi-1 )
-col4.metric("Schedule Performance", spi, spi-1 )
-col5.metric("Engagement", "86%", "4%")
 st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: green; font-size: 120%;'>Stakeholder Action</p>", unsafe_allow_html=True)
 actions = DataFrame({'a': [1,2,3], 'b': [2,3,4]})
 st.table(actions)
-col1, col2 = st.columns(2)
-with col1:
- st.video(videopmreport, format='video/mp4', start_time=0)
-with col2:
- st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: green; font-size: 120%;'>Management Report </p>", unsafe_allow_html=True)
+st.write("write out 3 risks that are high probablity and high impact")
+
+if len(videopmreport) < 10:
+  st.warning("PM status report is missing.  Please create report with transcript to get the remaining stoplight report analysis")
+else:
+ col1, col2, col3, col4, col5 = st.columns(5)
+ col1.metric("Polarity", round(textcsm.sentiment.polarity,2), round(1-textcsm.sentiment.polarity,2))
+ col2.metric("Objectivity", round(textcsm.sentiment.subjectivity,2), 1-textcsm.sentiment.subjectivity)
+ col3.metric("Cost Performance", cpi, cpi-1 )
+ col4.metric("Schedule Performance", spi, spi-1 )
+ col5.metric("Engagement", "86%", "4%")
+
+ col1, col2 = st.columns(2)
+ with col1:
+  st.video(videopmreport, format='video/mp4', start_time=0)
+ with col2:
+  st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: green; font-size: 120%;'>Management Report </p>", unsafe_allow_html=True)
 
  #st.markdown(plcommentsummary)
  #st.write(plcsmcomment) #sentiment for each sentence
@@ -233,7 +236,10 @@ with col2:
  plt.axis('off')
  plt.show()
  st.pyplot(plt)
-st.write(summary)
+ st.write(summary)
 st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: green; font-size: 120%;'>Deliverables</p>", unsafe_allow_html=True)
 deliverables = DataFrame({'a': [1,2,3], 'b': [2,3,4]})
+#df[(df['date'] > '2013-01-01') & (df['date'] < '2013-02-01')]
+#final_table_columns = ['id', 'name', 'year']
+#pandas_df = pandas_df[ pandas_df.columns.intersection(final_table_columns)]
 st.table(deliverables)

@@ -50,7 +50,7 @@ def fancy_box(wch_colour_box, wch_colour_font, iconname, sline, i):
                         padding-top: 18px;
                         padding-bottom: 18px;
                         line-height:25px;'>
-                        <i class='{iconname}'></i> {i}
+                        <i class='{iconname} fa-2x'></i> {i}
                         </style><BR><span style='font-size: 14px;
                         margin-top: 0;'>{sline}</style></span></p>"""
 
@@ -145,7 +145,7 @@ with cc[2]:
    mssummary = "<sup>" + msintro + "</sup><br><br>" 
    fancy_box ("120,173,214,.25", "0,0,0,.75", "fas fa-tasks", mssummary, "Milestones")
 with cc[2]:
-   quintro = "<br>What makes the CUSTOMERS really happy in terms of ...  ... the OUTCOME of the project?  ... the MILESTONES on the way there?  ... the kind of information/cooperation in the project?  "
+   quintro = "<br>What makes the CUSTOMERS really happy in terms of ...  ... the OUTCOME of the product (besides the project is delivered on time and on budget)? ... the MILESTONES on the way there?  ... the kind of information/cooperation in the project?  "
    qusummary = "<sup>" + quintro + "</sup><br><br>" + st.session_state['plsqualitygoal'].replace('\n', '<br>') + "<br><br>"+  st.session_state['thepmquality'] 
    fancy_box ("120,173,214,.2", "0,0,0,.75", "fas fa-signal", qusummary, "Quality")
 

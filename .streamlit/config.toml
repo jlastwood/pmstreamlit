@@ -4,3 +4,6 @@ backgroundColor="#FFFFFF"
 secondaryBackgroundColor="#F4A261"
 textColor="#2A9D8F"
 font="sans serif"
+
+[global]
+dataFrameSerialization = "legacy"

@@ -158,14 +158,13 @@ def reporttitle(reportname, reporttable):
             tbody th {display:none}
             </style>
             """
+  st.markdown(hide_table_row_index, unsafe_allow_html=True)
   st.markdown("<h3 style='text-align: center; vertical-align: bottom; color: white; background: grey; '>The PM Monitor</h3><br/>", unsafe_allow_html=True)
   st.table(reporttable)
 
+def reporttitleonly(reportname):
+  st.markdown("<h3 style='text-align: center; vertical-align: bottom; color: white; background: grey; '>The PM Monitor</h3><br/>", unsafe_allow_html=True)
 # Inject CSS with Markdown
-  st.markdown(hide_table_row_index, unsafe_allow_html=True)
-  url1 = "http://localhost:8501/plan"
-  url2 = "http://localhost:8501/canvas"
-  url3 = "http://localhost:8501/stoplight"
 #  col1, col2, col3  = st.columns(3)
 #  with col1:
 #   st.markdown(f'''
@@ -188,3 +187,4 @@ def reporttitle(reportname, reporttable):
    header="<p style='text-align: center; vertical-align: bottom; color: white; background: green; font-size: 120%;'>" + reportname + "</p>"
    st.markdown(header, unsafe_allow_html=True)
   return()
+
