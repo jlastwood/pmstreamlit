@@ -1,5 +1,6 @@
 import streamlit as st
 import openai
+import re
 
 model_engine = "text-davinci-003"
 openai.api_key =  st.secrets.openai
@@ -34,4 +35,5 @@ def askme(question):
      except openai.error.RateLimitError as e:
       return(f'Open API returns an API Error: {e}')
       pass
+    re.sub(r'^$\n', '', response, flags=re.MULTILINE)
     return response

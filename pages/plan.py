@@ -50,7 +50,7 @@ def on_askme5_clicked():
           st.session_state.plscopenicetohave = askme("What are three nice to have features in a" + st.session_state.plpname + " project?")
 
 def on_askme6_clicked():
-          st.session_state.plsqualitygoal = askme("What would make customers happey in terms of the outcome of the" + st.session_state.plpname + " project?")
+          st.session_state.plsqualitygoal = askme("What would make customers happey in terms of the outcome of the" + st.session_state.plpname + " product?")
 
 def on_askme7_clicked():
           st.session_state.plpscopecontingency = askme("What are three ways to mitigate the impact of scope changes in a " + st.session_state.plpname + " project?")
@@ -96,6 +96,30 @@ with tab0:
 
       st.subheader("How to Report")
       st.write("Restore your plan from backup.  Update Cost, spend to date, and work hours performed.  Update project phase if needed.   Were there scope changes this period?  In schedule, note if milestone delivery dates are changing.  Has the team changed?  What is the active member and engagement score for the period? Was there a quality report.  Create your brief video/audio report and save.  Following these questions, save and go to the Stoplight report.  ")
+      st.subheader("Steps and Pipeline")
+      st.write("""
+This application provides
+
+- Form to input a charter and plan
+- Project reports to share 
+- Earned value analysis and reporting of CPI and SPI and ROI
+- Analysis of project risks based on the project characteristics
+- Sentiment analysis of team and stakeholder communications
+- Probability of identified risks based on monitored threasholds
+- Engagement analysis based on team and stakeholder communications
+- Wordcloud analysis reporting to assess what are the topics of the week
+- Analysis of WBS to report most important information
+
+Pipeline
+
+- enter and save a copy of your plan, objectives and charter
+- enter your weekly cadence reporting updates to spend and progress
+- analysis of your communication channels
+- analysis of WBS and team tasks (if you are doing bottom up planning)
+- view risks, controls and monitors
+- Report and communicate
+""")
+
      ##  The basic intro information 
 with tab1:
       st.subheader("Project Information")
@@ -104,7 +128,7 @@ with tab1:
       with col4:
        st.text_input ("Project ID", max_chars=10, value=setvalue('plpnumber'), help="A unique id to identify this project", key='plpnumber')
       with col5:
-       st.text_input ("Project Name", help="A short project name, use key words to describe the project. ", max_chars=50, key='plpname', value=setvalue('plname'))
+       st.text_input ("Project Name", help="A short project name, use key words to describe the project. ", max_chars=50, key='plpname', value=setvalue('plpname'))
       col4, col5 = st.columns(2)
       with col4:
        st.text_input ("Project Manager Name", max_chars=30, value=setvalue('plpmname'), key='plpmname')
@@ -341,8 +365,9 @@ with tab5:
 
 with tab6:
       st.subheader("Quality")
-      st.session_state['plsqualitygoal']  = st.text_area ("Describe Quality Goal? (askme) ", value=setvalue('plsqualitygoal'))
+      st.text_area ("Describe Quality Goal? (askme) ", value=setvalue('plsqualitygoal'), key='plsqualitygoal')
       st.button("askme for a quality goal", on_click=on_askme6_clicked)
+      st.text_input ("Quality Report", value=setvalue('plsqualityreport'), key='plsqualityreport')
       col1, col2, col3, col4, col5 = st.columns(5)
       with col1:
        st.session_state['plntests']  = st.slider ("Number of Tests", value=setvalue('plntests'), format="%i", min_value=0, max_value=100, step=1 )
@@ -355,10 +380,10 @@ with tab6:
       with col5:
        st.session_state['pldinspectdate']  = st.date_input ("Inspection Report Date", setvalue('pldinspectdate'))
 
-      st_tags(
+      st.multiselect(
          label='Select types of quality inspection attributes',
-         suggestions=['Component Testing', 'Pre Production Testing', 'Pre Shipment/Final Inspection', 'None'],
-         value=setvalue('plmlistqualitytypes'), key='plmlistqualitytypes', maxtags = 3)
+         options=['Component Testing', 'Pre Production Testing', 'Pre Shipment/Final Inspection', 'None'],
+         default=setvalue('plmlistqualitytypes'), key='plmlistqualitytypes', max_selections = 3)
      #  test results, test not done, test run less than tolerance of 70% test failed more than 20 or critical test failed is positive
       st.session_state['thepminspectionwarning'] = "Inspection planned or passed." 
       st.session_state['thepminspectionflag'] = 0 
@@ -371,7 +396,7 @@ with tab6:
       if int(st.session_state['plntests']) > 0:
         passfail = int(st.session_state['plntestsfailed'] / st.session_state['plntests'] * 100) 
         passcoverage = int(st.session_state['plntestsrun'] / st.session_state['plntests'] * 100) 
-      st.session_state['thepmquality'] = f'{planquality} {st.session_state.plnteam}  members and have collaborated together for {st.session_state.plnteamweeks}  weeks. The inspector team/name is {st.session_state.plpinspectorname}.  The inspection report is planned on {st.session_state.pldinspectdate.strftime("%Y-%m-%d")}  Pass to fail rate is {passfail:.0f}%. Test coverage is {passcoverage}%. ' 
+      st.session_state['thepmquality'] = f'{planquality} {st.session_state.plnteam}  members and have collaborated together for {st.session_state.plnteamweeks}  weeks. The inspector team/name is {st.session_state.plpinspectorname}.  The inspection report is planned on {st.session_state.pldinspectdate.strftime("%Y-%m-%d")}  Pass to fail rate is {passfail:.0f}%. Test coverage is {passcoverage}%. The quality report is found here {st.session_state.plsqualityreport} ' 
       st.markdown('##') 
       st.success(st.session_state['thepmquality'])
       st.success(st.session_state['thepminspectionwarning'])

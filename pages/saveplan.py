@@ -89,9 +89,11 @@ if clear:
    clear_form()
 
 # 1. Download Settings Button convert dataframe to list
+#  there is a pandas problem with data serialization set to legacy
 dataitems = st.session_state.items()
 datalist = list(dataitems)
 df = pd.DataFrame(datalist)
+
 csv = df.to_csv().encode('utf-8')
 col1, col2, col3, col4 = st.columns([1, 1, 3, 3])
 #settings_to_download = {k: v for k, v in st.session_state.items()
