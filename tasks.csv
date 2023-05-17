@@ -1,6 +1,8 @@
-id,Type,Start,Finish,Completion Pct,Team,duration,name,dependencies
-1,Story,2022-01-01,2022-03-01,40,Dev,2,"planning activity",
-2,Story,2022-01-01,2022-03-01,100,Dev,3,"planning activity",1
-3,Milestone,2022-01-01,2022-03-01,40,Mgr,4,"planning activity",2
-4,Epic,2022-01-01,2022-03-01,40,Mgr,10,"planning activity","2 3"
-5,Story,2022-01-01,2022-03-01,40,Dev,3,"planning activity",1
+ac,Type,Start,finish,Completion Pct,Team,du,name,pr
+St,start,01/01/22,03/01/22,100,PM,1,,St
+a,Story,01/01/22,03/01/22,40,Dev,2,planning activity,St
+b,Story,01/01/22,03/01/22,100,Dev,3,planning activity,a
+c,Milestone,01/01/22,03/01/22,40,Mgr,4,planning activity,b
+d,Epic,01/01/22,03/01/22,40,Mgr,10,planning activity,c
+e,Story,01/01/22,03/01/22,40,Dev,3,planning activity,c
+End,End,01/01/22,03/01/22,1,PM,1,,d e
