@@ -235,7 +235,7 @@ with tab4:
       st.subheader("Schedule")
       st.write("The plan is managed and controlled by the defined milestones.  Your project should have no less than 6 milestones however you can define more. Milestones are point in time events that are used to verify if the project is on track.  Completing a phase in the plan is a milestone.  Features can be decomposed into unique stories, stories are SMART,  Specific, Measurable, Achievable, Realistic and completion of a feature can be tracked as a milestone. ")
 
-      dfm = pd.DataFrame()
+      dfmlist = []
       sdate = st.session_state['pldstartdate']
       #[sdate+timedelta(days=x) for x in range((edate-sdate).days)]
       if st.session_state['plncadence'] > 0:
@@ -247,57 +247,62 @@ with tab4:
        reportsinplan = 8
 
       st.write("Status Reports", reportsinplan)
+     
+      #  append not supported
+      #  collect in list and then convert to df  https://stackoverflow.com/questions/75956209/dataframe-object-has-no-attribute-append
 
       msstatus = 'Planned'
       rdays = (ndays * (reportsinplan - 1))
       for i in range(reportsinplan - 4, reportsinplan - 1):
          ldays = (1 + i)  * ndays
-         data = {'Milestone': '5-Accept', 'reportdate': sdate+timedelta(days=ldays), 'plandate': sdate+timedelta(days=rdays), 'Status': msstatus}
-         dfm = dfm.append(data, ignore_index=True)
-
+         #data = ['Milestone': '5-Accept', 'reportdate': sdate+timedelta(days=ldays), 'plandate': sdate+timedelta(days=rdays), 'Status': msstatus]
+         data = ['5-Accept', sdate+timedelta(days=ldays), sdate+timedelta(days=rdays), msstatus]
+         dfmlist.append(data)
       msstatus = 'Planned'
       rdays = (ndays * (reportsinplan - 2))
       for i in range(reportsinplan - 5, reportsinplan - 2):
          ldays = (1 + i)  * ndays
-         data = {'Milestone': '4-Inspect', 'reportdate': sdate+timedelta(days=ldays), 'plandate': sdate+timedelta(days=rdays), 'Status': msstatus}
-         dfm = dfm.append(data, ignore_index=True)
+         data = {'4-Inspect', sdate+timedelta(days=ldays), sdate+timedelta(days=rdays), msstatus}
+         dfmlist.append(data)
 
       msstatus = 'Planned'
       rdays = (ndays * (reportsinplan - 3))
       for i in range(reportsinplan - 6, (reportsinplan - 3)):
          ldays = (1 + i)  * ndays
-         data = {'Milestone': '3-Build', 'reportdate': sdate+timedelta(days=ldays), 'plandate': sdate+timedelta(days=rdays), 'Status': msstatus}
-         dfm = dfm.append(data, ignore_index=True)
+         data = {'3-Build', sdate+timedelta(days=ldays), sdate+timedelta(days=rdays), msstatus}
+         dfmlist.append(data)
 
       msstatus = 'In Progress'
       rdays = (ndays * 4)
       for i in range(1, (reportsinplan - 4)):
          ldays = (1 + i)  * ndays
-         data = {'Milestone': '2-Design', 'reportdate': sdate+timedelta(days=ldays), 'plandate': sdate+timedelta(days=rdays), 'Status': msstatus}
-         dfm = dfm.append(data, ignore_index=True)
+         data = {'2-Design', sdate+timedelta(days=ldays), sdate+timedelta(days=rdays), msstatus}
+         dfmlist.append(data)
 
       msstatus = 'In Progress'
       rdays = (ndays * 3)
       for i in range(0, 3):
          ldays = (1 + i)  * ndays
-         data = {'Milestone': '1-Plan', 'reportdate': sdate+timedelta(days=ldays), 'plandate': sdate+timedelta(days=rdays), 'Status': msstatus}
-         dfm = dfm.append(data, ignore_index=True)
+         data = {'1-Plan', sdate+timedelta(days=ldays), sdate+timedelta(days=rdays), msstatus}
+         dfmlist.append(data)
          # st.write(rdays, ndays, ldays)
 
       msstatus = 'Planned'
       rdays = (ndays * reportsinplan)
       for i in range(reportsinplan - 3, reportsinplan):
          ldays = (1 + i)  * ndays
-         data = {'Milestone': '6-Close', 'reportdate': sdate+timedelta(days=ldays), 'plandate': sdate+timedelta(days=rdays), 'Status': msstatus}
-         dfm = dfm.append(data, ignore_index=True)
+         data = {'6-Close', sdate+timedelta(days=ldays), sdate+timedelta(days=rdays), msstatus}
+         dfmlist.append(data)
   
       # get status from phase
       msstatus = 'Baseline'
       for i in range(1, reportsinplan + 1):
          ldays = ndays*i
-         data = {'Milestone': 'Baseline', 'reportdate': sdate+timedelta(days=ldays), 'plandate': sdate+timedelta(days=ldays), 'Status': msstatus}
-         dfm = dfm.append(data, ignore_index=True)
+         data = {'Baseline', sdate+timedelta(days=ldays), sdate+timedelta(days=ldays), msstatus}
+         dfmlist.append(data)
 
+      dfm = pd.DataFrame(dfmlist)
+      dfm = dfm.rename(columns={0: "Milestone", 1: "plandate", 2: "reportdate", 3: "Status"})
       dfresponse = AgGrid(dfm, height=200, theme='streamlit', editable=True, fit_columns_on_grid_load=True)
 
       chart = alt.Chart(dfm).mark_line(point = True).encode(
