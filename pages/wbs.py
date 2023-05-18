@@ -97,7 +97,6 @@ def find_paths(graph, node, slackTimes, paths):
 # https://github.com/sanatsingh/Critical-Path-Method-SE/blob/master/ca_2.py
 # https://levelup.gitconnected.com/how-to-create-a-multi-layer-gantt-chart-using-plotly-e7d7f158938c
 
-
 im = Image.open("assets/images/BlueZoneIT.ico")
 st.set_page_config(
       page_title="The PM Monitor Work Breakdown Activities",
@@ -139,8 +138,11 @@ if uploaded_file is not None:
     Tasks['Start'] = Tasks['Start'] + pd.Timedelta(days=daysoffset)
     #Tasks['Start'] = Tasks['Start'] + pd.Timedelta(days=daysoffset)
     #Tasks['finish'] = Tasks['Start'] + pd.to_timedelta(Tasks['du'], unit='D') 
+    # Tasks = st.dataframe( Tasks[Tasks['Type'] == 'Milestone'] )
     df = Tasks
-    df.replace('-', np.nan)
+    #df = Tasks
+    #df.replace('-', np.nan)
+
 
     for index, row in Tasks.iterrows():
          nodes = row['pr'].split(' ')
@@ -210,14 +212,14 @@ if uploaded_file is not None:
 
     # push lists back to data frame but need to add extra line for end
     abca = list(slackTimes.values())
-    abca.append(0)
+    #abca.append(0)
     Tasks['slack'] = abca
     abcb = list(startTimes.values())
-    abcb.append(0)
+    #abcb.append(0)
     Tasks['startdays'] = abcb
     Tasks['startdays'] = pd.to_numeric(Tasks['startdays'])
     abcc = list(completionTimes.values())
-    abcc.append(0)
+    #abcc.append(0)
     Tasks['enddays'] = abcc
     Tasks['enddays'] = pd.to_numeric(Tasks['enddays'])
 

@@ -262,28 +262,28 @@ with tab4:
       rdays = (ndays * (reportsinplan - 2))
       for i in range(reportsinplan - 5, reportsinplan - 2):
          ldays = (1 + i)  * ndays
-         data = {'4-Inspect', sdate+timedelta(days=ldays), sdate+timedelta(days=rdays), msstatus}
+         data = ['4-Inspect', sdate+timedelta(days=ldays), sdate+timedelta(days=rdays), msstatus]
          dfmlist.append(data)
 
       msstatus = 'Planned'
       rdays = (ndays * (reportsinplan - 3))
       for i in range(reportsinplan - 6, (reportsinplan - 3)):
          ldays = (1 + i)  * ndays
-         data = {'3-Build', sdate+timedelta(days=ldays), sdate+timedelta(days=rdays), msstatus}
+         data = ['3-Build', sdate+timedelta(days=ldays), sdate+timedelta(days=rdays), msstatus]
          dfmlist.append(data)
 
       msstatus = 'In Progress'
       rdays = (ndays * 4)
       for i in range(1, (reportsinplan - 4)):
          ldays = (1 + i)  * ndays
-         data = {'2-Design', sdate+timedelta(days=ldays), sdate+timedelta(days=rdays), msstatus}
+         data = ['2-Design', sdate+timedelta(days=ldays), sdate+timedelta(days=rdays), msstatus]
          dfmlist.append(data)
 
       msstatus = 'In Progress'
       rdays = (ndays * 3)
       for i in range(0, 3):
          ldays = (1 + i)  * ndays
-         data = {'1-Plan', sdate+timedelta(days=ldays), sdate+timedelta(days=rdays), msstatus}
+         data = ['1-Plan', sdate+timedelta(days=ldays), sdate+timedelta(days=rdays), msstatus]
          dfmlist.append(data)
          # st.write(rdays, ndays, ldays)
 
@@ -291,18 +291,18 @@ with tab4:
       rdays = (ndays * reportsinplan)
       for i in range(reportsinplan - 3, reportsinplan):
          ldays = (1 + i)  * ndays
-         data = {'6-Close', sdate+timedelta(days=ldays), sdate+timedelta(days=rdays), msstatus}
+         data = ['6-Close', sdate+timedelta(days=ldays), sdate+timedelta(days=rdays), msstatus]
          dfmlist.append(data)
   
       # get status from phase
       msstatus = 'Baseline'
       for i in range(1, reportsinplan + 1):
          ldays = ndays*i
-         data = {'Baseline', sdate+timedelta(days=ldays), sdate+timedelta(days=ldays), msstatus}
+         data = ['Baseline', sdate+timedelta(days=ldays), sdate+timedelta(days=ldays), msstatus]
          dfmlist.append(data)
 
       dfm = pd.DataFrame(dfmlist)
-      dfm = dfm.rename(columns={0: "Milestone", 1: "plandate", 2: "reportdate", 3: "Status"})
+      dfm = dfm.rename(columns={0: "Milestone", 1: "reportdate", 2: "plandate", 3: "Status"})
       dfresponse = AgGrid(dfm, height=200, theme='streamlit', editable=True, fit_columns_on_grid_load=True)
 
       chart = alt.Chart(dfm).mark_line(point = True).encode(
