@@ -15,6 +15,8 @@ import matplotlib.pyplot as plt
 import networkx as nx
 from datetime import timedelta, date, time, datetime
 
+st.session_state.update(st.session_state)
+
 def make_pert_chart(graph, startTimes, completionTimes, slackTimes, criticalPaths):
     
     criticalEdges = defaultdict(list)
@@ -95,7 +97,6 @@ def find_paths(graph, node, slackTimes, paths):
 # https://github.com/sanatsingh/Critical-Path-Method-SE/blob/master/ca_2.py
 # https://levelup.gitconnected.com/how-to-create-a-multi-layer-gantt-chart-using-plotly-e7d7f158938c
 
-st.session_state.update(st.session_state)
 
 im = Image.open("assets/images/BlueZoneIT.ico")
 st.set_page_config(
