@@ -174,8 +174,6 @@ else:
  col1, col2 = st.columns(2)
  with col1:
   st.video(videopmreport, format='video/mp4', start_time=0)
- with col2:
-  st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: green; font-size: 120%;'>Management Report </p>", unsafe_allow_html=True)
 
  #st.markdown(plcommentsummary)
  #st.write(plcsmcomment) #sentiment for each sentence
@@ -223,8 +221,8 @@ else:
 
  # https://stackoverflow.com/questions/49566756/creating-wordclouds-with-altair
  # create the WordCloud object
- wordcloud = WordCloud(min_word_length =3,
-                      background_color='white', stopwords=stopwords, max_words=20)
+ wordcloud = WordCloud(min_word_length =5,
+                      background_color='white', stopwords=stopwords, max_words=10)
 
  # generate the word cloud
  stopwords = set(STOPWORDS)
@@ -235,11 +233,12 @@ else:
  plt.imshow(wordcloud, interpolation='bilinear')
  plt.axis('off')
  plt.show()
- st.pyplot(plt)
- st.write(summary)
+ with col2:
+  st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: green; font-size: 120%;'>Management Report </p>", unsafe_allow_html=True)
+  st.pyplot(plt)
+  st.write(summary)
 st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: green; font-size: 120%;'>Deliverables</p>", unsafe_allow_html=True)
-deliverables = DataFrame({'a': [1,2,3], 'b': [2,3,4]})
+st.write(st.session_state.plscopemusthave)
 #df[(df['date'] > '2013-01-01') & (df['date'] < '2013-02-01')]
 #final_table_columns = ['id', 'name', 'year']
 #pandas_df = pandas_df[ pandas_df.columns.intersection(final_table_columns)]
-st.table(deliverables)

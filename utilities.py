@@ -56,6 +56,7 @@ def currencyrisk(projectrevenue, projectcost, projecthours, projectcountries, pr
 
 # calculate cpi and spi
 def evreport(projectrevenue, projectbudget, projecthours, projectrate, projectbasecurrency, dateStart, dateEnd, actualcost, milestoneplanned, milestonecomplete, daystoend, daystoday, timecomplete ):
+#  https://techdocs.broadcom.com/us/en/ca-enterprise-software/business-management/clarity-project-and-portfolio-management-ppm-on-premise/15-9-2/Using-Classic-Clarity-PPM/project-management/create-projects-teams-and-tasks/calculate-earned-value-eac-etc-and-other-metrics.html
 #  https://www.projectengineer.net/the-earned-value-formulas/
 #  pv = percentage of completed work planned times projectcost
 #  ev = percentage complete actual times project cost
@@ -64,7 +65,7 @@ def evreport(projectrevenue, projectbudget, projecthours, projectrate, projectba
 #  spi = ev/pv (less than 1 behind schedule)
 #  cv = ev - ac
 #  cpi = ev/ac
-#  bac = projectcost
+#  bac = BAC = ((Actuals + Remaining Work) x actual cost
 #  when past cost and schedule performace will continue
 #  EAC = AC + [(BAC – EV)/(SPI x CPI)]
 #  etc = eac - ac
@@ -72,6 +73,8 @@ def evreport(projectrevenue, projectbudget, projecthours, projectrate, projectba
    eac = 0
    spi = 0
    etc = 0
+   bac = 0
+   evmstats = {}
    if projectbudget > 0:
       if milestoneplanned == 0:
          milestoneplanned = 1
@@ -109,9 +112,22 @@ def evreport(projectrevenue, projectbudget, projecthours, projectrate, projectba
         cpicomment = "performing well on or under budget "
       #  use markdown
       evsumm = f'**{svcomment} and {cvcomment}**<p>The project has a current Earned Value of {ev:,.0f} of a total spend to date of {acwp:,.0f}.  {timecomplete}% of the time has elapsed in the schedule.   Planned Value or the total cost of work that should have been done based on the schedule is {pv:,.0f}  <br/> Schedule Variance {sv:,.0f} is {scomment}. and Schedule Performance Index is {spi:.2f}% {spcomment} 1. The project is {bcomment} schedule.</p><p> Cost Variance is {cv} Cost Variance monitors budget.  The work can be ahead of schedule but over budget.  Cost Performance Index {cpi:.2f}% provides a guide as to the relative amount of the variance. The project is {cpicomment}.</p><p>Project Estimate at Completion is now {eac:,.0f} Estimate To Complete {etc:,.0f}</p>'
+
+      evmstats = {
+       "BAC": 0,
+       "PV": pv,
+       "EV": ev,
+       "AC": acwp,
+       "CV": cv, 
+       "CPI": cpi,
+       "VAC": bac - eac,
+       "EAC": acwp + etc,
+       "ETC": etc} 
+
    else:
       evsumm = f'No Earned Value report,  missing budget'
-   return(evsumm, cpi, spi, etc)
+
+   return(evsumm, cpi, spi, etc, pd.DataFrame([evmstats]))
 
 def switch_cadence(argument):
     switcher = {
