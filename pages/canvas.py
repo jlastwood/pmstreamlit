@@ -1,14 +1,16 @@
 """Page for viewing the awesome Project canvas"""
 import pathlib
 import streamlit as st
-import awesome_streamlit as ast
+#import awesome_streamlit as ast
 import datetime
 import base64
 from utilities import reporttitle
 from PIL import Image
 import textwrap
-import hydralit_components as hc
+#import hydralit_components as hc
 from os.path import join
+#from pyhtml2pdf import converter
+#import pyscreenshot
 
 st.session_state.update(st.session_state)
 
@@ -20,6 +22,13 @@ st.set_page_config(
       layout="wide",
       initial_sidebar_state="collapsed",
 )
+
+#no_sidebar_style = """
+#    <style>
+#        div[data-testid="stSidebarNav"] {display: none;}
+#    </style>
+#"""
+#st.markdown(no_sidebar_style, unsafe_allow_html=True)
 
 # https://gist.github.com/treuille/8b9cbfec270f7cda44c5fc398361b3b1
 
@@ -167,10 +176,36 @@ with cc[3]:
    teamsummary = "<sup>" + teamintro + "</sup><br><br>" + st.session_state.thepmteam.replace('\n', '<br />')   
    fancy_box ("239,209,100,.25", "0,0,0,.75", "fas fa-handshake", teamsummary, "Team")
    resintro = "<br>What resources does the project need to be implemented? (excl. time and knowledge)"
-   ressummary = "<sup>" + resintro + "</sup><br><br>" + "<br>" + mySep.join(st.session_state.plmlistscopeoption)
+   ressummary = "<sup>" + resintro + "</sup><br><br>" + "<br>" 
    #ressummary = "<sup>" + resintro + "</sup><br><br>" + mySep.join(st.session_state.plmlistscopelist) + "<br>" + mySep.join(st.session_state.plmlistscopeoption)
    fancy_box ("239,209,100,.25", "0,0,0,.75", "fas fa-space-shuttle", ressummary.replace(',', '<br />'), "Resources")
 
 st.write("##")
 successmsg = f'The PM Monitor project canvas project poster presented by {st.session_state.plpmname} on {st.session_state.pldcharterdate}.  Thank you for using The PM Monitor. thepmmonitor.streamlit.app.  To print and share this canvas we recommend markuphero or gofullpage chrome extensions'
 st.success(successmsg)
+
+# To capture the screen
+# image = pyscreenshot.grab()
+
+# st.image(image)  
+# To display the captured screenshot
+# image.show()
+  
+# To save the screenshot
+#img = image.save("GeeksforGeeks.png")
+
+# btn = st.download_button(
+#       label="Download image",
+#       data=image,
+#       file_name="imagename.png",
+#       mime="image/png")
+#  this does not take screenshot, only print static contents
+#converter.convert('http://localhost:8501/Canvas', 'canvas.pdf')
+
+#with open("canvas.pdf", "rb") as pdf_file:
+#    PDFbyte = pdf_file.read()
+#
+#st.download_button(label="Export_Report",
+#                    data=PDFbyte,
+#                    file_name="canvas.pdf",
+#                    mime='application/octet-stream')

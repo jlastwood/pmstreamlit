@@ -317,54 +317,57 @@ with tab5:
       st.write("Projects are executed and implemented by people, the team, the stakeholders and are implemented to provide benefit to users or customers.  The communication plan outlines the needs of the stakeholders, team and users. The complexity maintaining good communication and establishing trust between the team and the stakeholders is a factor of the size of the team, and how long they have been working together.  Trust is earned, not given, and as trust increases, performance will improve and quality will follow.  Typically engagement and team sentiment is high at the beginning of the project and decreases over time, and engagement of the stakeholders follows the opposite pattern  ")
       col1, col2, col3, col4 = st.columns(4)
       with col1:
-       st.session_state['plnstakeholder']  = st.slider ("Number of Stakeholders", value=setvalue('plnstakeholder'), format="%i", min_value=0, max_value=10, step=1 )
+       st.slider ("Number of Stakeholders", value=setvalue('plnstakeholder'), format="%i", min_value=0, max_value=10, step=1, key='plnstakeholder' )
       with col2:
-       st.session_state['plnteam']  = st.slider ("Number of Core Team Members", value=setvalue('plnteam'), format="%i", min_value=0, max_value=15, step=1)
+       st.slider ("Number of Core Team Members", value=setvalue('plnteam'), format="%i", min_value=0, max_value=15, step=1, key='plnteam')
       with col3:
-       st.session_state['plnusers']  = st.slider ("Number of Users", value=setvalue('plnusers'), format="%i", min_value=0, max_value=100000, step=10000)
+       st.slider ("Number of Users", value=setvalue('plnusers'), format="%i", min_value=0, max_value=100000, step=10000, key='plnusers')
       with col4:
-       st.session_state['plnactors']  = st.slider ("Number of Actors", value=setvalue('plnactors'), format="%i", min_value=0, max_value=10, step=1)
+       st.slider ("Number of Actors", value=setvalue('plnactors'), format="%i", min_value=0, max_value=10, step=1, key='plnactors')
       col1, col2, col3, col4 = st.columns(4)
       with col1:
-       st.session_state['plnteamweeks']  = st.slider ("Weeks with Full Team", value=setvalue('plnteamweeks'), format="%i", min_value=0, max_value=12, step=1 )
+       st.slider ("Weeks with Full Team", value=setvalue('plnteamweeks'), format="%i", min_value=0, max_value=12, step=1, key='plnteamweeks' )
       with col2:
-       st.session_state['plnopenroles']  = st.slider ("Number of Open Roles", value=setvalue('plnopenroles'), format="%i", min_value=0, max_value=15, step=1)
+       st.slider ("Number of Open Roles", value=setvalue('plnopenroles'), format="%i", min_value=0, max_value=15, step=1, key='plnopenroles')
       st.write("---")
-      col1, col2, col3, col4 = st.columns(4)
+      st.write("Enter the location of the team WBS and their communication channel")
+      col3, col4 = st.columns(2)
       with col3:
-       st.session_state['plpactivitylink']  = st.text_input ("Activity Source Link (URL)", value=setvalue('plpactivitylink') )
+       st.text_input ("Activity Source Link (URL)", value=setvalue('plpactivitylink'), key='plpactivitylink' )
       with col4:
-       st.session_state['plpstanduplink']  = st.text_input ("Standup Async Link (URL)" , value=setvalue('plpstanduplink'))
+       st.text_input ("Standup Async Link (URL)" , value=setvalue('plpstanduplink'), key='plpstanduplink')
       st.write("---")
-      col1, col2, col3, col4 = st.columns(4)
+      st.write("Enter the contact information of the team leads, architect and account manager")
+      col1, col2, col3, col4, col5 = st.columns(5)
       with col1:
-       st.session_state['plpsolutionname'] = st.text_input ("Solution Architect Name", max_chars=30, value=setvalue('plpsolutionname'))
+       st.text_input ("Solution Architect Name", max_chars=30, value=setvalue('plpsolutionname'), key='plpsolutionname')
       with col2:
-       st.session_state['plpoperationname'] = st.text_input ("Operations Lead Name", max_chars=30, value=setvalue('plpoperationname'))
+       st.text_input ("Operations Lead Name", max_chars=30, value=setvalue('plpoperationname'), key='plpoperationname')
       with col3:
-       st.session_state['plpinspectorname'] = st.text_input ("Inspection Lead Name", max_chars=30, value=setvalue('plpinspectorname'))
+       st.text_input ("Inspection Lead Name", max_chars=30, value=setvalue('plpinspectorname'), key='plpinspectorname')
       with col4:
-       st.session_state['plpaccountname'] = st.text_input ("Account Manager Name", max_chars=30, value=setvalue('plpaccountname'))
-      with col1:
-       st.session_state['plpmcustname'] = st.text_input ("Customer Project Manager Name", max_chars=30, value=setvalue('plpmcustname'))
+       st.text_input ("Account Manager Name", max_chars=30, value=setvalue('plpaccountname'), key='plpaccountname')
+      with col5:
+       st.text_input ("Customer Project Manager Name", max_chars=30, value=setvalue('plpmcustname'), key='plpmcustname')
       col1, col2, col3, col4 = st.columns(4)
       st.write("---")
       col1, col2, col3, col4 = st.columns(4)
       with col1:
        # SAM = (Active Channel Members/ Total Channel Members)
-       st.session_state['plnactivesam']  = st.slider ("Active Member Score", value=setvalue('plnactivesam'), format="%i", min_value=0, max_value=100, step=5 )
+       st.slider ("Active Member Score", value=setvalue('plnactivesam'), format="%i", min_value=0, max_value=100, step=5, key='plnactivesam' )
       with col2:
         #SES = ((Unique Commenters + Unique Reactors) / 2) / (Active Channel Members)
         #SES Simplified = (Average Active Members) / (Active Channel Members)
-       st.session_state['plnactiveses']  = st.slider ("Active Engagement Score", value=setvalue('plnactiveses'), format="%i", min_value=0, max_value=100, step=5 )
+       st.slider ("Active Engagement Score", value=setvalue('plnactiveses'), format="%i", min_value=0, max_value=100, step=5, key='plnactiveses' )
       planchannels = (int(st.session_state['plnstakeholder']) + int(st.session_state['plnteam'])) * (int(st.session_state['plnstakeholder']) + int(st.session_state['plnteam']) - 1)
       st.write("---")
-      col1, col2, col3, col4 = st.columns(4)
+      st.write("The project manager supplies a video report with the reports")
+      col3, col4 = st.columns(2)
       with col3:
-       st.session_state['plpmreport'] = st.text_input ("PM report (youtube)", value=setvalue('plpmreport'))
+       st.text_input ("PM report (youtube)", value=setvalue('plpmreport'), key='plpmreport')
       with col4:
-       st.session_state['plpmid'] = st.text_input ("PM report ID", value=setvalue('plpmid'))
-      plancommunication = f' There are {planchannels:.0f} communication channels. The team has a message formum at {st.session_state.plpstanduplink} and a task activity board at {st.session_state.plpactivitylink}'
+       st.text_input ("PM report ID", value=setvalue('plpmid'), key='plpmid')
+      plancommunication = f' There are {planchannels:.0f} communication channels. The team has a message forum at {st.session_state.plpstanduplink} and a task activity board at {st.session_state.plpactivitylink}'
       st.markdown('##') 
       st.success(plancommunication)
 
@@ -375,15 +378,15 @@ with tab6:
       st.text_input ("Quality Report", value=setvalue('plsqualityreport'), key='plsqualityreport')
       col1, col2, col3, col4, col5 = st.columns(5)
       with col1:
-       st.session_state['plntests']  = st.slider ("Number of Tests", value=setvalue('plntests'), format="%i", min_value=0, max_value=100, step=1 )
+       st.slider ("Number of Tests", value=setvalue('plntests'), format="%i", min_value=0, max_value=100, step=1, key="plntests" )
       with col2:
-       st.session_state['plntestsrun']  = st.slider ("Number of Tests Run", value=setvalue('plntestsrun'), format="%i", min_value=0, max_value=100, step=1 )
+       st.slider ("Number of Tests Run", value=setvalue('plntestsrun'), format="%i", min_value=0, max_value=100, step=1, key='plntestsrun' )
       with col3:
-       st.session_state['plntestsfailed']  = st.slider ("Number of Tests Failed", value=setvalue('plntestsfailed'), format="%i", min_value=0, max_value=100, step=1 )
+       st.slider ("Number of Tests Failed", value=setvalue('plntestsfailed'), format="%i", min_value=0, max_value=100, step=1, key='plntestsfailed' )
       with col4:
        st.session_state['plntestscritical']  = st.slider ("Number Critical Failed", value=setvalue('plntestscritical'), format="%i", min_value=0, max_value=100, step=1 )
       with col5:
-       st.session_state['pldinspectdate']  = st.date_input ("Inspection Report Date", setvalue('pldinspectdate'))
+       st.date_input ("Inspection Report Date", setvalue('pldinspectdate'), key='pldinspectdate')
 
       st.multiselect(
          label='Select types of quality inspection attributes',
@@ -392,15 +395,15 @@ with tab6:
      #  test results, test not done, test run less than tolerance of 70% test failed more than 20 or critical test failed is positive
       st.session_state['thepminspectionwarning'] = "Inspection planned or passed." 
       st.session_state['thepminspectionflag'] = 0 
-      if st.session_state['plntests'] == 0 or st.session_state['plntestscritical'] > 0 or (st.session_state['plntestsrun'] == 0 and st.session_state['pldinspectdate'] < daytoday ):
+      if st.session_state.plntests == 0 or st.session_state.plntestscritical > 0 or (st.session_state.plntestsrun == 0 and st.session_state.pldinspectdate < daytoday ):
         st.session_state['thepminspectionwarning'] = "Inspection plan missing or failed." 
         st.session_state['thepminspectionflag'] = 1 
       planquality = f'There are {st.session_state.plntests:.0f}  tests planned. '
       passfail = 0
       passcoverage = 0
-      if int(st.session_state['plntests']) > 0:
-        passfail = int(st.session_state['plntestsfailed'] / st.session_state['plntests'] * 100) 
-        passcoverage = int(st.session_state['plntestsrun'] / st.session_state['plntests'] * 100) 
+      if int(st.session_state.plntests) > 0:
+        passfail = int(st.session_state.plntestsfailed / st.session_state.plntests * 100) 
+        passcoverage = int(st.session_state.plntestsrun / st.session_state.plntests * 100) 
       st.session_state['thepmquality'] = f'{planquality} {st.session_state.plnteam}  members and have collaborated together for {st.session_state.plnteamweeks}  weeks. The inspector team/name is {st.session_state.plpinspectorname}.  The inspection report is planned on {st.session_state.pldinspectdate.strftime("%Y-%m-%d")}  Pass to fail rate is {passfail:.0f}%. Test coverage is {passcoverage}%. The quality report is found here {st.session_state.plsqualityreport} ' 
       st.markdown('##') 
       st.success(st.session_state['thepmquality'])
@@ -417,17 +420,17 @@ with tab3:
       with col5:
        selected_cur2 = st.selectbox("Expense Currency", currchoice.Item, index=setvalue('pllistexpensecurrency')) 
        st.session_state['pllistexpensecurrency'] = currchoice.loc[currchoice.Item == selected_cur2]["Value"].iloc[0]
-      st.session_state['plnbudget'] = st.slider('Budget', min_value=0, max_value=200000, value=setvalue('plnbudget'), step=5000)
-      st.session_state['plnspend'] = st.slider('Spend to Date', min_value=0, max_value=250000, value=setvalue('plnspend'), step=500)
+      st.slider('Budget', min_value=0, max_value=200000, value=setvalue('plnbudget'), step=5000, key='plnbudget')
+      st.slider('Spend to Date', min_value=0, max_value=250000, value=setvalue('plnspend'), step=500, key='plnspend')
       col1, col2, col3, col4 = st.columns(4)
       with col1:
-       st.session_state['plnhours'] = st.slider('Estimated Work Hours', min_value=0, max_value=2000, value=setvalue('plnhours'), step=10)
+       st.slider('Estimated Work Hours', min_value=0, max_value=2000, value=setvalue('plnhours'), step=10, key='plnhours')
       with col2:
-       st.session_state['plnavgrate'] = st.slider('Average Rate', min_value=0, max_value=200, value=setvalue('plnavgrate'), step=5)
+       st.slider('Average Rate', min_value=0, max_value=200, value=setvalue('plnavgrate'), step=5, key='plnavgrate')
       with col3:
-       st.session_state['plnhoursused'] = st.slider('Work Hours Performed', min_value=0, max_value=2000, value=setvalue('plnhoursused'), step=10)
+       st.slider('Work Hours Performed', min_value=0, max_value=2000, value=setvalue('plnhoursused'), step=10, key='plnhoursused')
       with col4:
-       st.session_state['plnhoursconfidence'] = st.slider('Estimate Confidence', min_value=0, max_value=100, value=setvalue('plnhoursconfidence'), step=5)
+       st.slider('Estimate Confidence', min_value=0, max_value=100, value=setvalue('plnhoursconfidence'), step=5, key='plnhoursconficence')
       plbudget = st.session_state['plnbudget'] + (st.session_state['plnhours'] * st.session_state['plnavgrate'])
       plspend = st.session_state['plnspend'] + (st.session_state['plnhoursused'] * st.session_state['plnavgrate'])
       #mcomplete = len(dfm[dfm.Status == 'Complete'])
@@ -438,23 +441,12 @@ with tab3:
        mplanned = 1
       mcomplete = st.session_state.plnhoursused
       st.session_state['thepmdelivery'] = int (mcomplete / mplanned * 100)
-      (evsummary, st.session_state['thepmcpi'], st.session_state['thepmspi'], etc)  = evreport((plbudget + (plbudget *.3)), plbudget, st.session_state['plnhours'], st.session_state['plnavgrate'], "EUR" , st.session_state['pldstartdate'], st.session_state['pldenddate'], plspend, mplanned, mcomplete, daystoend, daystoday, st.session_state['thepmtimecomplete'])
+      (evsummary, st.session_state['thepmcpi'], st.session_state['thepmspi'], etc, st.session_state['thepmevm'])  = evreport((plbudget + (plbudget *.3)), plbudget, st.session_state['plnhours'], st.session_state['plnavgrate'], "EUR" , st.session_state['pldstartdate'], st.session_state['pldenddate'], plspend, mplanned, mcomplete, daystoend, daystoday, st.session_state['thepmtimecomplete'])
       st.session_state['thepmbudgetcomplete'] = 0
       if plbudget > 0:
         st.session_state['thepmbudgetcomplete'] = int(plspend / plbudget * 100)
       st.markdown("{}".format(evsummary), unsafe_allow_html=True)
 
-      st.session_state['thepmevm'] = pd.DataFrame({
-       "Project": [st.session_state.plpname],
-       "BAC": [st.session_state.plpnumber],
-       "AC": [st.session_state.thepmphase],
-       "EV": [st.session_state.thepmphase],
-       "CV": [st.session_state.thepmphase],
-       "CPI": [st.session_state.thepmcpi],
-       "VAC": [st.session_state.thepmphase],
-       "EAC": [st.session_state.thepmphase],
-       "ETC": [etc]
-        })
       st.dataframe(st.session_state.thepmevm)
 
 with tab8:
