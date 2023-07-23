@@ -1,7 +1,7 @@
 """Main module for the streamlit app"""
 import streamlit as st
 from PIL import Image
-from st_pages import Page, Section, show_pages, add_page_title
+#from st_pages import Page, Section, show_pages, add_page_title
 
 primaryColor="#264653"
 backgroundColor="#FFFFFF"
@@ -18,22 +18,22 @@ st.set_page_config(
 
 #import awesome_streamlit as ast
 
-show_pages(
-    [
-        Page("home.py", "Home", "🏠"),
-        Page("pages/plan.py", "Plan", ":spiral_note_pad:"),
-        Page("pages/saveplan.py", "Save", ":left_speech_bubble:"),
-        Section(name="Reports", icon=":books:"),
-        Page("pages/stoplight.py", "StopLight", ":books:"),
-        Page("pages/canvas.py", "Canvas", ":books:"),
-        Page("pages/finalreport.py", "  Final", ":information_source:"),
-        Section(name="Analysis", icon=":books:"),
-        Page("pages/risk.py", "Risk", ":books:"),
-        Page("pages/wbs.py", "WBS", ":books:"),
-        Page("pages/communication.py", "  Comms", ":left_speech_bubble:"),
-        Page("pages/about.py", "About", ":books:", in_section=False),
-    ]
-)
+#show_pages(
+#    [
+#        Page("home.py", "Home", "🏠"),
+#        Page("pages/plan.py", "Plan", ":spiral_note_pad:"),
+#        Page("pages/saveplan.py", "Save", ":left_speech_bubble:"),
+#        Section(name="Reports", icon=":books:"),
+#        Page("pages/stoplight.py", "StopLight", ":books:"),
+#        Page("pages/canvas.py", "Canvas", ":books:"),
+#        Page("pages/finalreport.py", "  Final", ":information_source:"),
+#        Section(name="Analysis", icon=":books:"),
+#        Page("pages/risk.py", "Risk", ":books:"),
+#        Page("pages/wbs.py", "WBS", ":books:"),
+#        Page("pages/communication.py", "  Comms", ":left_speech_bubble:"),
+#        Page("pages/about.py", "About", ":books:", in_section=False),
+#    ]
+#)
 
 def main():
     """Main function of the App"""
