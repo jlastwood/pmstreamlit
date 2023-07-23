@@ -1,15 +1,13 @@
 """Page for viewing the awesome Project risks"""
 import pathlib
 import streamlit as st
-import awesome_streamlit as ast
 import datetime
-from risklist import getrisks
 import pandas as pd
 import altair as alt
-from st_aggrid import AgGrid
-from utilities import reporttitle
-from riskgenerate import calculate_risks_json
 from PIL import Image
+from scripts.risklist import getrisks
+from scripts.thepmutilities import reporttitle
+from scripts.riskgenerate import calculate_risks_json
 
     # set value for score in dictionary for selected risks
     # using timeline decide which risks are closed and probability
@@ -161,20 +159,20 @@ with st.container():
      #st.json(myrisks)
      st.write("Risks after adjustments based on current project status.  Risk probability is increased when trigger is applied.  Risks are closed when timeline is applied."   )
  
-     grid_response = AgGrid(
-        dataframe,
-        editable=False,
-        height=300,
-        filter=True,
-        )
+     #grid_response = AgGrid(
+     #   dataframe,
+     #   editable=False,
+     #   height=300,
+     #   filter=True,
+     #   )
 
      st.write("Risks at start of project.")
-     grid_response = AgGrid(
-        startframe,
-        editable=False,
-        height=300,
-        filter=True,
-        )
+     #grid_response = AgGrid(
+     #   startframe,
+     #   editable=False,
+     #   height=300,
+     #   filter=True,
+     #   )
      #updated = grid_response['data']
      #df = pd.DataFrame(updated)
 

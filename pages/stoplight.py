@@ -2,7 +2,6 @@
 import pathlib
 from PIL import Image
 import streamlit as st
-import awesome_streamlit as ast
 import datetime
 import pandas as pd
 import hydralit_components as hc
@@ -10,7 +9,7 @@ import heapq
 import random
 from collections import Counter
 from pandas import *
-from utilities import currencyrisk, evreport, plancomment, get_table_download_link, reporttitle, reporttitleonly
+from scripts.thepmutilities import currencyrisk, evreport, plancomment, get_table_download_link, reporttitle, reporttitleonly
 from deepmultilingualpunctuation import PunctuationModel
 #from st_radial import st_radial
 from textblob import TextBlob

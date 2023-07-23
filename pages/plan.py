@@ -5,13 +5,12 @@ from math import log
 from datetime import datetime 
 from datetime import timedelta, date
 import pandas as pd
-from utilities import currencyrisk, evreport, plancomment, get_table_download_link, datedifferences
+from scripts.thepmutilities import currencyrisk, evreport, plancomment, get_table_download_link, datedifferences
 import altair as alt
 from st_aggrid import AgGrid
 import io
 import base64
-from askchatgpt import askme
-from streamlit_tags import st_tags
+from scripts.askchatgpt import askme
 
 st.session_state.update(st.session_state)
 
@@ -203,7 +202,7 @@ with tab2:
        st.button("askme for scope options", on_click=on_askme5_clicked)
       with col5:
        st.text_area ("What is out of scope?", value=setvalue('plscopeoutofscope'), key='plscopeoutofscope')
-      st.text_area ("What scope has been added or removed after the start of this project? ", value=setvalue('plscopechange'), key='plscopechange')
+      scopechange = st.text_area ("What scope has been added or removed after the start of this project? ", value=setvalue('plscopechange'), key='plscopechange')
       col4, col5 = st.columns(2)
       with col4:
        st.slider('Features Planned', min_value=0, max_value=20, value=setvalue('plnfeaturesplanned'), help="How many features are planned for this product", key='plnfeaturesplanned')
@@ -211,20 +210,11 @@ with tab2:
        st.session_state['plnfeaturescompleted'] = st.slider('Features Completed', min_value=0, max_value=20, value=setvalue('plnfeaturescompleted'), help="How many features are completed at this report?")
       col4, col5 = st.columns(2)
       with col5:
-       st.session_state['pmlistscopelist'] = st_tags(
-         label='Select non functional attributes', text='Prese enter to add',
-         suggestions=['Security', 'Availability', 'Usability', 'Maintainability','Documentation', 'Accessibility', 'Compliance', 'Robustness', 'Reliablity', 'Performance', 'Localization', 'Compatiblity', 'Portability', 'Scalability', 'None'],
-         value=setvalue('plmlistscopelist'), key='plmlistscopelist', maxtags = 4)
+       st.multiselect( label='Select non functional attributes', help='Prese enter to add', options=['Security', 'Availability', 'Usability', 'Maintainability','Documentation', 'Accessibility', 'Compliance', 'Robustness', 'Reliablity', 'Performance', 'Localization', 'Compatiblity', 'Portability', 'Scalability', 'None'], default=setvalue('plmlistscopelist'), key='plmlistscopelist', max_selections = 4)
       with col4:
-        st_tags(
-         label='Select technical architecture attributes and resources',
-         suggestions=['CMS', 'Web Framework', 'SEO', 'Search', 'Cloud Hosting', 'OnPrem Hosting', 'Automation',  'ERP', 'CDN', 'CI/CD', 'Custom Theme', 'No/Low Code', 'Native Mobile App', 'Process Model', 'Database', 'Testing', 'Decommission', 'Data Migration', 'SAAS', 'None'], value=setvalue('plmlistscopeoption'), key='plmlistscopeoption', maxtags = 4)
-      scopechange = ""
-      if len(st.session_state['plscopechange']) > 5:
-         st.session_state['thepmcopechanged'] = True
-         scopechange = f'There are scope changes. {st.session_state.plscopechange}'
-      else:
-         st.session_state['thepmcopechanged'] = False
+        st.multiselect( label='Select technical architecture attributes and resources', options=['CMS', 'Web Framework', 'SEO', 'Search', 'Cloud Hosting', 'OnPrem Hosting', 'Automation',  'ERP', 'CDN', 'CI/CD', 'Custom Theme', 'No/Low Code', 'Native Mobile App', 'Process Model', 'Database', 'Testing', 'Decommission', 'Data Migration', 'SAAS', 'None'], default=setvalue('plmlistscopeoption'), key='plmlistscopeoption', max_selections = 4)
+      if len(scopechange) > 5:
+         scopechange = f'There are scope changes. {scopechange}'
       st.session_state['thepmplanscope'] = f'Options:  \n\n  {st.session_state.plscopenicetohave}  \n\n Required:  \n  {st.session_state.plscopemusthave}  \n\n  Out of Scope:  {st.session_state.plscopeoutofscope} {scopechange}'
       st.success(st.session_state['thepmplanscope'])
 

@@ -1,19 +1,19 @@
 import streamlit as st
-from st_aggrid import AgGrid
 import streamlit as st
 import pandas as pd 
-import numpy as np
+#import numpy as np
+#np.bool = np.bool_
 import plotly.express as px
 from  PIL import Image
 import io 
 import base64
-from utilities import reporttitle
 import graphviz
 import altair as alt
 from collections import defaultdict
 import matplotlib.pyplot as plt
 import networkx as nx
 from datetime import timedelta, date, time, datetime
+from scripts.thepmutilities import reporttitle
 
 st.session_state.update(st.session_state)
 
@@ -241,7 +241,8 @@ if uploaded_file is not None:
 
 # create a list of the values we want to assign for each condition
     values = ['NotStarted', 'InProgress', 'Completed']
-    Tasks['Status'] = np.select(conditions, values)
+    #Tasks['Status'] = np.select(conditions, values)
+    Tasks['Status'] = ['1','2']
     Tasks["Late"] = ((Tasks["Start"] < pd.to_datetime(todaydate)) &  (Tasks["Status"] != 'Completed'))
 
     st.write("Filter or view activities") 

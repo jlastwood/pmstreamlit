@@ -1,20 +1,33 @@
 """Page for viewing the awesome Project canvas"""
 import pathlib
 import streamlit as st
-#import awesome_streamlit as ast
 import datetime
 import base64
-from utilities import reporttitle
 from PIL import Image
 import textwrap
 #import hydralit_components as hc
 from os.path import join
 #from pyhtml2pdf import converter
 #import pyscreenshot
+from streamlit_elements import elements, mui, html, dashboard
+from scripts.thepmutilities import reporttitle
+
+def make_grid(cols,rows):
+    grid = [0]*cols
+    for i in range(cols):
+        with st.container():
+            grid[i] = st.columns(rows)
+    return grid
+
+# Changes:
+#   Having a nice print and share image or pdf 
+#   streamlit elements better boxes and moving elements
+#   button with three canvas options
+#     https://canvanizer.com/
+#     lean change, customer journey and business model
 
 st.session_state.update(st.session_state)
 
-#  https://canvanizer.com/
 im = Image.open("assets/images/BlueZoneIT.ico")
 st.set_page_config(
       page_title="The PM Monitor Project Canvas",
@@ -64,6 +77,7 @@ def fancy_box(wch_colour_box, wch_colour_font, iconname, sline, i):
                         margin-top: 0;'>{sline}</style></span></p>"""
 
   st.markdown(lnk + htmlstr, unsafe_allow_html=True)
+  return(lnk + htmlstr)
 
 def set_bg_hack(main_bg):
     '''
@@ -110,6 +124,8 @@ def render_svg(svg):
 # set_bg_hack('background.png')
 # initialize session state variables
 
+mygrid = make_grid(5,5)
+
 if 'thepmheader' not in st.session_state:
       st.error('Sorry, plan is missing. Please enter or import a plan')
       st.stop()
@@ -120,6 +136,58 @@ mySep = ","
 reporttitle("", st.session_state['thepmheader'])
 gradiant_header ('#1aa3ff', '#00ff00', '#ffffff', 'Project Canvas')
 
+with elements("dashboard"):
+
+    # You can create a draggable and resizable dashboard using
+    # any element available in Streamlit Elements.
+
+    # First, build a default layout for every element you want to include in your dashboard
+
+    layout = [
+        # Parameters: element_identifier, x_pos, y_pos, width, height, [item properties...]
+        dashboard.Item("item1", 0, 0, 2, 2),
+        dashboard.Item("item2", 2, 0, 2, 2),
+        dashboard.Item("item3", 4, 2, 2, 2)
+        #dashboard.Item("item2", 2, 0, 2, 2, isDraggable=False, moved=False),
+        #dashboard.Item("item3, 0, 2, 1, 1, isResizable=False),
+    ]
+
+    # Next, create a dashboard layout using the 'with' syntax. It takes the layout
+    # as first parameter, plus additional properties you can find in the GitHub links below.
+    msintro = "<br>Which milestones are important? What are the deadlines for ...  ... intermediate results ... important decisions ... visible and measurable successes "
+    milestones = st.session_state['thepmmilestones']
+    #mssummary = "<sup>" + msintro + "</sup><br><br>" + " ".join(milestones.values.tolist())
+    mssummary = "<sup>" + msintro + "</sup><br><br>"
+    mssummary1 = "Milestones:" + msintro
+    # box1 = fancy_box ("120,173,214,.25", "0,0,0,.75", "fas fa-tasks", mssummary, "Milestones")
+    #        "bgcolor": "rgb(120,173,214);opacity:0.3",
+
+    #with dashboard.Grid(layout):
+    #    with mui.Paper("First item", key="item1")
+    #      with mui.Typography:
+    #        html.p("Milestones")
+    #        html.p("mssumary")
+    #    mui.Paper("Second item (cannot drag)", key="item2")
+    #    mui.Paper("Third item (cannot resize)", key="item3")
+
+    # You can nest children using multiple 'with' statements.
+    #
+    # <Paper>
+    #   <Typography>
+    #     <p>Hello world</p>
+    #     <p>Goodbye world</p>
+    #   </Typography>
+    # </Paper>
+
+        #with mui.Paper(key='item2'):
+        #  with mui.Typography:
+        #    html.p(mssummary)
+        #    html.p("Goodbye world")
+
+    # If you want to retrieve updated layout values as the user move or resize dashboard items,
+    # you can pass a callback to the onLayoutChange event parameter.
+
+#mygrid[3][3].write('33')
 cc = st.columns(4)
 with cc[0]:
    p1intro = "<br>Project Introduction"
