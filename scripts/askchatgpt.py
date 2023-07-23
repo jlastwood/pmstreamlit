@@ -1,15 +1,15 @@
 import streamlit as st
-import openai
 import re
 import json
 import requests
+#import openai
 
 # https://huggingface.co/deepset/xlm-roberta-large-squad2
 # https://app.metatext.ai/exploreº
 # https://huggingface.co/spaces/flax-community/Gpt2-bengali/commit/2d7816407af411dce0bbf868a07eb5bd6861f041
 
 model_engine = "text-davinci-003"
-openai.api_key =  st.secrets.openai
+#openai.api_key =  st.secrets.openai
 API_TOKEN = st.secrets.huggingface
 
 max_len=100
