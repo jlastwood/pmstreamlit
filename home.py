@@ -16,9 +16,8 @@ st.set_page_config(
       initial_sidebar_state="collapsed",
 )
 
-import awesome_streamlit as ast
+#import awesome_streamlit as ast
 
-# removed st_pages did not deploy
 show_pages(
     [
         Page("home.py", "Home", "🏠"),
@@ -95,15 +94,15 @@ Closure \n
 #''',
 #unsafe_allow_html=True)
 
-    st.sidebar.write("***About and Contribute***")
-    st.sidebar.write(
-        """
-        This an open source project built using Streamlit, submit comments, questions, as 
-        [issues](https://github.com/jlastwood/pmstreamlit/issues)
-        Idea, Design and Development by Janet. More information at
-        [bluezoneit.com](https://bluezoneit.com).  Feel free to buy me a coffee to support The PM monitor.  [bmc.link](https://bmc.link/thepmmonitor)
-"""
-    )
+#    st.sidebar.write("***About and Contribute***")
+#    st.sidebar.write(
+#        """
+#        This an open source project built using Streamlit, submit comments, questions, as 
+#        [issues](https://github.com/jlastwood/pmstreamlit/issues)
+#        Idea, Design and Development by Janet. More information at
+#        [bluezoneit.com](https://bluezoneit.com).  Feel free to buy me a coffee to support The PM monitor.  [bmc.link](https://bmc.link/thepmmonitor)
+#"""
+#    )
 
 if __name__ == "__main__":
     main()

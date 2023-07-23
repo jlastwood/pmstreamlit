@@ -1,6 +1,0 @@
-Milestone,Description,Status,Effort,Actual,reportdate,Report,plandate,CostPlan,CostActual,MSStart,MSDisplace
-MS1,Plan,Planned,0,0,12/01/22,Start,12/01/22,0,0,1,0;1;-1;0
-MS2,Requirements Accepted,Complete,0,0,12/01/22,Deliverable,12/01/22,0,0,2,"0,1,-1,0"
-MS3,Technical Architecture,In Progress,0,0,12/01/22,Deliverable,12/01/22,0,0,2,"0,1,1,1,2"
-MS4,Build Report,In Progress,0,0,12/01/22,Deliverable,12/01/22,0,0,3,"0,0,1,1"
-MS5,Inspection Report,In Progress,0,0,12/01/22,Deliverable,12/01/22,0,0,4,"0,0,-1"

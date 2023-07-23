@@ -1,21 +1,25 @@
 # Awesome Streamlit [![Awesome](https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg)](https://github.com/MarcSkovMadsen/awesome-streamlit)
 
-## Disclaimer
+## Vision
 
-Vision:  Provide a project manager with a tool and capability to manage project risks, assess risk probabilty and present risks that need to be addressed.  
+Provide a project manager with a tool and capability to manage project risks, assess risk probabilty and present risks that need to be addressed and from a detailed plan be able to output dynamic reports for sharing with the community.  
 
 
 ## Introduction
 
 Project risk management begins with a plan, outlining the benefits, costs, resources and objectives of the project.  The plan and key performance indicators such as milestone completion, resource sentiment and engagement are used to highlight risks.  
 
+## Project Charter and Final report
+
+The project charter is a document mostly text based, that outlines the goals, objectives, how the project will be monitored, and defines what success looks like. 
+
 ## Project Canvas
 
-The project canvas is a visualization tool used to describe the project goals, benefits and scope to the stakeholders.  
+The project canvas is a visualization tool used to describe the project goals, benefits and scope to the stakeholders and team. There are three layouts, business view, team view and  
 
 ## Risk template and automated probability
 
-Many project managers have difficulty identifying risks, convincing their stakeholders that they should identify risks in their projects early and have a strategy to address them.  Projects are about taking risks to achieve a new state, product, process or goal.  
+Many project managers have difficulty identifying risks, convincing their stakeholders that they should identify risks in their projects early and have a strategy to address them.  Projects are about taking risks to achieve a new state, product, process or goal.  The PM monitor has a list of 130 possible risks.  Triggers will raise or lower probability of the monitored risks. 
 
 ## Earned Value Analysis
 
