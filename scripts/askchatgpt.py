@@ -3,10 +3,25 @@ import re
 import json
 import requests
 #import openai
+from transformers import AutoModelForQuestionAnswering, AutoTokenizer, pipeline
+from langchain.utilities import WikipediaAPIWrapper
+import wikipedia
 
 # https://huggingface.co/deepset/xlm-roberta-large-squad2
 # https://app.metatext.ai/exploreº
 # https://huggingface.co/spaces/flax-community/Gpt2-bengali/commit/2d7816407af411dce0bbf868a07eb5bd6861f041
+
+# sentence transformer
+# https://huggingface.co/sentence-transformers/multi-qa-distilbert-cos-v1
+
+wikipedia = WikipediaAPIWrapper()
+# Load the question answering model and tokenizer
+#model_name = "deepset/roberta-base-squad2"
+model_name = "deepset/gbert-large"
+model = AutoModelForQuestionAnswering.from_pretrained(model_name)
+tokenizer = AutoTokenizer.from_pretrained(model_name)
+
+nlp = pipeline('question-answering', model=model, tokenizer=tokenizer)
 
 model_engine = "text-davinci-003"
 #openai.api_key =  st.secrets.openai
@@ -29,6 +44,7 @@ def query(payload):
 #    response = requests.request("POST", MODELS[model_name]["url"], headers=headers, data=data)
     st.write(response)
     return json.loads(response.content.decode("utf-8"))
+
 def process(text: str,
             model_name: str,
             max_len: int,
@@ -39,7 +55,7 @@ def process(text: str,
     payload = {
         "inputs": {
             "question": text,
-            "context": "A Project management plan.",
+            "context": "Project Management Planning",
         },
         "parameters": {
             "max_new_tokens": max_len,
@@ -55,8 +71,32 @@ def process(text: str,
     st.write(payload)
     return query(payload)
 
-def askme(text):
+def askme(question_input):
+    # Extract keywords from the question input
+    contextlist = "Project Plan"
+    keywords = contextlist.split()
 
+    # Fetch context information using the Wikipedia toolkit based on keywords
+    wikipedia = WikipediaAPIWrapper()
+    context_input = wikipedia.run(' '.join(keywords))
+
+    # Prepare the question and context for question answering
+    QA_input = {
+        'question': question_input,
+        'context': context_input
+    }
+
+    # Get the answer using the question answering pipeline
+    res = nlp(QA_input)
+
+    # Display the answer
+    # st.write("Question:", question_input)
+    # st.write("Answer:", res['answer'])
+    # st.write("Score:", res['score'])
+    return(res['answer'])
+    
+
+def askmehf(text):
   answer=""
   result = process(text=text,
                          model_name=model_name,
@@ -77,14 +117,15 @@ def askme(text):
                 else:
                   answer = result[0]["generated_text"]
                   st.write(result.replace("\n", "  \n"))
+#  this is not working
   return(result)
-#  return(result[answer])
 
 #def askme(question):
 #    '''
 #    This function gets the question label, the project name and returns response
 #    This function uses the OpenAI API to generate a response to the given 
 #    user_query using the ChatGPT model
+#    disabled after free 3 month trial ended
 #    '''
 #    response="Open AI answer"
 #    st.write(question)
