@@ -14,3 +14,9 @@ Python Streamlit app with input form, analytics, and output reports
 - [ ] risk - set impact, prioirity and status based on events, add reports and outputs, outputs go to stoplight report
 - [ ] tasks - read task list from CSV, calculate critical path, late tasks, show resource utilization, and generate reports and output for stoplight report
 - [ ] communication - read a communication channel source, calculate sentiment, engagement and topics
+
+
+- .vscode cleanup
+    - I got rid of extraneous files
+    - I added a launch app config
+- got rid of a few other extraneous files
