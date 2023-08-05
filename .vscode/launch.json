@@ -5,11 +5,15 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Launch App",
+            "name": "launch pmstreamlit",
             "type": "python",
             "request": "launch",
-            "program": "home.py",
-            "console": "integratedTerminal"
+            "module": "streamlit",
+            "args": [
+                "run",
+                "home.py"
+            ],
+            "justMyCode": false
         },
         {
             "name": "Python: Current File (Integrated Terminal)",
