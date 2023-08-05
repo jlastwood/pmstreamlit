@@ -21,3 +21,9 @@ Python Streamlit app with input form, analytics, and output reports
     - I got rid of extraneous files
     - I added a launch app config
 - got rid of a few other extraneous files
+
+- cleanup
+    - got rid of activate folder
+    - got rid of package folder 
+    - got rid of src folder 
+    - got rid of pytest.ini
