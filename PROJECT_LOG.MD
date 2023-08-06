@@ -5,8 +5,14 @@ Python Streamlit app with input form, analytics, and output reports
     - [X] upgrade python modules
         - [X] identified and updated core modules and dependencies
         - [X] still need to update or remove mystery dependencies (they have to do with scripts)
+        - [ ] make notes on extra dependencies
     - [ ] fix bugs 
-        - [ ] on About > AttributeError: st.session_state has no attribute "plpname"
+        - [ ] plan
+            - [ ] st.secrets not working because no toml file. 
+                I guess we can have one that is just gitignored
+                I still have to figure out what is supposed to go in there. 
+        - [ ] About 
+            - [ ] AttributeError: st.session_state has no attribute "plpname"
     - [ ] deploy to streamlit << I have no idea how you are deploying this :smile:
 - [ ] landing page - add a slider, clean up menu options
 - [ ] input form - fix bugs, cleanup code
@@ -23,6 +29,7 @@ Python Streamlit app with input form, analytics, and output reports
     - .vscode
         - I got rid of extraneous files
         - I added a launch app config
+        - got rid of unnecessary launch configs
     - got rid of a few other extraneous files
         - hello_streamlit.py is a tutorial script
         - got rid of discourse_1436.py because its just a selectbox example
@@ -43,3 +50,12 @@ Python Streamlit app with input form, analytics, and output reports
         - got rid of duplicate and unused imports
 
     - created an experiments folder in scripts where I put stuff that we don't use but might still be cool to look at later
+
+    - got rid of pages.toml because I don't think its doing anything
+
+    - stuff I gitignored
+        - secrets.toml
+        - credentials.local.toml
+        - credentials.prod.toml
+        - config.local.toml
+        - config.prod.toml

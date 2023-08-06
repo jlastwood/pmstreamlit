@@ -1,3 +1,10 @@
+# streamlit config
+.streamlit/secrets.toml
+.streamlit/credentials.local.toml
+.streamlit/credentials.prod.toml
+.streamlit/config.local.toml
+.streamlit/config.prod.toml
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -24,7 +31,6 @@ wheels/
 .installed.cfg
 *.egg
 MANIFEST
-.streamlit/secrets.toml
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
