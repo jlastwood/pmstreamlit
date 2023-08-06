@@ -3,6 +3,8 @@
 Python Streamlit app with input form, analytics, and output reports
 - [ ] upgrade version of python and modules, bug fixes and update git and deploy to streamlit
     - [ ] upgrade python modules
+        - [X] identified and updated core modules and dependencies
+        - [ ] still need to update or remove mystery dependencies (they have to do with scripts)
     - [ ] fix bugs 
         - [ ] on About > AttributeError: st.session_state has no attribute "plpname"
     - [ ] deploy to streamlit 
@@ -29,4 +31,3 @@ Python Streamlit app with input form, analytics, and output reports
     - got rid of pytest.ini
     - got rid of scripts\app_dev_vscode (my launch.json does this - you can just put breakpoints in there)
     - got rid of run_awesome_stremlit_with_ping.sh
-    
