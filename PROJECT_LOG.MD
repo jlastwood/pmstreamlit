@@ -1,5 +1,5 @@
 # General TODO 
-[ ] Python Streamlit app with input form, analytics, and output reports
+- [ ] Python Streamlit app with input form, analytics, and output reports
 - [ ] upgrade version of python and modules, bug fixes and update git and deploy to streamlit
     - [X] upgrade python modules
         - [X] identified and updated core modules and dependencies
