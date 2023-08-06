@@ -6,6 +6,14 @@ textblob==0.17.1
 hydralit-components==1.0.10
 streamlit-aggrid==0.3.4.post3
 streamlit-elements==0.1.0
+# scripts dependencies
+graphviz==0.20.1
+matplotlib==3.7.2
+networkx==3.1
+wordcloud==1.9.2
+youtube-transcript-api==0.6.1
+deepmultilingualpunctuation==1.0.1
+transformers==4.31.0
 # dependencies
 aiohttp==3.8.5
 aiosignal==1.3.1      
@@ -44,8 +52,6 @@ numpy==1.25.2
 openai==0.27.8
 packaging==23.1
 pandas==2.0.3
-Pillow==9.5.0
-plotly==5.15.0
 protobuf==4.23.4
 pyarrow==12.0.1
 pydeck==0.8.0
@@ -81,31 +87,16 @@ validators==0.20.0
 watchdog==3.0.0
 yarl==1.9.2
 zipp==3.16.2
-# mystery dependencies (probably for scripts)
-openai==0.27.8
-huggingface-hub==0.16.4
-backports.zoneinfo==0.2.1
 contourpy==1.1.0
 cycler==0.11.0
-deepmultilingualpunctuation==1.0.1
 fonttools==4.41.1
-graphviz==0.20.1
-importlib-resources==5.12.0
 kiwisolver==1.4.4
-matplotlib==3.7.2
 mpmath==1.3.0
-networkx==3.1
-pkgutil_resolve_name==1.3.10
-py4j==0.10.9.7
 pyparsing==3.0.9
-pyrsistent==0.19.3
-pyspark==3.4.0
 safetensors==0.3.1
-st-pages==0.4.1
 sympy==1.12
 tokenizers==0.13.3
 torch==2.0.1
-transformers==4.31.0
-wordcloud==1.9.2
-youtube-transcript-api==0.6.1
+
+
 

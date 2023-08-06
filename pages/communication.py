@@ -1,11 +1,7 @@
 """Page for viewing the awesome Project slackmessages"""
-import pathlib
 from PIL import Image
 import streamlit as st
-import datetime
-from scripts.risklist import getrisks
 import pandas as pd
-import altair as alt
 #from slack_message import slack_messages_pm
 from textblob import TextBlob
 from nltk.tokenize import sent_tokenize

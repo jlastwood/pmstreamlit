@@ -1,7 +1,5 @@
 """Page for viewing the awesome Project risks"""
-import pathlib
 import streamlit as st
-import datetime
 import pandas as pd
 import altair as alt
 from PIL import Image
