@@ -15,7 +15,6 @@
 - [ ] landing page - add a slider, clean up menu options
 ## Plan
 - [ ] input form - fix bugs, cleanup code
-
 ## Save Plan
 - [ ] tasks - read task list from CSV, calculate critical path, late tasks, show resource utilization, 
 ## Charter
