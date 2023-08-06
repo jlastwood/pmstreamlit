@@ -2,12 +2,12 @@
 
 Python Streamlit app with input form, analytics, and output reports
 - [ ] upgrade version of python and modules, bug fixes and update git and deploy to streamlit
-    - [ ] upgrade python modules
+    - [X] upgrade python modules
         - [X] identified and updated core modules and dependencies
-        - [ ] still need to update or remove mystery dependencies (they have to do with scripts)
+        - [X] still need to update or remove mystery dependencies (they have to do with scripts)
     - [ ] fix bugs 
         - [ ] on About > AttributeError: st.session_state has no attribute "plpname"
-    - [ ] deploy to streamlit 
+    - [ ] deploy to streamlit << I have no idea how you are deploying this :smile:
 - [ ] landing page - add a slider, clean up menu options
 - [ ] input form - fix bugs, cleanup code
 - [ ] utilities - refactoring, bug fixes and cleanup code
