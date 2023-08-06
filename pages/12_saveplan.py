@@ -1,12 +1,8 @@
 import streamlit as st
 from PIL import Image
-import pathlib
-from math import log
 from datetime import datetime 
-from datetime import timedelta, date
+from datetime import date
 import pandas as pd
-import io
-import base64
 
 st.session_state.update(st.session_state)
 

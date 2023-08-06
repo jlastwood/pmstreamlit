@@ -19,15 +19,27 @@ Python Streamlit app with input form, analytics, and output reports
 - [ ] communication - read a communication channel source, calculate sentiment, engagement and topics
 
 # other stuff I did
-- .vscode cleanup
-    - I got rid of extraneous files
-    - I added a launch app config
-- got rid of a few other extraneous files
-
 - cleanup
-    - got rid of activate folder
-    - got rid of package folder 
-    - got rid of src folder 
-    - got rid of pytest.ini
+    - .vscode
+        - I got rid of extraneous files
+        - I added a launch app config
+    - got rid of a few other extraneous files
+        - hello_streamlit.py is a tutorial script
+        - got rid of discourse_1436.py because its just a selectbox example
+        - got rid of deliverycp.py because it looks like an unfinished experiment with pandas that doesn't have much to do with this project (easy to reproduce if it matters)
+    - got rid of activate folder (this is all in the virtual env)
     - got rid of scripts\app_dev_vscode (my launch.json does this - you can just put breakpoints in there)
-    - got rid of run_awesome_stremlit_with_ping.sh
+    - got rid of config files and the pylint file
+    - awesome streamlit stuff removal
+        - got rid of package folder 
+        - got rid of src folder 
+        - got rid of pytest.ini
+        - got rid of run_awesome_stremlit_with_ping.sh
+        - got rid of test_runner_app.py because its for awesome streamlit 
+        - got rid of extract_resources_markdown.py
+        - got rid of ping_awesome_streamlit.py
+
+    - pages
+        - got rid of duplicate and unused imports
+
+    - created an experiments folder in scripts where I put stuff that we don't use but might still be cool to look at later
