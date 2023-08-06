@@ -27,3 +27,6 @@ Python Streamlit app with input form, analytics, and output reports
     - got rid of package folder 
     - got rid of src folder 
     - got rid of pytest.ini
+    - got rid of scripts\app_dev_vscode (my launch.json does this - you can just put breakpoints in there)
+    - got rid of run_awesome_stremlit_with_ping.sh
+    
