@@ -1,30 +1,45 @@
-# TODO 
-
-Python Streamlit app with input form, analytics, and output reports
+# General TODO 
+[ ] Python Streamlit app with input form, analytics, and output reports
 - [ ] upgrade version of python and modules, bug fixes and update git and deploy to streamlit
     - [X] upgrade python modules
         - [X] identified and updated core modules and dependencies
         - [X] still need to update or remove mystery dependencies (they have to do with scripts)
         - [ ] make notes on extra dependencies
     - [ ] fix bugs 
-        - [ ] plan
-            - [ ] st.secrets not working because no toml file. 
-                I guess we can have one that is just gitignored
-                I still have to figure out what is supposed to go in there. 
-        - [ ] About 
-            - [ ] AttributeError: st.session_state has no attribute "plpname"
+        - risk
+            
     - [ ] deploy to streamlit << I have no idea how you are deploying this :smile:
-- [ ] landing page - add a slider, clean up menu options
-- [ ] input form - fix bugs, cleanup code
 - [ ] utilities - refactoring, bug fixes and cleanup code
-- [ ] canvas output page, make three templates like canvanizer, with print to PDF
-- [ ] stoplight report - add graphs, outputs and print to PDF
-- [ ] add Q&A question/answer lookup using huggingface model
-- [ ] risk - set impact, prioirity and status based on events, add reports and outputs, outputs go to stoplight report
-- [ ] tasks - read task list from CSV, calculate critical path, late tasks, show resource utilization, and generate reports and output for stoplight report
-- [ ] communication - read a communication channel source, calculate sentiment, engagement and topics
+# Pages TODO
+## Home 
+- [ ] landing page - add a slider, clean up menu options
+## Plan
+- [ ] input form - fix bugs, cleanup code
 
-# other stuff I did
+## Save Plan
+- [ ] tasks - read task list from CSV, calculate critical path, late tasks, show resource utilization, 
+## Charter
+## Canvas
+- [ ] canvas output page, make three templates like canvanizer, with print to PDF
+## StopLight
+- [ ] stoplight report - add graphs, outputs and print to PDF
+## About
+## Communication
+- [ ] communication - read a communication channel source, calculate sentiment, engagement and topics
+## Risk
+- [ ] risk - set impact, prioirity and status based on events, add reports and outputs, outputs go to stoplight report
+- [ ] bugs
+    - [ ] AttributeError: st.session_state has no attribute "plnlistphase"
+## WBS
+
+
+# New Features TODO
+
+- [ ] add Q&A question/answer lookup using huggingface model
+- [ ] add a pert diagram somewhere
+
+
+### other stuff I did
 - cleanup
     - .vscode
         - I got rid of extraneous files
@@ -49,6 +64,7 @@ Python Streamlit app with input form, analytics, and output reports
     - pages
         - got rid of duplicate and unused imports
         - cleaned up home page
+        - renamed pages
 
     - created an experiments folder in scripts where I put stuff that we don't use but might still be cool to look at later
 
@@ -60,3 +76,6 @@ Python Streamlit app with input form, analytics, and output reports
         - credentials.prod.toml
         - config.local.toml
         - config.prod.toml
+
+    - renamed pages files to fit with multipage app practices
+    - added a project resources md file for useful project reference links
