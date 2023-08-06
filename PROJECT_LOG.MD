@@ -48,6 +48,7 @@ Python Streamlit app with input form, analytics, and output reports
 
     - pages
         - got rid of duplicate and unused imports
+        - cleaned up home page
 
     - created an experiments folder in scripts where I put stuff that we don't use but might still be cool to look at later
 
