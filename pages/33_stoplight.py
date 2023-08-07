@@ -1,23 +1,18 @@
 """Page for nlp of the project report"""
-import pathlib
 from PIL import Image
 import streamlit as st
 import datetime
-import pandas as pd
 import hydralit_components as hc
 import heapq
-import random
-from collections import Counter
-from pandas import *
-from scripts.thepmutilities import currencyrisk, evreport, plancomment, get_table_download_link, reporttitle, reporttitleonly
+from pandas import * # bad janet! bad! don't import * 
+from scripts.thepmutilities import reporttitle
 from deepmultilingualpunctuation import PunctuationModel
 #from st_radial import st_radial
 from textblob import TextBlob
 import nltk
-from nltk.tokenize import sent_tokenize, word_tokenize
+from nltk.tokenize import word_tokenize
 from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api.formatters import TextFormatter
-from youtube_transcript_api.formatters import PrettyPrintFormatter 
 from wordcloud import WordCloud, STOPWORDS
 import matplotlib.pyplot as plt
 

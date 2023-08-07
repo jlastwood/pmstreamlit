@@ -1,15 +1,9 @@
 """Page for viewing the awesome Project canvas"""
 import pathlib
 import streamlit as st
-import datetime
 import base64
 from PIL import Image
-import textwrap
-#import hydralit_components as hc
-from os.path import join
-#from pyhtml2pdf import converter
-#import pyscreenshot
-from streamlit_elements import elements, mui, html, dashboard
+from streamlit_elements import elements, dashboard
 from scripts.thepmutilities import reporttitle
 
 def make_grid(cols,rows):
