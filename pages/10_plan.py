@@ -1,15 +1,10 @@
 import streamlit as st
 from PIL import Image
-import pathlib
-from math import log
-from datetime import datetime 
 from datetime import timedelta, date
 import pandas as pd
-from scripts.thepmutilities import currencyrisk, evreport, plancomment, get_table_download_link, datedifferences
+from scripts.thepmutilities import evreport, plancomment
 import altair as alt
 from st_aggrid import AgGrid
-import io
-import base64
 from scripts.askchatgpt import askme
 
 st.session_state.update(st.session_state)
