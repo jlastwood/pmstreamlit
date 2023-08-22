@@ -117,7 +117,30 @@ def render_svg(svg):
 
 # set_bg_hack('background.png')
 # initialize session state variables
+st.markdown("""
+    <style>
+        @media print {
+            /* Hide the Streamlit menu and other elements you don't want to print */
+            [data-testid="stSidebar"] {
+                display: none !important;
+            }
 
+            .main {
+                max-width: 8in !important;
+            }
+
+            span, p, div, textarea, input {
+                color: #000 !important;
+            }
+            
+            .stMarkdown, .stCodeBlock, [data-testid="caption"], [data-testid="stMarkdownContainer"], [data-testid="stImage"], [data-baseweb="textarea"] {
+                max-width: 8in !important;
+                word-break: break-all;
+            }
+
+        }
+    </style>
+""", unsafe_allow_html=True)
 mygrid = make_grid(5,5)
 
 if 'thepmheader' not in st.session_state:
