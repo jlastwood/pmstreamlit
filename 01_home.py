@@ -11,6 +11,33 @@ st.set_page_config(
 )    
 st.session_state.update(st.session_state)
 ip = Image.open("assets/images/HomeImage.jpg")
+
+st.markdown("""
+    <style>
+        @media print {
+            /* Hide the Streamlit menu and other elements you don't want to print */
+            [data-testid="stSidebar"] {
+                display: none !important;
+            }
+
+            .main {
+                max-width: 8in !important;
+            }
+
+            span, p, div, textarea, input {
+                color: #000 !important;
+            }
+            
+            .stMarkdown, .stCodeBlock, [data-testid="caption"], [data-testid="stMarkdownContainer"], [data-testid="stImage"], [data-baseweb="textarea"] {
+                max-width: 8in !important;
+                word-break: break-all;
+            }
+
+        }
+    </style>
+""", unsafe_allow_html=True)
+
+
 st.header("6 Steps to Better Project Planning and Controlling")
 st.markdown("---")
 st.write("Fill in the project plan with Askme assistance, use NLP for sentiment and engagement analysis of communication channels and reports, use target activity plan analysis report for analysis of tasks and activities and finally a comprehensive list of possible risks classified by phase and probability set by triggers will speed up issue identification.")

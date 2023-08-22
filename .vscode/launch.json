@@ -11,7 +11,7 @@
             "module": "streamlit",
             "args": [
                 "run",
-                "home.py"
+                "01_home.py"
             ],
             "justMyCode": false
         },
