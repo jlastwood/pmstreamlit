@@ -16,31 +16,36 @@ st.markdown("""
     <style>
         @media print {
             /* Hide the Streamlit menu and other elements you don't want to print */
-            [data-testid="stSidebar"] {
-                display: none !important;
-            }
-
+            [data-testid="stSidebar"] { display: none !important; }
+            [data-testid="stHeader"] { display: none !important; }
+            [data-testid="stDecoration"] { display: none !important; }
+            [data-testid="stToolbar"] { display: none !important; }
+            .css-1iyw2u1 { display: none; }
+            .css-15yd9pf { display: none; }
+            .css-fblp2m { display: none; }
             .main {
-                max-width: 8in !important;
+                max-width: 12in !important;
+                margin: 25mm 25mm 25mm 25mm;
             }
 
             span, p, div, textarea, input {
-                color: #000 !important;
-            }
-            
-            .stMarkdown, .stCodeBlock, [data-testid="caption"], [data-testid="stMarkdownContainer"], [data-testid="stImage"], [data-baseweb="textarea"] {
-                max-width: 8in !important;
-                word-break: break-all;
+                color: #textcolor !important;
             }
 
+            .stMarkdown, .stCodeBlock, [data-testid="caption"], [data-testid="stMarkdownContainer"], [data-testid="stImage"], [data-baseweb="textarea"] {
+                max-width: 12in !important;
+                word-break: break-all;
+            }
+            #MainMenu{visibility: hidden;} footer{visibility: hidden;}
+            #root>div:nth-child(1)>div>div>div>div>section>div{padding-top: .2rem;
         }
     </style>
 """, unsafe_allow_html=True)
 
 
-st.header("6 Steps to Better Project Planning and Controlling")
+st.header("6 Steps to Project Planning and Controlling")
 st.markdown("---")
-st.write("Fill in the project plan with Askme assistance, use NLP for sentiment and engagement analysis of communication channels and reports, use target activity plan analysis report for analysis of tasks and activities and finally a comprehensive list of possible risks classified by phase and probability set by triggers will speed up issue identification.")
+st.write("Create a comprehensive project plan with AI (askme) assistance, use built in analysis for sentiment and engagement analysis of communication channels and reports, use target activity plan analysis report for analysis of tasks and activities and finally using a comprehensive list of possible risks classified by phase and probability enables consistent and reliable  issue identification.")
 st.markdown("---")
 
 colr = st.columns(2)
@@ -52,8 +57,10 @@ with colr[0]:
             • Create a plan
             • Define resources and activities
             • Define milestones 
-            • Review the goals and plan in the canvas report with stakeholders and team kickoff
-            • Know the risks, challenges and opportunities and plan mitigation 
+            • Review the goals and charter
+            • Share canvas and schedule team kickoff 
+            • Review risks, challenges and opportunities 
+            • Create task list with team
         """)
 with colr[1]:
     st.image(ip, caption="Step 1 - The PM Monitor Initiation, Planning, Set Goals and Objectives")
@@ -79,8 +86,10 @@ with colr[0]:
         """
         Closure \n
             • Gather feedback
-            • Update plan 
+            • Create a report summary
+            • Update plan and charter and publish
             • Generate final stoplight report
+            • Thank the team and release
         """)
 with colr[1]:
     st.image(ip, caption='Step 3 - The PM Monitor Closing')

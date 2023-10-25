@@ -142,7 +142,7 @@ def plancomment(dateStart, dateEnd, daystoday, daystoend, timecomplete, coreteam
    weekstotal = (daystoday / 7) 
    weeksend = int(daystoend / 7) 
    cadnumber = cadence
-   commentnote = f'Project {projectname} ({projectid}) sponsored by {pmname} is a {pmclass} project.  The project is currently in the {prphase} phase with planned completion in {weeksend:.0f} week(s). Status reports are updated every {cadnumber} week(s).  \n  \n   The benefits are  \n  {benefits}.  \n   \n  '
+   commentnote = f'Project {projectname} ({projectid}) sponsored by {pmname} is a {pmclass} project.  The project is currently in the {prphase} phase with planned completion in {weeksend:.0f} week(s) on {dateEnd} . Project initiation is {dateStart}. Status reports are updated every {cadnumber} week(s).  \n  \n   The benefits are  \n  {benefits}.  \n   \n  '
    return(commentnote)
 
 # weather events
@@ -175,11 +175,14 @@ def reporttitle(reportname, reporttable):
             </style>
             """
   st.markdown(hide_table_row_index, unsafe_allow_html=True)
-  st.markdown("<h3 style='text-align: center; vertical-align: bottom; color: white; background: grey; '>The PM Monitor</h3><br/>", unsafe_allow_html=True)
+  st.markdown("<h3 style='text-align: center; vertical-align: bottom; color: white; background: gray; '>The PM Monitor</h3><br/>", unsafe_allow_html=True)
   st.table(reporttable)
 
+def gradiant_header(color1, color2, color3, content):
+  st.markdown(f'<p style="text-align:center;background-image: linear-gradient(to right,{color1}, {color2});color:{color3};font-size:24px;border-radius:5px;">{content}</p>', unsafe_allow_html=True)
+
 def reporttitleonly(reportname):
-  st.markdown("<h3 style='text-align: center; vertical-align: bottom; color: white; background: grey; '>The PM Monitor</h3><br/>", unsafe_allow_html=True)
+  st.markdown("<h3 style='text-align: center; vertical-align: bottom; color: white; background: gray; '>The PM Monitor</h3><br/>", unsafe_allow_html=True)
 # Inject CSS with Markdown
 #  col1, col2, col3  = st.columns(3)
 #  with col1:

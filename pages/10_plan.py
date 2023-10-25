@@ -5,14 +5,47 @@ import pandas as pd
 from scripts.thepmutilities import evreport, plancomment
 import altair as alt
 from st_aggrid import AgGrid
-from scripts.askchatgpt import askme
+#from scripts.askchatgpt import askme
+from hugchat import hugchat
+from hugchat.login import Login
 
 st.session_state.update(st.session_state)
+
+hf_email = st.secrets['EMAIL']
+hf_pass = st.secrets['PASS']
+# Log in to huggingface and grant authorization to huggingchat
+sign = Login(hf_email, hf_pass)
+cookies = sign.login()
+
+# Save cookies to the local directory
+cookie_path_dir = "./cookies_snapshot"
+sign.saveCookiesToDir(cookie_path_dir)
+chatbot = hugchat.ChatBot(cookies=cookies.get_dict())
+
+# Load cookies when you restart your program:
+# sign = login(email, None)
+# cookies = sign.loadCookiesFromDir(cookie_path_dir) # This will detect if the JSON file exists, return cookies if it does and raise an Exception if it's not.
+
+# Create a ChatBot
+
+def askme(prompt_input):
+    # Hugging Face Login
+    #sign = Login(hf_email, hf_pass)
+    #cookies = sign.login()
+    # Create ChatBot                        
+    # chatbot = hugchat.ChatBot(cookies=cookies.get_dict())
+    #message = chatbot.query(prompt_input, web_search=True)
+    message = chatbot.query(prompt_input)
+    #message = {"role": "assistant", "content": chatbot.query(prompt_input)}
+    st.write(message)
+    st.write(message.text)
+    return message.text
+    # return chatbot.chat(prompt_input)
 
 def setvalue(var):
     if var.startswith('pllist'):
         if var in st.session_state:
-          st.write("insetvalue", var, st.session_state[var])
+          #st.write("insetvalue", var, st.session_state[var])
           if st.session_state[var] == "":
            return 0
           else:
@@ -29,7 +62,8 @@ def setvalue(var):
 
 # setup the questions for ask me
 def on_askme1_clicked():
-      st.session_state.plspurpose = askme("What is the purpose of " + st.session_state.plpname + " project?")
+      st.session_state.plspurpose = askme("What is the purpose of a " + st.session_state.plpname + " project?")
+      #st.write(st.session_state.plspurpose)
 
 def on_askme2_clicked():
       st.session_state.plsbenefits = askme("What are three benefits of " + st.session_state.plpname + " project?")
@@ -104,7 +138,7 @@ st.markdown("""
 
 st.markdown("<h3 style='text-align: center; color: white; background: grey;'>The PM Monitor</h3>", unsafe_allow_html=True)
 
-tab0, tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs(["Start", "Info", "Scope", "Cost", "Schedule", "Team", "Quality", "Constraints", "ROI"])
+tab0, tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9 = st.tabs(["Start", "Info", "Scope", "Cost", "Schedule", "Team", "Quality", "Constraints", "ROI", "Chat"])
 #with st.form(key="pmmonitorplan", clear_on_submit=False):
 
      ##  Introduction to Planning
@@ -149,15 +183,18 @@ with tab1:
        st.text_input ("Project Name", help="A short project name, use key words to describe the project. ", max_chars=50, key='plpname', value=setvalue('plpname'))
       col4, col5 = st.columns(2)
       with col4:
-       st.text_input ("Project Manager Name", max_chars=30, value=setvalue('plpmname'), key='plpmname')
+       st.text_input ("Project Manager Identification", max_chars=30, value=setvalue('plpmname'), key='plpmname')
       with col5:
-       st.text_input ("Product Owner or Sponsor Name", max_chars=30, value=setvalue('plspname'), key='plspname')
+       st.text_input ("Product Owner or Sponsor Identification", max_chars=30, value=setvalue('plspname'), key='plspname')
       st.text_area ("What is the purpose of this project (askme)?", value=setvalue('plspurpose'), key='plspurpose')
-      st.button("askme for a purpose", on_click=on_askme1_clicked)
+      if st.session_state.plpname != "None":
+        st.button("askme for a purpose", on_click=on_askme1_clicked) 
       st.text_area ("What are three benefits of this project (askme)?", value=setvalue('plsbenefits'), key='plsbenefits')
-      st.button("askme for some benefits", on_click=on_askme2_clicked)
+      if st.session_state.plpname != "None":
+        st.button("askme for some benefits", on_click=on_askme2_clicked)
       st.text_area ("Are there comparable benchmarks or services for this project (askme)?", value=setvalue('plsbenchmarks'), key='plsbenchmarks')
-      st.button("askme for benchmarks", on_click=on_askme3_clicked)
+      if st.session_state.plpname != "None":
+        st.button("askme for benchmarks", on_click=on_askme3_clicked)
      # set some dates
       week  = timedelta(days = 7)
       daytoday = date.today()
@@ -198,7 +235,7 @@ with tab1:
        #st.session_state.pllisttype = classchoice.loc[classchoice.Item == selected_class]["Value"].iloc[0]
 
      ##  output information and create header block
-       st.session_state['thepmplannote'] = plancomment(st.session_state['pldstartdate'], st.session_state['pldenddate'], daystoday, daystoend, st.session_state['thepmtimecomplete'], 3, st.session_state['plpnumber'], st.session_state['plpname'], st.session_state['plsbenefits'], st.session_state['plncadence'], st.session_state['thepmphase'], st.session_state['plspname'], selected_class)
+       st.session_state['thepmplannote'] = plancomment(st.session_state['pldstartdate'], st.session_state['pldenddate'], daystoday, daystoend, st.session_state['thepmtimecomplete'], 3, st.session_state['plpnumber'], st.session_state['plpname'], st.session_state['plsbenefits'], st.session_state['plncadence'], phaselist[st.session_state['thepmphase']], st.session_state['plspname'], classlist[selected_class])
       st.success(st.session_state['thepmplannote'])
 
       ndays = st.session_state['plncadence']*7

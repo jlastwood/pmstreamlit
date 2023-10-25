@@ -4,7 +4,7 @@ import streamlit as st
 import base64
 from PIL import Image
 from streamlit_elements import elements, dashboard
-from scripts.thepmutilities import reporttitle
+from scripts.thepmutilities import reporttitle, gradiant_header, reporttitleonly
 
 def make_grid(cols,rows):
     grid = [0]*cols
@@ -30,12 +30,44 @@ st.set_page_config(
       initial_sidebar_state="collapsed",
 )
 
-#no_sidebar_style = """
-#    <style>
-#        div[data-testid="stSidebarNav"] {display: none;}
-#    </style>
-#"""
-#st.markdown(no_sidebar_style, unsafe_allow_html=True)
+hide_decoration_bar_style = '''
+    <style>
+        header {visibility: hidden;}
+    </style>
+'''
+st.markdown(hide_decoration_bar_style, unsafe_allow_html=True)
+
+st.markdown("""
+    <style>
+        @media print {
+            @page {size: A4 landscape; margin: 27mm 16mm 27mm 16mm; }
+            body { margin: 0; padding: 0; }
+            /* Hide the Streamlit menu and other elements you don't want to print */
+            [data-testid="stSidebar"] { display: none !important; }
+            [data-testid="stHeader"] { display: none !important; }
+            [data-testid="stDecoration"] { display: none !important; }
+            [data-testid="stToolbar"] { display: none !important; }
+            .css-1iyw2u1 { display: none; }
+            .css-15yd9pf { display: none; }
+            .css-fblp2m { display: none; }
+            .main {
+                max-width: 15in !important;
+            }
+
+            span, p, div, textarea, input {
+                color: #textcolor !important;
+            }
+
+            .stMarkdown, .stCodeBlock, [data-testid="caption"], [data-testid="stMarkdownContainer"], [data-testid="stImage"], [data-baseweb="textarea"] {
+                max-width: 15in !important;
+                word-break: break-all;
+                break-inside: avoid;
+            }
+            #MainMenu{visibility: hidden;} footer{visibility: hidden;} header {visibility: hidden;}
+            #root>div:nth-child(1)>div>div>div>div>section>div{padding-top: .2rem;
+        }
+    </style>
+""", unsafe_allow_html=True)
 
 # https://gist.github.com/treuille/8b9cbfec270f7cda44c5fc398361b3b1
 
@@ -45,9 +77,6 @@ def get_base64_of_bin_file(bin_file):
     with open(url, 'rb') as f:
         data = f.read()
     return base64.b64encode(data).decode()
-
-def gradiant_header(color1, color2, color3, content):
-  st.markdown(f'<p style="text-align:center;background-image: linear-gradient(to right,{color1}, {color2});color:{color3};font-size:24px;border-radius:5px;">{content}</p>', unsafe_allow_html=True)
 
 def wrapbox(color1, color2, align, text, title, icon):
    text = "<p style='text-align: " + align + "; border-radius: 10px; color: " + color1 + "; background: " + color2 + ";opacity:0.6;'>header</p><p style='text-align: " + align + "; border-radius: 10px; color: " + color1 + "; background: " + color2 + ";'>" + title + "<br/>" + text + "</p>"
@@ -117,41 +146,26 @@ def render_svg(svg):
 
 # set_bg_hack('background.png')
 # initialize session state variables
-st.markdown("""
-    <style>
-        @media print {
-            /* Hide the Streamlit menu and other elements you don't want to print */
-            [data-testid="stSidebar"] {
-                display: none !important;
-            }
 
-            .main {
-                max-width: 8in !important;
-            }
-
-            span, p, div, textarea, input {
-                color: #000 !important;
-            }
-            
-            .stMarkdown, .stCodeBlock, [data-testid="caption"], [data-testid="stMarkdownContainer"], [data-testid="stImage"], [data-baseweb="textarea"] {
-                max-width: 8in !important;
-                word-break: break-all;
-            }
-
-        }
-    </style>
-""", unsafe_allow_html=True)
-mygrid = make_grid(5,5)
+#mygrid = make_grid(5,5)
 
 if 'thepmheader' not in st.session_state:
       st.error('Sorry, plan is missing. Please enter or import a plan')
       st.stop()
 
+#  get the theme colors
+color1t = st._config.get_option('theme.primaryColor')
+color1b = st._config.get_option('theme.secondaryBackgroundColor')
+color1c = st._config.get_option('theme.backgroundColor')
+color1d = st._config.get_option('theme.textColor')
+
 theme_scope = {'bgcolor': '#f9f9f9','title_color': 'orange','content_color': 'orange','icon_color': 'orange', 'icon': 'fa fa-check-circle'}
 font_fmt = {'font-class':'h4','font-size':'50%'}
 mySep = ","
-reporttitle("", st.session_state['thepmheader'])
-gradiant_header ('#1aa3ff', '#00ff00', '#ffffff', 'Project Canvas')
+
+# reporttitleonly("The PM Monitor")
+#gradiant_header ('#1aa3ff', '#00ff00', '#ffffff', 'Project Canvas')
+gradiant_header (color1t, color1b, color1c, 'The PM Monitor Project Canvas')
 
 with elements("dashboard"):
 

@@ -72,76 +72,55 @@ st.set_page_config(
       layout="wide",
       initial_sidebar_state="collapsed",
 )
-st.markdown("""
-    <style>
-        @media print {
-            /* Hide the Streamlit menu and other elements you don't want to print */
-            [data-testid="stSidebar"] {
-                display: none !important;
-            }
 
-            .main {
-                max-width: 8in !important;
-            }
-
-            span, p, div, textarea, input {
-                color: #000 !important;
-            }
-            
-            .stMarkdown, .stCodeBlock, [data-testid="caption"], [data-testid="stMarkdownContainer"], [data-testid="stImage"], [data-baseweb="textarea"] {
-                max-width: 8in !important;
-                word-break: break-all;
-            }
-
-        }
-    </style>
-""", unsafe_allow_html=True)
 st.markdown("<h3 style='text-align: center; color: white; background: grey;'>The PM Monitor</h3>", unsafe_allow_html=True)
 
+#   st.info("The information was updated, thank you for using the PM Monitor.  Use Save Plan to save a copy of your plan offline.  Go to Canvas or Stoplight reports")
 
-     #   st.info("The information was updated, thank you for using the PM Monitor.  Use Save Plan to save a copy of your plan offline.  Go to Canvas or Stoplight reports")
-
+st.markdown("""---""")
+st.write("Click clear to reset all plan information to None")
 clear = st.button("Clear Plan")
 if clear:
    st.info("The information was cleared, thank you for using the PM Monitor.  Use Save Plan to save a copy of your plan offline")
    clear_form()
 
-# 1. Download Settings Button convert dataframe to list
-#  there is a pandas problem with data serialization set to legacy
+# 1. Download Settings Button convert dataframe to list there is a pandas problem with data serialization set to legacy
 dataitems = st.session_state.items()
 datalist = list(dataitems)
 df = pd.DataFrame(datalist)
 
 csv = df.to_csv().encode('utf-8')
-col1, col2, col3, col4 = st.columns([1, 1, 3, 3])
 #settings_to_download = {k: v for k, v in st.session_state.items()
 settings_to_download = {k: v for k, v in datalist if "button" not in k and "file_uploader" not in k}
 
-    # 2. Select Settings to be uploaded
-with col3:
-  uploaded_file = st.file_uploader(label="Select a Plan to be uploaded",
+# 2. Select Settings to be uploaded
+uploaded_file = st.file_uploader(label="Select a Plan to be uploaded",
                                      help="Select the Plan File (Downloaded in a previous run) that you want"
                                           " to be uploaded and then applied (by clicking 'Apply Plan' above)")
-with col4:
-  if uploaded_file is not None:
+if uploaded_file is not None:
          uploaded_settings = pd.read_csv(uploaded_file)
-  else:
-        #uploaded_settings = settings_to_download
+else:
         uploaded_settings = settings_to_download
         st.warning("**WARNING**: Select the Plan File to be uploaded")
 
-button_apply_settings = col2.button(label="Apply Plan",
+st.markdown("""---""")
+if uploaded_file is not None:
+  button_apply_settings = st.button(label="Apply Plan",
                                         on_click=upload_saved_settings,
                                         args=(uploaded_settings,),
                                         help="Click to Apply the Plan of the Uploaded file.\\\n"
                                              "Please start by uploading a Plan File below")
+
+st.markdown("""---""")
 pmid="CS1"
 reportdate="12-01-2022"
 pmfile_name = "pmmonitorsettings_" + pmid + "_" + reportdate + ".csv"
-button_download = col1.download_button(label="Save Plan",
+button_download = st.download_button(label="Save Plan",
                                            data=csv,
                                            file_name=pmfile_name,
                                            help="Click to Download Current Settings")
+st.markdown("""---""")
+st.write("The following is a copy of the plan details")
 st.dataframe(df, use_container_width=True)
 # with open("milestones.csv", "rb") as file:
 #         milestonebtn = st.download_button(

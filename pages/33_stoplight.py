@@ -17,6 +17,13 @@ from wordcloud import WordCloud, STOPWORDS
 import matplotlib.pyplot as plt
 
 st.session_state.update(st.session_state)
+im = Image.open("assets/images/BlueZoneIT.ico")
+st.set_page_config(
+      page_title="The PM Monitor Stoplight Report",
+      page_icon=im,
+      layout="wide",
+      initial_sidebar_state="collapsed",
+)
 st.markdown("""
     <style>
         @media print {
@@ -41,13 +48,6 @@ st.markdown("""
         }
     </style>
 """, unsafe_allow_html=True)
-im = Image.open("assets/images/BlueZoneIT.ico")
-st.set_page_config(
-      page_title="The PM Monitor Stoplight Report",
-      page_icon=im,
-      layout="wide",
-      initial_sidebar_state="collapsed",
-)
 
 hide_table_row_index = """
             <style>

@@ -42,3 +42,6 @@ st.write("https://www.flashhub.io/virtuelle-organisationen-live/")
 st.session_state.plpname = st.session_state.plpname
 st.subheader("Credits")
 st.write(" a lot, get from source, streamlit, the python community")
+
+st.subheader("Theme")
+st.write("Using streamlit theme under settings, you can change the colors of the view and reports")
