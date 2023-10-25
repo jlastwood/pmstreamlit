@@ -1,7 +1,7 @@
 # core packages
 hugchat==0.3.7
 Pillow==9.5.0
-streamlit==1.25.0
+streamlit==1.27.2
 plotly==5.15.0
 textblob==0.17.1
 hydralit-components==1.0.10
