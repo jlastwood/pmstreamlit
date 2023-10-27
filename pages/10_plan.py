@@ -5,7 +5,6 @@ import pandas as pd
 from scripts.thepmutilities import evreport, plancomment
 import altair as alt
 from st_aggrid import AgGrid
-#from scripts.askchatgpt import askme
 from hugchat import hugchat
 from hugchat.login import Login
 
@@ -22,24 +21,36 @@ cookie_path_dir = "./cookies_snapshot"
 sign.saveCookiesToDir(cookie_path_dir)
 chatbot = hugchat.ChatBot(cookies=cookies.get_dict())
 
+#input_container = st.container()
+#colored_header(label='', description='', color_name='blue-30')
+#response_container = st.container()
+
 # Load cookies when you restart your program:
 # sign = login(email, None)
 # cookies = sign.loadCookiesFromDir(cookie_path_dir) # This will detect if the JSON file exists, return cookies if it does and raise an Exception if it's not.
 
-# Create a ChatBot
+#def generate_response(prompt):
+#    chatbot = hugchat.ChatBot()
+#    response = chatbot.chat(prompt)
+#    return response
 
+# Create a ChatBot
 def askme(prompt_input):
-    # Hugging Face Login
-    #sign = Login(hf_email, hf_pass)
-    #cookies = sign.login()
-    # Create ChatBot                        
-    # chatbot = hugchat.ChatBot(cookies=cookies.get_dict())
     #message = chatbot.query(prompt_input, web_search=True)
-    message = chatbot.query(prompt_input)
+    #id = chatbot.new_conversation()
+    return ("none")
+#    chatbot.change_conversation(id)
+#    message = chatbot.query(prompt_input)
+#    info = chatbot.get_conversation_info()
+#    st.write(info.id, info.title, info.model, info.system_prompt)
+    #st.write(info.id, info.title, info.model, info.system_prompt, info.history)
+#    st.write("inaskme")
+#    st.write(prompt_input)
     #message = {"role": "assistant", "content": chatbot.query(prompt_input)}
-    st.write(message)
-    st.write(message.text)
-    return message.text
+    # st.write(message)
+#    st.write(message.text)
+    #placeholder.text(message.text)
+#    return message.text
     # return chatbot.chat(prompt_input)
 
 def setvalue(var):
@@ -61,13 +72,7 @@ def setvalue(var):
           return st.session_state[var] if var in st.session_state else "None"
 
 # setup the questions for ask me
-def on_askme1_clicked():
-      st.session_state.plspurpose = askme("What is the purpose of a " + st.session_state.plpname + " project?")
-      #st.write(st.session_state.plspurpose)
-
-def on_askme2_clicked():
-      st.session_state.plsbenefits = askme("What are three benefits of " + st.session_state.plpname + " project?")
-
+      
 def on_askme3_clicked():
        st.session_state.plsbenchmarks = askme("Are there comparable benchmarks for a  " + st.session_state.plpname + " project?")
 
@@ -105,6 +110,7 @@ def on_askme12_clicked():
 # @st.cache
 
 im = Image.open("assets/images/BlueZoneIT.ico")
+
 st.set_page_config(
       page_title="The PM Monitor Plan",
       page_icon=im,
@@ -142,6 +148,7 @@ tab0, tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9 = st.tabs(["Start", "
 #with st.form(key="pmmonitorplan", clear_on_submit=False):
 
      ##  Introduction to Planning
+
 with tab0:
       st.subheader("How to Create a Plan")
       st.write("Meet with stakeholders, gather information, identify and document the goal, deliverables, budget and schedule.  Identify resources and constraints. Create an activity list and validate the resources and schedule.   Review the risks and make contingency plans. Moving one tab at a time, fill in the information in the form, update and check the summary.  Fill in all information, then publish and share the canvas poster with the team.  ")
@@ -186,15 +193,31 @@ with tab1:
        st.text_input ("Project Manager Identification", max_chars=30, value=setvalue('plpmname'), key='plpmname')
       with col5:
        st.text_input ("Product Owner or Sponsor Identification", max_chars=30, value=setvalue('plspname'), key='plspname')
+      cb1 = st.checkbox ("What is the purpose of this project (askme)?")
       st.text_area ("What is the purpose of this project (askme)?", value=setvalue('plspurpose'), key='plspurpose')
-      if st.session_state.plpname != "None":
-        st.button("askme for a purpose", on_click=on_askme1_clicked) 
+      if cb1 and len(st.session_state.plspurpose) < 10:
+         query = "What is the purpose of a " + st.session_state.plpname + " project?"
+         info = chatbot.get_conversation_info()
+         st.write("Asking AI for a response", cb1, info.id, info.title, info.model, info.system_prompt)
+         message = chatbot.query(query) 
+         st.write(message)
+      cb2 = st.checkbox ("askme for some benefits")
       st.text_area ("What are three benefits of this project (askme)?", value=setvalue('plsbenefits'), key='plsbenefits')
-      if st.session_state.plpname != "None":
-        st.button("askme for some benefits", on_click=on_askme2_clicked)
+      if cb2 and len(st.session_state.plsbenefits) < 10:
+         query = "What are three benefits of " + st.session_state.plpname + " project?"
+         info = chatbot.get_conversation_info()
+         st.write("Asking AI for a response", cb2, info.id, info.title, info.model, info.system_prompt, query)
+         message = chatbot.query(query) 
+         st.write(message)
+      cb3 = st.checkbox("askme for benchmarks")
       st.text_area ("Are there comparable benchmarks or services for this project (askme)?", value=setvalue('plsbenchmarks'), key='plsbenchmarks')
-      if st.session_state.plpname != "None":
-        st.button("askme for benchmarks", on_click=on_askme3_clicked)
+      if cb3 and len(st.session_state.plsbenchmarks) < 10:
+         query = "Are there comparable benchmarks or services for a " + st.session_state.plpname + " project?"
+         info = chatbot.get_conversation_info()
+         st.write("Asking AI for a response", cb2, info.id, info.title, info.model, info.system_prompt, query)
+         message = chatbot.query(query) 
+         st.write("Response:  if this response is correct, paste this into the field above")
+         st.write(message)
      # set some dates
       week  = timedelta(days = 7)
       daytoday = date.today()
@@ -250,12 +273,12 @@ with tab2:
       st.subheader("Scope")
       st.write("The scope information outlines the features that the product should have. Scope also clarifies what is not planned and what may be negotiable")
       col4, col5 = st.columns(2)
+      st.checkbox("askme for scope list", on_change=on_askme4_clicked)
       st.text_area ("What are the must have Features? (askme)", value=setvalue('plscopemusthave'), key='plscopemusthave')
-      st.button("askme for scope list", on_click=on_askme4_clicked)
       col4, col5 = st.columns(2)
       with col4:
+       st.checkbox("askme for scope options", on_change=on_askme5_clicked)
        st.text_area ("What are some features that are negotiable or nice to have? (askme)", value=setvalue('plscopenicetohave'), key='plscopenicetohave')
-       st.button("askme for scope options", on_click=on_askme5_clicked)
       with col5:
        st.text_area ("What is out of scope?", value=setvalue('plscopeoutofscope'), key='plscopeoutofscope')
       scopechange = st.text_area ("What scope has been added or removed after the start of this project? ", value=setvalue('plscopechange'), key='plscopechange')
@@ -419,8 +442,8 @@ with tab5:
 
 with tab6:
       st.subheader("Quality")
+      st.checkbox("askme for a quality goal", on_change=on_askme6_clicked)
       st.text_area ("Describe Quality Goal? (askme) ", value=setvalue('plsqualitygoal'), key='plsqualitygoal')
-      st.button("askme for a quality goal", on_click=on_askme6_clicked)
       st.text_input ("Quality Report", value=setvalue('plsqualityreport'), key='plsqualityreport')
       col1, col2, col3, col4, col5 = st.columns(5)
       with col1:
@@ -508,8 +531,8 @@ with tab8:
        st.session_state['plnbenefitperiod']  = st.slider ("Benefit Period", value=setvalue('plnbenefitperiod'), format="%i", min_value=1, max_value=36, step=1 )
       with col4:
        st.session_state['pldbenefitdate']  = st.date_input ("Benefit Start Date", value=setvalue('pldbenefitdate'))
+      st.checkbox("askme for roi", on_change=on_askme12_clicked())
       st.session_state['pldroigoal'] = st.text_area("ROI Goal", value=setvalue('plproigoal'))
-      st.button("askme for roi", on_click=on_askme12_clicked)
       benefitdelta = (st.session_state['plnincreaseincome'] - st.session_state['plnincreaseexpense'])
       roi = 0
       rateofreturn = 0
@@ -529,36 +552,44 @@ with tab7:
       with col1:
        st.session_state['plnscoperange']  = st.slider ("Scope Risk", value=setvalue('plnscoperange'), format="%i", min_value=0, max_value=5, step=1 )
       with col2:
+       st.checkbox("askme for scope mitigation strategies", on_change=on_askme7_clicked)
        st.session_state['plpscopecontingency']  = st.text_area ("What are three ways to mitigate the impact of scope changes in a project? (askme)", value=setvalue('plpscopecontingency'))
-       st.button("askme for scope mitigation strategies", on_click=on_askme7_clicked)
       col1, col2 = st.columns([1,5])
       with col1:
        st.session_state['plnschedulerange']  = st.slider ("Schedule Risk", value=setvalue('plnschedulerange'), format="%i", min_value=0, max_value=5, step=1 )
       with col2:
+       st.checkbox("askme for schedule mitigation strategies", on_change=on_askme8_clicked)
        st.session_state['plptimecontingency']  = st.text_area ("Schedule Contingency? (askme)", value=setvalue('plptimecontingency'))
-       st.button("askme for schedule mitigation strategies", on_click=on_askme8_clicked)
       col1, col2 = st.columns([1,5])
       with col1:
        st.session_state['plnbudgetrange']  = st.slider ("Budget Risk", value=setvalue('plnbudgetrange'), format="%i", min_value=0, max_value=5, step=1 )
       with col2:
+       st.checkbox("askme for budget mitigation strategies", on_change=on_askme9_clicked)
        st.session_state['plpbudgetcontingency']  = st.text_area ("Budget Contingency", value=setvalue('plpbudgetcontingency'))
-       st.button("askme for budget mitigation strategies", on_click=on_askme9_clicked)
       col1, col2 = st.columns([1,5])
       with col1:
        st.session_state['plnteamrange']  = st.slider ("Team Risk", value=setvalue('plnteamrange'), format="%i", min_value=0, max_value=5, step=1 )
       with col2:
+       st.checkbox("askme for team mitigation strategies", on_change=on_askme10_clicked())
        st.session_state['plpteamcontingency']  = st.text_area ("Team Contingency", value=setvalue('plpteamcontingency'))
-       st.button("askme for team mitigation strategies", on_click=on_askme10_clicked)
       col1, col2 = st.columns([1,5])
       with col1:
        st.session_state['plnresourcerange']  = st.slider ("Resource Risk", value=setvalue('plnresourcerange'), format="%i", min_value=0, max_value=5, step=1 )
       with col2:
+       st.checkbox("askme for resource mitigation strategies", on_change=on_askme11_clicked())
        st.session_state['plpresourcecontingency']  = st.text_area ("Resource Contingency", value=setvalue('plpresourcecontingency'))
-       st.button("askme for resource mitigation strategies", on_click=on_askme11_clicked)
       thepmcontingencysummary = "The project contingency plans include Scope: " + st.session_state['plpscopecontingency']+ " Schedule: " + st.session_state['plptimecontingency'] + " Budget:  " + st.session_state['plpbudgetcontingency'] + " and Resource:  " + st.session_state['plpresourcecontingency']
       st.markdown("{}".format(thepmcontingencysummary), unsafe_allow_html=True)
 
-     #if submit:
-     #   st.info("The information was updated, thank you for using the PM Monitor.  Use Save Plan to save a copy of your plan offline.  Go to Canvas or Stoplight reports")
       st.session_state['thepmteam'] = f'The team is composed of {st.session_state.plnteam:.0f}  members and have collaborated together for {st.session_state.plnteamweeks:.0f} weeks.  \n\n   The solution architect is {st.session_state.plpsolutionname}. The Operations Lead is {st.session_state.plpoperationname}. The inspector is {st.session_state.plpinspectorname}.  There are currently {st.session_state.plnopenroles:.0f} open roles.  \n\n  The team contingengy is {st.session_state.plpteamcontingency}.'
 
+with tab9:
+    placeholder = st.empty()
+    textquestion = st.text_input ("Help")
+    # st.button('askmeforhelp', key='askmeforhelp')  
+    #chatbot.change_conversation(id)
+    if  len(textquestion) > 10:
+      message = chatbot.query(textquestion)
+      st.write(textquestion)
+      textquestion = ""
+      st.write(message.text)

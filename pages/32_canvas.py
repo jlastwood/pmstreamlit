@@ -30,18 +30,19 @@ st.set_page_config(
       initial_sidebar_state="collapsed",
 )
 
-hide_decoration_bar_style = '''
-    <style>
-        header {visibility: hidden;}
-    </style>
-'''
-st.markdown(hide_decoration_bar_style, unsafe_allow_html=True)
+#hide_decoration_bar_style = '''
+#    <style>
+#        header {visibility: hidden;}
+#    </style>
+#'''
+#st.markdown(hide_decoration_bar_style, unsafe_allow_html=True)
 
 st.markdown("""
     <style>
         @media print {
             @page {size: A4 landscape; margin: 27mm 16mm 27mm 16mm; }
             body { margin: 0; padding: 0; }
+            header {display: none !important;}
             /* Hide the Streamlit menu and other elements you don't want to print */
             [data-testid="stSidebar"] { display: none !important; }
             [data-testid="stHeader"] { display: none !important; }
@@ -219,7 +220,7 @@ with elements("dashboard"):
     # you can pass a callback to the onLayoutChange event parameter.
 
 #mygrid[3][3].write('33')
-cc = st.columns(4)
+cc = st.columns([1,2,1,1])
 with cc[0]:
    p1intro = "<br>Project Introduction"
    p1summary = "<sup>" + p1intro + "</sup><br><br>" + st.session_state['thepmplannote'].replace('\n', '<br />')   

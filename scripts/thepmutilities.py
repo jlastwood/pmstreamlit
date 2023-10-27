@@ -142,7 +142,7 @@ def plancomment(dateStart, dateEnd, daystoday, daystoend, timecomplete, coreteam
    weekstotal = (daystoday / 7) 
    weeksend = int(daystoend / 7) 
    cadnumber = cadence
-   commentnote = f'Project {projectname} ({projectid}) sponsored by {pmname} is a {pmclass} project.  The project is currently in the {prphase} phase with planned completion in {weeksend:.0f} week(s) on {dateEnd} . Project initiation is {dateStart}. Status reports are updated every {cadnumber} week(s).  \n  \n   The benefits are  \n  {benefits}.  \n   \n  '
+   commentnote = f'Project {projectname} ({projectid}) sponsored by {pmname} is a {pmclass} project.  The project is currently in the {prphase} phase with planned completion in {weeksend:.0f} week(s) on {dateEnd} . Project initiation is {dateStart}. Status reports are updated every {cadnumber} week(s).  \n  \n '
    return(commentnote)
 
 # weather events

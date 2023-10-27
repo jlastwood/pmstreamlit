@@ -19,16 +19,19 @@ color1b = st._config.get_option('theme.secondaryBackgroundColor')
 color1c = st._config.get_option('theme.backgroundColor')
 color1d = st._config.get_option('theme.textColor')
 
-hide_decoration_bar_style = '''
-    <style>
-        header {visibility: hidden;}
-    </style>
-'''
-st.markdown(hide_decoration_bar_style, unsafe_allow_html=True)
+#hide_decoration_bar_style = '''
+#    <style>
+#        header {visibility: hidden;}
+#    </style>
+#'''
+#st.markdown(hide_decoration_bar_style, unsafe_allow_html=True)
 
 st.markdown("""
     <style>
         @media print {
+            @page {size: A4 landscape; margin: 27mm 16mm 27mm 16mm; }
+            body { margin: 0; padding: 0; }
+            header {display: none !important;}
             /* Hide the Streamlit menu and other elements you don't want to print */
             [data-testid="stSidebar"] { display: none !important; }
             [data-testid="stHeader"] { display: none !important; }
@@ -38,8 +41,7 @@ st.markdown("""
             .css-15yd9pf { display: none; }
             .css-fblp2m { display: none; }
             .main {
-                max-width: 12in !important;
-                margin: 25mm 25mm 25mm 25mm;
+                max-width: 15in !important;
             }
 
             span, p, div, textarea, input {
@@ -47,7 +49,7 @@ st.markdown("""
             }
 
             .stMarkdown, .stCodeBlock, [data-testid="caption"], [data-testid="stMarkdownContainer"], [data-testid="stImage"], [data-baseweb="textarea"] {
-                max-width: 12in !important;
+                max-width: 15in !important;
                 word-break: break-all;
                 break-inside: avoid;
             }
