@@ -10,6 +10,33 @@ import datetime
 # price of oil because USD is based on oil
 # https://docs.quandl.com/docs/python-time-series
 
+def get_grade(score, total):
+     
+    if score > 0: 
+      avg = total/score * 100
+    else:
+      return("None")
+    if avg > 100:
+      avg = 0
+ 
+    if avg >= 91 and avg <= 100:
+      grade = "A1"
+    elif avg >= 81 and avg < 91:
+      grade = "A2"
+    elif avg >= 71 and avg < 81:
+      grade = "B1"
+    elif avg >= 61 and avg < 71:
+      grade = "B2"
+    elif avg >= 51 and avg < 61:
+      grade = "C1"
+    elif avg >= 41 and avg < 51:
+      grade = "C2"
+    elif avg >= 33 and avg < 41:
+      grade = "D"
+    elif avg >= 0 and avg < 33:
+      grade = "E"
+    return(grade)
+
 def get_table_download_link(df):
     """Generates a link allowing the data in a given panda dataframe to be downloaded
     in:  dataframe
@@ -82,14 +109,17 @@ def evreport(projectrevenue, projectbudget, projecthours, projectrate, projectba
       pv = int(projectbudget * (timecomplete / 100))
       acwp = actualcost
       sv = ev - pv
+      st.write(sv, ev, pv)
       if pv > 0:
         spi = float(ev/pv)
       cv = ev - acwp
       if acwp > 0:
         cpi = ev/acwp
-      if spi > 0 and cpi > 0:
-        eac = float(acwp + ((projectbudget - ev)/(spi * cpi)))
+      #if spi > 0 and cpi > 0:
+      eac = float(acwp + ((projectbudget - ev)/(spi * cpi)))
       etc = float(eac - acwp)
+      #  BAC is project budget, only change if approved change in scope
+      bac = projectbudget
       if sv < 0:
         svcomment = 'Behind Schedule'
         bcomment = "behind "
@@ -111,18 +141,22 @@ def evreport(projectrevenue, projectbudget, projecthours, projectrate, projectba
       else:
         cpicomment = "performing well on or under budget "
       #  use markdown
-      evsumm = f'**{svcomment} and {cvcomment}**<p>The project has a current Earned Value of {ev:,.0f} of a total spend to date of {acwp:,.0f}.  {timecomplete}% of the time has elapsed in the schedule.   Planned Value or the total cost of work that should have been done based on the schedule is {pv:,.0f}  <br/> Schedule Variance {sv:,.0f} is {scomment}. and Schedule Performance Index is {spi:.2f}% {spcomment} 1. The project is {bcomment} schedule.</p><p> Cost Variance is {cv} Cost Variance monitors budget.  The work can be ahead of schedule but over budget.  Cost Performance Index {cpi:.2f}% provides a guide as to the relative amount of the variance. The project is {cpicomment}.</p><p>Project Estimate at Completion is now {eac:,.0f} Estimate To Complete {etc:,.0f}</p>'
-
+      evsumm = f'**{svcomment} and {cvcomment}**   The project has a current Earned Value of {ev:,.0f} of a total spend to date of {acwp:,.0f}.  {timecomplete}% of the time has elapsed in the schedule.   Planned Value or the total cost of work that should have been done based on the schedule is {pv:,.0f}   Schedule Variance {sv:,.0f} is {scomment}. and Schedule Performance Index is {spi:.2f}% {spcomment} 1. The project is {bcomment} schedule.   Cost Variance is {cv} Cost Variance monitors budget.  The work can be ahead of schedule but over budget.  Cost Performance Index {cpi:.2f}% provides a guide as to the relative amount of the variance. The project is {cpicomment}.   Project Estimate at Completion is now {eac:,.0f} Estimate To Complete {etc:,.0f}.'
+ 
+      
+      eac =  acwp + etc
       evmstats = {
-       "BAC": 0,
-       "PV": pv,
-       "EV": ev,
-       "AC": acwp,
-       "CV": cv, 
-       "CPI": cpi,
-       "VAC": bac - eac,
-       "EAC": acwp + etc,
-       "ETC": etc} 
+       "Budget at Completion": format(bac, ",.0f"),
+       "Planned Value (PV)": pv,
+       "Earned Value (EV)": ev,
+       "Actual Cost (AC)": acwp,
+       "Cost Variance": cv, 
+       "Schedule Variance": sv, 
+       "Cost Performance IndexI": cpi,
+       "Schedule Performance Index": spi,
+       "Estimate at Completion": format(eac,",.0f"),
+       "Variance at Completion": format(bac - eac,",.0f"),
+       "Estimate to Complete": format(etc,",.0f")} 
 
    else:
       evsumm = f'No Earned Value report,  missing budget'
@@ -175,10 +209,14 @@ def reporttitle(reportname, reporttable):
             </style>
             """
   st.markdown(hide_table_row_index, unsafe_allow_html=True)
-  st.markdown("<h3 style='text-align: center; vertical-align: bottom; color: white; background: gray; '>The PM Monitor</h3><br/>", unsafe_allow_html=True)
+  # st.markdown("<h3 style='text-align: center; vertical-align: bottom; color: white; background: gray; '>The PM Monitor</h3><br/>", unsafe_allow_html=True)
   st.table(reporttable)
 
-def gradiant_header(color1, color2, color3, content):
+def gradiant_header(content):
+  color1 = st._config.get_option('theme.primaryColor')
+  color2 = st._config.get_option('theme.secondaryBackgroundColor')
+  color3 = st._config.get_option('theme.backgroundColor')
+  color1d = st._config.get_option('theme.textColor')
   st.markdown(f'<p style="text-align:center;background-image: linear-gradient(to right,{color1}, {color2});color:{color3};font-size:24px;border-radius:5px;">{content}</p>', unsafe_allow_html=True)
 
 def reporttitleonly(reportname):

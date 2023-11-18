@@ -5,16 +5,16 @@ import pandas as pd
 #from slack_message import slack_messages_pm
 from textblob import TextBlob
 from nltk.tokenize import sent_tokenize
-from scripts.thepmutilities import reporttitle
+from scripts.thepmutilities import reporttitle, gradiant_header
+
+st.session_state.update(st.session_state)
 
 # https://ruarfff.com/slack-sentiment/
-if 'thepmheader' not in st.session_state:
-     st.error('Please create a plan')
-     st.stop()
+
 
 im = Image.open("assets/images/BlueZoneIT.ico")
 st.set_page_config(
-      page_title="The PM Monitor Team Monitor",
+      page_title="The PM Monitor Communications Analysis",
       page_icon=im,
       layout="wide",
       initial_sidebar_state="collapsed",
@@ -43,9 +43,15 @@ st.markdown("""
         }
     </style>
 """, unsafe_allow_html=True)
+
+gradiant_header ('The PM Monitor Communication Analysis')
+
+if 'thepmheader' not in st.session_state:
+     st.error('Please create a plan')
+     st.stop()
 reporttitle("Team Communication Analysis", st.session_state['thepmheader'])
 
-st.write("Using your team communication channel messages, analysis of the sentiment, word density (what they are talking about") 
+st.write("Using your team communication channel messages, analysis of the sentiment, word density to see what they are talking about, and engagement score") 
 
 uploaded_file = st.file_uploader("Message history", type=['csv'])
 

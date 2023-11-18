@@ -1,11 +1,11 @@
 """Page for nlp of the project report"""
 from PIL import Image
 import streamlit as st
-import datetime
+from datetime import date, datetime
 import hydralit_components as hc
 import heapq
-from pandas import * # bad janet! bad! don't import * 
-from scripts.thepmutilities import reporttitle
+import pandas as pd # bad janet! bad! don't import * 
+from scripts.thepmutilities import reporttitle, gradiant_header
 from deepmultilingualpunctuation import PunctuationModel
 #from st_radial import st_radial
 from textblob import TextBlob
@@ -15,6 +15,30 @@ from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api.formatters import TextFormatter
 from wordcloud import WordCloud, STOPWORDS
 import matplotlib.pyplot as plt
+
+def color_survived(val):
+    color = 'white'
+    if val == 1:
+      color = 'green' 
+    if val == 2:
+      color = 'red'
+    return f'background-color: {color}'
+
+# get a list of the bullet points
+def split(s):
+    thislist = []
+    start = 0
+    for i in [1,2,3,4,5,6,7,8]:
+      txt = str(i) + '.'
+      fins = s.find(txt, start)
+      if fins > 0:
+        end = s.find(":", fins)
+        if end < 0:
+          end = find + 15
+        getstring = s[fins:end]
+        thislist.append(getstring)
+        start = fins + 3
+    return thislist
 
 st.session_state.update(st.session_state)
 im = Image.open("assets/images/BlueZoneIT.ico")
@@ -59,6 +83,9 @@ hide_table_row_index = """
 #@st.cache
 #with st.spinner("Loading  ..."):
     # initialize session state variables
+
+gradiant_header ('The PM Monitor Stoplight Report')
+
 if 'thepmheader' not in st.session_state:
  st.warning("Sorry, plan is missing.  Please enter or import a plan")
  st.stop()
@@ -82,78 +109,99 @@ if len(videoidreport) > 10:
  textresult = model.restore_punctuation(text_formatted)
  textcsm = TextBlob(textresult) #sentiment for each sentence
 
-daytoday = datetime.date.today()
+daytoday = date.today()
 cpi = round(st.session_state.thepmcpi,1)
 spi = round(st.session_state.thepmspi,1)
-
+freqn = str(st.session_state.plncadence) + 'W'
+#series = pd.date_range(start=st.session_state.pldstartdate, end=st.session_state.pldenddate, periods=st.session_state.reportsinplan, freq='B')
+series = pd.date_range(start=st.session_state.pldstartdate, end=st.session_state.pldenddate, freq=freqn)
+seriesdate = [datetime.strftime(d, '%m-%d-%Y') for d in series]
+serieslist = pd.DataFrame(seriesdate)
+statuslist = []
+for i in range (0, len(serieslist)):
+   statuslist.append(1)
+serieslist['Status'] = statuslist
 bar_theme_2 = {'bgcolor': 'lightgrey','content_color': 'grey','progress_color': 'green'}
 
 reporttitle("Stoplight Report", st.session_state['thepmheader'])
 
-cola, colb, colc, cole = st.columns([1,2,1,4])
+seriestrans = serieslist.T
+st.table(seriestrans.style.applymap(color_survived))
+
+cola, colb, colc, cold, cole = st.columns([1,2,1,1,4])
 with cola:
   st.write("Schedule")
 with colb:
-  hc.progress_bar(st.session_state['thepmtimecomplete'],'Time',key='paschedule',sentiment='good')
+  hc.progress_bar(st.session_state['thepmtimecomplete'],'Time',key='thepaschedule',sentiment='good')
 with colc:
   st.write(st.session_state['thepmtimecomplete'], spi)
+with cold:
+  st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: #D12F2E; font-size: 100%;'>  R  </p>", unsafe_allow_html=True)
 with cole:
   if spi < 1:
     notes = "<font color='grey'>:warning:" + " Behind schedule - Contingency: " + st.session_state['plptimecontingency'] + "</font>"
   else:
     notes = "<font color='grey'>" + "On or ahead of schedule" + "</font>"
   st.markdown("{}".format(notes), unsafe_allow_html=True)
-cola, colb, colc, cole = st.columns([1,2,1,4])
+cola, colb, colc, cold, cole = st.columns([1,2,1,1,4])
 with cola:
   st.write("Scope")
 with colb:
   scopebar =  st.session_state['thepmdelivery']
-  hc.progress_bar(scopebar,'Features',key='pascope',sentiment='good',override_theme=bar_theme_2)
+  hc.progress_bar(scopebar,'Features',key='thepascope',sentiment='good',override_theme=bar_theme_2)
 with colc:
   st.write(scopebar)
+with cold:
+  st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: #FFBF00; font-size: 90%;'>  A  </p>", unsafe_allow_html=True)
 with cole:
   if len(st.session_state['plscopechange']) > 10:
     notec = "<font color='grey'>:warning: " + st.session_state['plpscopecontingency'] + "</font>"
   else:
     notec = ""
   st.markdown("{}".format(notec), unsafe_allow_html=True)
-cola, colb, colc, cole = st.columns([1,2,1,4])
+cola, colb, colc, cold, cole = st.columns([1,2,1,1,4])
 with cola:
   st.write("Quality")
 with colb:
   qualbar = 0
   if int(st.session_state['plntests']) > 0:
    qualbar = int(st.session_state['plntestsfailed'] / st.session_state['plntests'] * 100)
-  hc.progress_bar(qualbar,'Quality',key='paqual',sentiment='good',override_theme=bar_theme_2)
+  hc.progress_bar(qualbar,'Quality',key='thepaqual',sentiment='good',override_theme=bar_theme_2)
 with colc:
   st.write(qualbar)
+with cold:
+  st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: #FFBF00; font-size: 100%;'>  A  </p>", unsafe_allow_html=True)
 with cole:
   if int(st.session_state['thepminspectionflag']) == 1:
     notec = "<font color='grey'>:warning: " + st.session_state['thepminspectionwarning'] + st.session_state['plpscopecontingency'] + "</font>"
   else:
     notec = ""
   st.markdown("{}".format(notec), unsafe_allow_html=True)
-cola, colb, colc, cole = st.columns([1,2,1,4])
+cola, colb, colc, cold, cole = st.columns([1,2,1,1,4])
 with cola:
   st.write("Cost")
 with colb:
-  hc.progress_bar(st.session_state['thepmbudgetcomplete'],'Cost',key='pabudget',sentiment='good')
+  hc.progress_bar(st.session_state['thepmbudgetcomplete'],'Cost',key='thepmpabudget',sentiment='good')
 with colc:
   st.write(st.session_state['thepmbudgetcomplete'], cpi)
+with cold:
+  st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: #FFBF00; font-size: 100%;'>  A  </p>", unsafe_allow_html=True)
 with cole:
   if cpi < 1:
     notes = "<font color='grey'>:warning: " + "Over Budget - Contingency:  " + st.session_state['plpbudgetcontingency'] + "</font>"
   else:
     notes = "<font color='grey'>" + "On or ahead of budget" + "</font>"
   st.markdown("{}".format(notes), unsafe_allow_html=True)
-cola, colb, colc, cole = st.columns([1,2,1,4])
+cola, colb, colc, cold, cole = st.columns([1,2,1,1,4])
 with cola:
   st.write("Risk")
 with colb:
   riskbar = 15
-  hc.progress_bar(riskbar,'Risk',key='parisk',sentiment='good',override_theme=bar_theme_2)
+  hc.progress_bar(riskbar,'Risk',key='thepmparisk',sentiment='good',override_theme=bar_theme_2)
 with colc:
   st.write(riskbar)
+with cold:
+  st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: #FFBF00; font-size: 100%;'>  A  </p>", unsafe_allow_html=True)
 with cole:
   # if there are open risks, and probability is 100 and impact is high
   st.markdown("<font color='grey'>Risks have become issues and require management action</font>", unsafe_allow_html=True)
@@ -174,8 +222,7 @@ with colc:
 st.markdown("---")
 
 st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: green; font-size: 120%;'>Stakeholder Action</p>", unsafe_allow_html=True)
-actions = DataFrame({'a': [1,2,3], 'b': [2,3,4]})
-st.table(actions)
+
 st.write("write out 3 risks that are high probablity and high impact")
 
 if len(videopmreport) < 10:
@@ -255,7 +302,18 @@ else:
   st.pyplot(plt)
   st.write(summary)
 st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: green; font-size: 120%;'>Deliverables</p>", unsafe_allow_html=True)
-st.write(st.session_state.plscopemusthave)
+col1, col2 = st.columns(2)
+with col1:
+ st.write("Requirements")
+ st.write('.  \n'.join(split(st.session_state.plscopemusthave)))
+ st.write("Nice to Have")
+ st.write('.  \n'.join(split(st.session_state.plscopenicetohave)))
+with col2:
+ st.write("Environment and Non-Functional")
+ st.write('.  \n'.join(st.session_state.plmlistscopelist))
+ st.write('.  \n'.join(st.session_state.plmlistscopeoption))
+ st.write("Quality Reports")
+ st.write('.  \n'.join(st.session_state.plmlistqualitytypes))
 #df[(df['date'] > '2013-01-01') & (df['date'] < '2013-02-01')]
 #final_table_columns = ['id', 'name', 'year']
 #pandas_df = pandas_df[ pandas_df.columns.intersection(final_table_columns)]

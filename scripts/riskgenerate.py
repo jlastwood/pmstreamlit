@@ -1,70 +1,95 @@
 import json
 import pandas as pd
+import streamlit as st
 
-def calculate_risks_json(risks, phasenumber, SPI, CPI, engagementscoreteam, sentimentscoreteam, retention, scopechange, earnedvalue, roi, latestart, inspectfail):
-   for d in risks:
-        d['riskselect'] = 'Y'
-        # timeframe when risk will have an impact
-        # the risk probablility can be 0 when risk has elapsed
+def get_impact(value):
+   impact = '1-High'
+   if value == 3:
+     impact = '2-Moderate'
+   if value == 3:       
+     impact = '3-Low'
+   return(impact)
 
-   selectedrisks = [d for d in risks if d['riskselect'] == 'Y']
+def calculate_risks_json(phasenumber, SPI, CPI, engagementscoreteam, sentimentscoreteam, retention, scopechange, earnedvalue, roi, latestart, inspectfail):
 
-    #  set the score value and count scores and risktable
-   for d in selectedrisks:
-        d['riskscore'] = '3-Lowest'
-        if d['riskimpact'] == '3' or d['riskprobability'] == '3':
-           d['riskscore'] = '1-Highest'
-        if d['riskimpact'] == '2' or d['riskprobability'] == '2':
-           d['riskscore'] = '2-Moderate'
-        if d['riskimpact'] == '' and d['riskprobability'] == '':
-           d['riskscore'] = '2-Moderate'
+   risks = pd.read_csv('scripts/risksver4.csv')
 
-        if d['riskprobability'] == '1':
-           d['riskprobability'] = '1-High'
-        if d['riskprobability'] == '2':
-           d['riskprobability'] = '2-Moderate'
-        if d['riskprobability'] == '3':
-           d['riskprobability'] = '3-Low'
-        if d['riskimpact'] == '1':
-           d['riskimpact'] = '1-High'
-        if d['riskimpact'] == '2':
-           d['riskimpact'] = '2-Moderate'
-        if d['riskimpact'] == '3':
-           d['riskimpact'] = '3-Low'
+   rows = len(risks)
+   risks.loc[0:rows,['riskselect']] = ['Y']
 
-         # 1,3,5, and 9
-        if (d['risktimeline'] == '1' and phasenumber > 2) or (d['risktimeline'] == '3' and phasenumber > 4) or (d['risktimeline'] == '5' and phasenumber > 5):
-           d['riskprobability'] = pd.NA
-           d['riskimpact'] = pd.NA
-           d['riskresponse'] = pd.NA
-           d['riskselect'] = 'N'
-           d['riskscore'] = pd.NA
-           d['riskowner'] = pd.NA
-           d['risktrigger'] = pd.NA
-        if d['risktimeline'] == '1':
-           d['risktimeline'] = '1-Plan'
-        if d['risktimeline'] == '3':
-           d['risktimeline'] = '2-Design'
-        if d['risktimeline'] == '5':
-           d['risktimeline'] = '3-Build'
-        if d['risktimeline'] == '9':
-           d['risktimeline'] = '5-Accept'
+   currentphase =  str(phasenumber) + '-' + st.session_state.thepmphasename
+   # Find issues in current phase based on trigger
+   if 1 < earnedvalue < 20:
+      risks.loc[(risks['risktrigger'] == "earnedvalue") & (risks['risktimeline'] == currentphase), 'riskselect'] = "I"
+   if inspectfail > 0:
+      risks.loc[(risks['risktrigger'] == "inspectfail") & (risks['risktimeline'] == currentphase), 'riskselect'] = "I"
+   if latestart > 0:
+      risks.loc[(risks['risktrigger'] == "latestart") & (risks['risktimeline'] == currentphase), 'riskselect'] = "I"
+   if 1 < roi < 130:
+      risks.loc[(risks['risktrigger'] == "roi") & (risks['risktimeline'] == currentphase), 'riskselect'] = "I"
+   if 1 < engagementscoreteam < 80:
+      risks.loc[(risks['risktrigger'] == "engagement") & (risks['risktimeline'] == currentphase), 'riskselect'] = "I"
+   if 1 < sentimentscoreteam < 80:
+      risks.loc[(risks['risktrigger'] == "sentiment") & (risks['risktimeline'] == currentphase), 'riskselect'] = "I"
+   if CPI < 1:
+      risks.loc[(risks['risktrigger'] == "cpi") & (risks['risktimeline'] == currentphase), 'riskselect'] = "I"
+   if SPI < 1:
+      risks.loc[(risks['risktrigger'] == "spi") & (risks['risktimeline'] == currentphase), 'riskselect'] = "I"
+   if scopechange > 0:
+      risks.loc[(risks['risktrigger'] == "scopechange") & (risks['risktimeline'] == currentphase), 'riskselect'] = "I"
+   if 1 < roi < 20:
+      risks.loc[(risks['risktrigger'] == "roi") & (risks['risktimeline'] == currentphase), 'riskselect'] = "I"
+   if retention > 0:
+      risks.loc[(risks['risktrigger'] == "retention") & (risks['risktimeline'] == currentphase), 'riskselect'] = "I"
 
-   return(selectedrisks)
+   # if past phase then close risks
+   if phasenumber > 1:
+      risks.loc[risks['risktimeline'] == "1-Plan", 'riskprobability'] = pd.NA 
+      risks.loc[risks['risktimeline'] == "1-Plan", 'riskselect'] =  "N"
+      risks.loc[risks['risktimeline'] == "1-Plan", 'riskresponse'] =  pd.NA
+   if phasenumber > 2:
+      risks.loc[risks['risktimeline'] == "2-Design", 'riskprobability'] = pd.NA 
+      risks.loc[risks['risktimeline'] == "2-Design", 'riskselect'] =  "N"
+      risks.loc[risks['risktimeline'] == "2-Design", 'riskresponse'] = pd.NA 
+   if phasenumber > 3:
+      risks.loc[risks['risktimeline'] == "3-Build", 'riskprobability'] = pd.NA 
+      risks.loc[risks['risktimeline'] == "3-Build", 'riskselect'] =  "N"
+      risks.loc[risks['risktimeline'] == "3-Build", 'riskresponse'] = pd.NA 
+   if phasenumber > 4:
+      risks.loc[risks['risktimeline'] == "4-Inspect", 'riskprobability'] = pd.NA 
+      risks.loc[risks['risktimeline'] == "4-Inspect", 'riskselect'] =  "N"
+      risks.loc[risks['risktimeline'] == "4-Inspect", 'riskresponse'] = pd.NA 
+   if phasenumber > 5:
+      risks.loc[risks['risktimeline'] == "5-Accept", 'riskprobability'] = pd.NA 
+      risks.loc[risks['risktimeline'] == "5-Accept", 'riskselect'] =  "N"
+      risks.loc[risks['risktimeline'] == "5-Accept", 'riskresponse'] = pd.NA 
+
+   #  setting impact based on plan
+   impact = get_impact(st.session_state.plnscoperange)
+   risks.loc[risks['riskclassification'] == "Scope", 'riskimpact'] = impact
+   risks.loc[risks['riskclassification'] == "Cost", 'riskimpact'] = impact
+
+   #  recacalculate score 
+   #  set the score value and count scores and risktable
+   #for i in range (0, rows):
+   #  risks.at[i, 'riskimpact'] = 'dummy'
+   #     risks.at[i, 'riskscore'] = '3-Lowest'
+   issuecount = sum(risks['riskselect'] == 'I')
+   riskcount = sum(risks['riskselect'] == 'Y')
+   closedcount = sum(risks['riskselect'] == 'N')
+   avoidcount = sum(risks['riskresponse'] == 'Avoid')
+   risktotal = len(risks)
+
+   risksummary = f'In Phase {phasenumber}, there are {riskcount} risks identified.  {issuecount} risks have been triggered and are possible issues.  {avoidcount} risks have planned mitigation or avoidance strategies. {closedcount} risks from previous phases have been closed. '
+
+
+
+   return(risks, issuecount, riskcount, risktotal, risksummary)
 
 #  get the risks and set the current value of probability and impact
-
 #  using probability in the plan, set (scope risk)
-
 #  if plan has contingency, set to avoid, otherwise accept, decrease impact
-
-#  using CPI and SPI, if negative, increase probabilyt, if positive decrease probability
-
 #  using quality failure, increase probability
-
 #  using changes, increase probability
-
 #  using negative sentiment increase probability and engagement low increase
-
 #  issues probablity high, not avoid, risk high
-

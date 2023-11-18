@@ -6,6 +6,5 @@ textColor="#2A9D8F"
 font="sans serif"
 
 [global]
-dataFrameSerialization = "legacy"
 disableWidgetStateDuplicationWarning = true
 

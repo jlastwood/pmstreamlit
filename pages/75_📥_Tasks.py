@@ -11,7 +11,7 @@ from collections import defaultdict
 import matplotlib.pyplot as plt
 import networkx as nx
 from datetime import datetime
-from scripts.thepmutilities import reporttitle
+from scripts.thepmutilities import reporttitle, gradiant_header
 
 st.session_state.update(st.session_state)
 
@@ -94,30 +94,6 @@ def find_paths(graph, node, slackTimes, paths):
 
 # https://github.com/sanatsingh/Critical-Path-Method-SE/blob/master/ca_2.py
 # https://levelup.gitconnected.com/how-to-create-a-multi-layer-gantt-chart-using-plotly-e7d7f158938c
-st.markdown("""
-    <style>
-        @media print {
-            /* Hide the Streamlit menu and other elements you don't want to print */
-            [data-testid="stSidebar"] {
-                display: none !important;
-            }
-
-            .main {
-                max-width: 8in !important;
-            }
-
-            span, p, div, textarea, input {
-                color: #000 !important;
-            }
-            
-            .stMarkdown, .stCodeBlock, [data-testid="caption"], [data-testid="stMarkdownContainer"], [data-testid="stImage"], [data-baseweb="textarea"] {
-                max-width: 8in !important;
-                word-break: break-all;
-            }
-
-        }
-    </style>
-""", unsafe_allow_html=True)
 im = Image.open("assets/images/BlueZoneIT.ico")
 st.set_page_config(
       page_title="The PM Monitor Work Breakdown Activities",
@@ -126,9 +102,11 @@ st.set_page_config(
       initial_sidebar_state="collapsed",
 )
 
+gradiant_header ('The PM Monitor Activity Analysis')
 if 'thepmheader' not in st.session_state:
       st.error('Plan is missing. Please enter or import a plan')
       st.stop()
+
 
 reporttitle("Activity", st.session_state['thepmheader'])
 

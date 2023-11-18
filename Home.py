@@ -45,7 +45,8 @@ st.markdown("""
 
 st.header("6 Steps to Project Planning and Controlling")
 st.markdown("---")
-st.write("Create a comprehensive project plan with AI (askme) assistance, use built in analysis for sentiment and engagement analysis of communication channels and reports, use target activity plan analysis report for analysis of tasks and activities and finally using a comprehensive list of possible risks classified by phase and probability enables consistent and reliable  issue identification.")
+st.write("A project management tool provides assistance with managing chaos in a project, enabling the project manager to consume and analyse information from multiple sources, assess risks and plan actions. The PM Monitor walks the Project manager through creating a comprehensive Project plan with 7 phases, generates reports and provides tools to analyse risks, task progress and communications.")
+st.write("Create a comprehensive project plan with AI (askme) assistance, use built in analysis for sentiment and engagement analysis of communication channels , use target activity plan analysis report for analysis of tasks and activities and finally using a comprehensive list of possible risks classified by phase and probability enables fact based issue identification.")
 st.markdown("---")
 
 colr = st.columns(2)
@@ -53,14 +54,14 @@ with colr[0]:
     st.write(
         """
         Initiation and Planning \n 
-            • Identify goals
-            • Create a plan
-            • Define resources and activities
-            • Define milestones 
-            • Review the goals and charter
-            • Share canvas and schedule team kickoff 
-            • Review risks, challenges and opportunities 
-            • Create task list with team
+         - Identify goals
+         - Create a plan
+         - Define resources and activities
+         - Define milestones 
+         - Review the goals and charter
+         - Share canvas and schedule team kickoff 
+         - Review risks, challenges and opportunities 
+         - Create task list with team
         """)
 with colr[1]:
     st.image(ip, caption="Step 1 - The PM Monitor Initiation, Planning, Set Goals and Objectives")
@@ -70,12 +71,12 @@ with coll[1]:
     st.write(
         """
         Execute, Monitor and Control \n
-            • Update metrics,  milestones completed and costs incurred, change phase
-            • Monitor activity changes and updates
-            • Monitor communication channels, meetings and meeting outcomes
-            • Monitor risks and issues and initiate controls
-            • Create a report summary
-            • Share stoplight report on your communication channel. 
+         - Update metrics,  milestones completed and costs incurred, change phase
+         - Monitor activity changes and updates
+         - Monitor communication channels, meetings and meeting outcomes
+         - Monitor risks and issues and initiate controls
+         - Create a report summary
+         - Share stoplight report on your communication channel. 
         """)
 with coll[0]:
     st.image(ip, caption='Step 2 - The PM Monitor Execution Monitoring, Controlling and Reporting')
@@ -85,11 +86,11 @@ with colr[0]:
     st.write(
         """
         Closure \n
-            • Gather feedback
-            • Create a report summary
-            • Update plan and charter and publish
-            • Generate final stoplight report
-            • Thank the team and release
+         - Gather feedback
+         - Create a report summary
+         - Update plan and charter and publish
+         - Generate final stoplight report
+         - Thank the team and release
         """)
 with colr[1]:
     st.image(ip, caption='Step 3 - The PM Monitor Closing')
