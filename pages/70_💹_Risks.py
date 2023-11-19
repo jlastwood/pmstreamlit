@@ -73,7 +73,7 @@ with st.container():
 
      #st.write(risksummary)
 
-     col3, col4, col5, col6 = st.columns(4)
+     col3, col4, col5 = st.columns(3)
      col3.metric("Issues", issues)
      col4.metric("Risks", risks)
      col5.metric("Closed", startmetric5, int(startmetric5/totalrisks))
@@ -103,17 +103,17 @@ with st.container():
      )
      st.altair_chart(d, use_container_width=True)
 
-     st.subheader("Risk by Owner and Timeline")
-     st.write("Risks are closed when the project advances to later phases.")
+     st.subheader("Risk by Class and Timeline")
+     st.write("Risks are closed when the project advances to later phases as they no longer are applicable")
      d = alt.Chart(dataframe.dropna()).mark_bar().encode(
-       x='riskowner',
+       x='riskclassification',
        y='count(risktimeline)',
        color='risktimeline'
      )
      st.altair_chart(d, use_container_width=True)
 
      st.subheader("Risk by Owner and Trigger")
-     st.write("Using triggers identify if risks have occurred or will occur.")
+     st.write("Using triggers risks in the current phase will be flagged as issues ", phasenumber, SPI, CPI, engagementscoreteam, sentimentscoreteam, retention, scopechange, earnedvalue, roi, latestart, inspectfail)
      f = alt.Chart(dataframe.dropna()).mark_bar().encode(
        x='riskowner',
        y='count(risktrigger)',

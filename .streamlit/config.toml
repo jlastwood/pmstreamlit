@@ -6,5 +6,5 @@ textColor="#2A9D8F"
 font="sans serif"
 
 [global]
-disableWidgetStateDuplicationWarning = true
+# disableWidgetStateDuplicationWarning = true
 

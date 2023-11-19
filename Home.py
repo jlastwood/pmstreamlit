@@ -7,7 +7,6 @@ st.set_page_config(
     page_title="The PM Monitor",
     page_icon=im,
     layout="wide",
-    initial_sidebar_state="collapsed",
 )    
 st.session_state.update(st.session_state)
 ip = Image.open("assets/images/HomeImage.jpg")
@@ -48,7 +47,15 @@ st.markdown("---")
 st.write("A project management tool provides assistance with managing chaos in a project, enabling the project manager to consume and analyse information from multiple sources, assess risks and plan actions. The PM Monitor walks the Project manager through creating a comprehensive Project plan with 7 phases, generates reports and provides tools to analyse risks, task progress and communications.")
 st.write("Create a comprehensive project plan with AI (askme) assistance, use built in analysis for sentiment and engagement analysis of communication channels , use target activity plan analysis report for analysis of tasks and activities and finally using a comprehensive list of possible risks classified by phase and probability enables fact based issue identification.")
 st.markdown("---")
+video_file = open('streamlit-Home-2023-11-19-09-11-67.webm', 'rb')
+video_bytes = video_file.read()
+st.video(video_bytes)
 
+with st.sidebar:
+   st.write("this is sidebar")
+   st.markdown('<a href="/Save.py" target="_self">Next page</a>', unsafe_allow_html=True)
+
+st.markdown("---")
 colr = st.columns(2)
 with colr[0]:
     st.write(

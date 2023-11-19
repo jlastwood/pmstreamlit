@@ -1,7 +1,5 @@
 import streamlit as st
 import pandas as pd 
-#import numpy as np
-#np.bool = np.bool_
 import plotly.express as px
 from  PIL import Image
 import io 
@@ -12,6 +10,8 @@ import matplotlib.pyplot as plt
 import networkx as nx
 from datetime import datetime
 from scripts.thepmutilities import reporttitle, gradiant_header
+# https://medium.com/@luisfernandopa1212/efficient-project-scheduling-with-python-the-critical-path-method-19a3f8235f91
+# https://pypi.org/project/cheche-pm/###Risk_Analysis
 
 st.session_state.update(st.session_state)
 
@@ -124,8 +124,8 @@ if uploaded_file is not None:
     duration = {}
 
     Tasks=pd.read_csv(uploaded_file, quotechar='"', delimiter=',', skipinitialspace=True)
-    Tasks['Start'] = Tasks['Start'].astype('datetime64')
-    Tasks['finish'] = Tasks['finish'].astype('datetime64')
+    Tasks['Start'] = Tasks['Start'].astype('datetime64[ns]')
+    Tasks['finish'] = Tasks['finish'].astype('datetime64[ns]')
     Tasks['du'] = Tasks['du'].astype('int')
     Tasks['du'] = Tasks['du'].fillna(0)
     # force type to int

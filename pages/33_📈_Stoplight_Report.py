@@ -15,6 +15,7 @@ from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api.formatters import TextFormatter
 from wordcloud import WordCloud, STOPWORDS
 import matplotlib.pyplot as plt
+from scripts.riskgenerate import calculate_risks_json
 
 def color_survived(val):
     color = 'white'
@@ -206,24 +207,50 @@ with cole:
   # if there are open risks, and probability is 100 and impact is high
   st.markdown("<font color='grey'>Risks have become issues and require management action</font>", unsafe_allow_html=True)
 st.markdown("---")
-cola, colb, colc = st.columns([2,2,4])
+cola, colb, colc, cold = st.columns([2,2,2,2])
 with cola:
   st.write("Planned Completion")
 with colb:
   st.write(st.session_state['pldenddate'])
 with colc:
-  st.markdown("<font color='red'></font>", unsafe_allow_html=True)
+  st.write("Planned Features")
+with cold:
+  st.write(st.session_state['plnfeaturesplanned'])
 with cola:
   st.write("Estimate to Complete")
 with colb:
-  st.session_state['thepmtimecomplete']
+  st.write(st.session_state['thepmtimecomplete'])
 with colc:
-  st.markdown("<font color='red'><font>", unsafe_allow_html=True)
+  st.write("Features Completed")
+with cold:
+  st.write(st.session_state['plnfeaturescompleted'])
 st.markdown("---")
 
 st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: green; font-size: 120%;'>Stakeholder Action</p>", unsafe_allow_html=True)
 
-st.write("write out 3 risks that are high probablity and high impact")
+st.write("The following issues have been triggered, the risk owner should consider taking action to recover.")
+
+phasenumber = st.session_state.plnlistphase
+CPI = st.session_state.thepmcpi
+SPI = st.session_state.thepmspi
+engagementscoreteam = st.session_state.plnactivesam
+sentimentscoreteam = st.session_state.plnactiveses
+retention = st.session_state.plnopenroles
+scopechange = len(st.session_state.plscopechange.split("."))
+if len(st.session_state.plscopechange) < 6:
+   scopechange = 0
+earnedvalue = st.session_state.plnactiveses
+roi = st.session_state.plnactiveses
+latestart = st.session_state.plnactiveses
+inspectfail = st.session_state.plnactiveses
+
+(myrisks, issues, risks, totalrisks, risksummary)  = calculate_risks_json(phasenumber, SPI, CPI, engagementscoreteam, sentimentscoreteam, retention, scopechange, earnedvalue, roi, latestart, inspectfail)
+
+cols = ['risktype', 'riskowner', 'riskscore', 'riskdescription']
+myissues = (myrisks[myrisks['riskselect'] == 'I'])
+subissues = myissues[cols]
+
+st.table(subissues)
 
 if len(videopmreport) < 10:
   st.warning("PM status report is missing.  Please create report with transcript to get the remaining stoplight report analysis")
