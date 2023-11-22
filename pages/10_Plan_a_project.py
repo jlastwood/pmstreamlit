@@ -2,7 +2,7 @@ import streamlit as st
 from PIL import Image
 from datetime import timedelta, date, datetime
 import pandas as pd
-from scripts.thepmutilities import evreport, plancomment, get_grade
+from scripts.thepmutilities import evreport, plancomment, get_grade, gradiant_header
 import altair as alt
 from st_aggrid import AgGrid
 from hugchat import hugchat
@@ -117,9 +117,19 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-st.markdown("<h3 style='text-align: center; color: white; background: grey;'>The PM Monitor</h3>", unsafe_allow_html=True)
+#  get the theme colors
+color1t = st._config.get_option('theme.primaryColor')
+color1b = st._config.get_option('theme.secondaryBackgroundColor')
+color1c = st._config.get_option('theme.backgroundColor')
+color1d = st._config.get_option('theme.textColor')
 
-tab0, tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9 = st.tabs(["Start", "Info", "Scope", "Cost", "Schedule", "Team", "Quality", "Constraints", "ROI", "Chat"])
+theme_scope = {'bgcolor': '#f9f9f9','title_color': 'orange','content_color': 'orange','icon_color': 'orange', 'icon': 'fa fa-check-circle'}
+font_fmt = {'font-class':'h4','font-size':'50%'}
+mySep = ","
+
+gradiant_header ('The PM Monitor Project Planning Form') 
+
+tab0, tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8, tab9, tab10 = st.tabs(["Start", "Info", "Scope", "Cost", "Schedule", "Roster", "Quality", "Constraints", "ROI", "Chat", "Risk"])
 #with st.form(key="pmmonitorplan", clear_on_submit=False):
 
      ##  Introduction to Planning
@@ -268,7 +278,7 @@ with tab2:
       scopechange = st.text_area ("What scope has been added or removed after the start of this project? ", value=setvalue('plscopechange'), key='plscopechange')
       col4, col5 = st.columns(2)
       with col4:
-       st.slider('Features Planned', min_value=0, max_value=20, value=setvalue('plnfeaturesplanned'), help="How many features are planned for this product. One feature is a collection or group of user stories.  Epics are high level initiatives and contain many features", key='plnfeaturesplanned')
+       st.slider('Features Planned', min_value=0, max_value=20, value=setvalue('plnfeaturesplanned'), help="How many features are planned for this product. One feature is a collection or group of user stories.  Epics are high level initiatives and contain many features", key='plnfeaturesplanned', disabled=disableplan)
       with col5:
        st.session_state['plnfeaturescompleted'] = st.slider('Features Completed', min_value=0, max_value=20, value=setvalue('plnfeaturescompleted'), help="How many features are completed at this report?")
       st.text_area ("What is out of scope?", value=setvalue('plscopeoutofscope'), key='plscopeoutofscope')
@@ -311,25 +321,24 @@ with tab4:
       st.subheader("Schedule")
       st.write("The plan is managed and controlled by the defined milestones.  Your project should have no less than 6 milestones however you can define more. Milestones are point in time events that are used to verify if the project is on track.  Completing a phase in the plan is a milestone.  Features can be decomposed into unique stories, stories are SMART,  Specific, Measurable, Achievable, Realistic and completion of a feature can be tracked as a milestone. ")
 
-      st.date_input ("Plan Date", setvalue('pldplandate'), key='pldplandate', help="Enter the target project plan date")
-      st.date_input ("Design Date", setvalue('plddesigndate'), key='plddesigndate', help="Enter the target project plan date")
-      st.date_input ("Build Date", setvalue('pldbuilddate'), key='pldbuilddate', help="Enter the target project plan date")
-      st.date_input ("Inspect Date", setvalue('pldinspectdateplan'), key='pldinspectdateplan', help="Enter the target project plan date")
-      st.date_input ("Accept Date", setvalue('pldacceptdate'), key='pldacceptdate', help="Enter the target project plan date")
+      st.date_input ("Plan Date", setvalue('pldplandate'), key='pldplandate', help="Enter the target project plan date", disabled=disableplan)
+      st.date_input ("Design Date", setvalue('plddesigndate'), key='plddesigndate', help="Enter the target project plan date", disabled=disableplan)
+      st.date_input ("Build Date", setvalue('pldbuilddate'), key='pldbuilddate', help="Enter the target project plan date", disabled=disableplan)
+      st.date_input ("Inspect Date", setvalue('pldinspectdateplan'), key='pldinspectdateplan', help="Enter the target project plan date", disabled=disableplan)
+      st.date_input ("Accept Date", setvalue('pldacceptdate'), key='pldacceptdate', help="Enter the target project plan date", disabled=disableplan)
       sdate = st.session_state['pldstartdate']
       #[sdate+timedelta(days=x) for x in range((edate-sdate).days)]
+      reportsinplan = 1
       if st.session_state['plncadence'] > 0:
        reportsinplan = int(weeksinplan/st.session_state['plncadence'])
-      else:
-       reportsinplan = 1
       #  we must report at least close of each phase
       if reportsinplan < 6:
        reportsinplan = 6 
-      st.session_state['reportsinplan'] = reportsinplan
+      st.session_state['thepmreportsinplan'] = reportsinplan
 
       st.write("Status Reports", reportsinplan)
-      series = pd.DataFrame(pd.date_range(start=st.session_state.pldstartdate, end=st.session_state.pldenddate, periods=st.session_state.reportsinplan, normalize=True))
-      seriesb = pd.DataFrame(pd.date_range(start=st.session_state.pldstartdate, end=st.session_state.pldenddate, periods=st.session_state.reportsinplan))
+      series = pd.DataFrame(pd.date_range(start=st.session_state.pldstartdate, end=st.session_state.pldenddate, periods=st.session_state.thepmreportsinplan, normalize=True))
+      seriesb = pd.DataFrame(pd.date_range(start=st.session_state.pldstartdate, end=st.session_state.pldenddate, periods=st.session_state.thepmreportsinplan))
       jseries = pd.merge(series, seriesb, left_index=True, right_index=True)
       jseries = jseries.rename(columns={"0_x": "reportdate", "0_y": "plandate"})
       jseries['Milestone'] = "Baseline"
@@ -390,17 +399,17 @@ with tab4:
       # st.write(oseries)
 
 with tab5:
-      st.subheader("Team")
+      st.subheader("Roster")
       st.write("Projects are executed and implemented by people, the team, the stakeholders and are implemented to provide benefit to users or customers.  The communication plan outlines the needs of the stakeholders, team and users. The complexity maintaining good communication and establishing trust between the team and the stakeholders is a factor of the size of the team, and how long they have been working together.  Trust is earned, not given, and as trust increases, performance will improve and quality will follow.  Typically engagement and team sentiment is high at the beginning of the project and decreases over time, and engagement of the stakeholders follows the opposite pattern  ")
       col1, col2, col3, col4 = st.columns(4)
       with col1:
-       st.slider ("Number of Stakeholders", value=setvalue('plnstakeholder'), format="%i", min_value=0, max_value=10, step=1, key='plnstakeholder' )
+       st.slider ("Number of Stakeholders", value=setvalue('plnstakeholder'), format="%i", min_value=0, max_value=10, step=1, key='plnstakeholder', disabled=disableplan )
       with col2:
-       st.slider ("Number of Core Team Members", value=setvalue('plnteam'), format="%i", min_value=0, max_value=15, step=1, key='plnteam')
+       st.slider ("Number of Core Team Members", value=setvalue('plnteam'), format="%i", min_value=0, max_value=15, step=1, key='plnteam', disabled=disableplan)
       with col3:
-       st.slider ("Number of Users", value=setvalue('plnusers'), format="%i", min_value=0, max_value=100000, step=10000, key='plnusers')
+       st.slider ("Number of Users", value=setvalue('plnusers'), format="%i", min_value=0, max_value=100000, step=10000, key='plnusers', disabled=disableplan)
       with col4:
-       st.slider ("Number of Actors", value=setvalue('plnactors'), format="%i", min_value=0, max_value=10, step=1, key='plnactors')
+       st.slider ("Number of Actors", value=setvalue('plnactors'), format="%i", min_value=0, max_value=10, step=1, key='plnactors', disabled=disableplan)
       st.write("---")
       col1, col2, col3, col4 = st.columns(4)
       with col1:
@@ -431,16 +440,16 @@ with tab5:
       st.write("Enter the contact information of the team leads, architect and account manager")
       col1, col2, col3, col4, col5 = st.columns(5)
       with col1:
-       st.text_input ("Solution Architect Name", max_chars=30, value=setvalue('plpsolutionname'), key='plpsolutionname')
-       st.text_input ("Controller Finance ", max_chars=30, value=setvalue('plpfinancename'), key='plpfinancename')
+       st.text_input ("Solution Architect Name", max_chars=30, value=setvalue('plpsolutionname'), key='plpsolutionname', disabled=disableplan)
+       st.text_input ("Controller Finance ", max_chars=30, value=setvalue('plpfinancename'), key='plpfinancename', disabled=disableplan)
       with col2:
-       st.text_input ("Operations Lead Name", max_chars=30, value=setvalue('plpoperationname'), key='plpoperationname')
+       st.text_input ("Operations Lead Name", max_chars=30, value=setvalue('plpoperationname'), key='plpoperationname', disabled=disableplan)
       with col3:
-       st.text_input ("Inspection Lead Name", max_chars=30, value=setvalue('plpinspectorname'), key='plpinspectorname')
+       st.text_input ("Inspection Lead Name", max_chars=30, value=setvalue('plpinspectorname'), key='plpinspectorname', disabled=disableplan)
       with col4:
-       st.text_input ("Account Manager Name", max_chars=30, value=setvalue('plpaccountname'), key='plpaccountname')
+       st.text_input ("Account Manager Name", max_chars=30, value=setvalue('plpaccountname'), key='plpaccountname', disabled=disableplan)
       with col5:
-       st.text_input ("Customer Project Manager Name", max_chars=30, value=setvalue('plpmcustname'), key='plpmcustname')
+       st.text_input ("Customer Project Manager Name", max_chars=30, value=setvalue('plpmcustname'), key='plpmcustname', disabled=disableplan)
       planchannels = (int(st.session_state['plnstakeholder']) + int(st.session_state['plnteam'])) * (int(st.session_state['plnstakeholder']) + int(st.session_state['plnteam']) - 1)
       st.write("---")
       st.write("The project manager supplies a video report with the reports")
@@ -457,7 +466,7 @@ with tab6:
       st.subheader("Quality and Grade")
       st.write("Enter the Quality inspection types, attributes and dates.  When the inspector starts to inspect, enter the results of the quality inspection.  The PM monitor will determine a pass/fail score based on the results against the plan. ")
       cb6 = st.checkbox("askme for a quality goal")
-      st.text_area ("Describe Quality Goal? (askme) ", value=setvalue('plsqualitygoal'), key='plsqualitygoal')
+      st.text_area ("Describe Quality Goal? (askme) ", value=setvalue('plsqualitygoal'), key='plsqualitygoal', disabled=disableplan)
       if cb6 and len(st.session_state.plsqualitygoal) < 10:
          query = "What would make customers happey in terms of the outcome of t " + st.session_state.plpname + " project?"
          info = chatbot.get_conversation_info()
@@ -483,17 +492,17 @@ with tab6:
       st.write("Enter details to calculate a grade, number of features planned, completed and inspected.  The quality of the product reports if the product is working, the grade is about product scope, how many features does the product have.  A product regardless of its service must be high-quality, however a product does not have to be high-grade, it can have minimal features and meet the goals of the sponsor.  Normally higher grade products, with more features have more risks and most cost.")
       col1, col2, col3, col4 = st.columns(4)
       with col1:
-       st.slider ("Number of Features", value=setvalue('plnscopenumber'), format="%i", min_value=0, max_value=100, step=1, key="plnscopenumber" )
+       st.slider ("Number of Features", value=setvalue('plnscopenumber'), format="%i", min_value=0, max_value=100, step=1, key="plnscopenumber" , disabled=disableplan)
       with col2:
-       st.slider ("Number of Features nice to have", value=setvalue('plnscopenumberwish'), format="%i", min_value=0, max_value=100, step=1, key="plnscopenumberwish" )
+       st.slider ("Number of Features nice to have", value=setvalue('plnscopenumberwish'), format="%i", min_value=0, max_value=100, step=1, key="plnscopenumberwish" , disabled=disableplan)
       with col3:
        st.slider ("Number of Features Complete and Pass", value=setvalue('plnscopenumbersuccess'), format="%i", min_value=0, max_value=100, step=1, key="plnscopenumbersuccess" )
       with col4:
-       st.slider ("Number of Features Comparable", value=setvalue('plnscopenumbercomp'), format="%i", min_value=0, max_value=100, step=1, key="plnscopenumbercomp", help="Describe the number of features in comparable products" )
+       st.slider ("Number of Features Comparable", value=setvalue('plnscopenumbercomp'), format="%i", min_value=0, max_value=100, step=1, key="plnscopenumbercomp", help="Describe the number of features in comparable products" , disabled=disableplan)
       st.multiselect(
          label='Select types of quality inspection attributes',
-         options=['Component Testing', 'Pre Production Testing', 'Pre Shipment/Final Inspection', 'None'],
-         default=setvalue('plmlistqualitytypes'), key='plmlistqualitytypes', max_selections = 3)
+         options=['Component or by Piece Testing', 'Pre Production Testing(PPI)', 'Pre Shipment/Final Inspection(PSI)', 'Security Test', 'Regulatory/Compliance Testing', 'Code Scanner', 'None'],
+         default=setvalue('plmlistqualitytypes'), key='plmlistqualitytypes', max_selections = 5)
      #  test results, test not done, test run less than tolerance of 70% test failed more than 20 or critical test failed is positive
       st.session_state['thepminspectionwarning'] = "Inspection planned or passed." 
       st.session_state['thepminspectionflag'] = 0 
@@ -527,17 +536,17 @@ with tab3:
       with col5:
        selected_cur2 = st.selectbox("Expense Currency", currchoice.Item, index=setvalue('pllistexpensecurrency')) 
        st.session_state['pllistexpensecurrency'] = currchoice.loc[currchoice.Item == selected_cur2]["Value"].iloc[0]
-      st.slider('Budget', min_value=0, max_value=200000, value=setvalue('plnbudget'), step=5000, key='plnbudget')
+      st.slider('Budget', min_value=0, max_value=200000, value=setvalue('plnbudget'), step=5000, key='plnbudget', disabled=disableplan)
       st.slider('Spend to Date', min_value=0, max_value=250000, value=setvalue('plnspend'), step=500, key='plnspend')
       col1, col2, col3, col4, col5 = st.columns(5)
       with col1:
-       st.slider('Estimated Work Hours', min_value=0, max_value=2000, value=setvalue('plnhours'), step=10, key='plnhours')
+       st.slider('Estimated Work Hours', min_value=0, max_value=2000, value=setvalue('plnhours'), step=10, key='plnhours', disabled=disableplan)
       with col2:
        st.slider('Average Rate', min_value=0, max_value=200, value=setvalue('plnavgrate'), step=5, key='plnavgrate')
       with col3:
        st.slider('Work Hours Performed', min_value=0, max_value=2000, value=setvalue('plnhoursused'), step=10, key='plnhoursused')
       with col4:
-       st.slider('Estimate Confidence', min_value=0, max_value=100, value=setvalue('plnhoursconfidence'), step=5, key='plnhoursconficence')
+       st.slider('Estimate Confidence', min_value=0, max_value=100, value=setvalue('plnhoursconfidence'), step=5, key='plnhoursconficence', disabled=disableplan)
       with col5:
        st.slider('Estimate Complete', min_value=0, max_value=100, value=setvalue('plnestimatecomplete'), step=5, key='plnestimatecomplete', help="Enter the value for earned value estimate")
       plbudget = st.session_state['plnbudget']
@@ -557,7 +566,12 @@ with tab3:
 with tab8:
       st.subheader("Return on Investment")
      #https://www.investopedia.com/articles/basics/10/guide-to-calculating-roi.asp
+     #[200~https://www.coface.com/news-economy-and-insights/business-risk-dashboard/country-risk-files/canada
       st.write("Measure the benefits or return on the investment over time based on the benefits, either savings or increased income after release.  Provide the date when new benefits are expected to start, and the number of periods to allocate the investment.  A benefit date before end of project is a sign of agile delivery or iterative delivery to give value in increments, or a maintanance project.  The ROI is a number that is used to measure the value of the investment in this project against other projects in your portfolio.")
+      st.write("input country , gdp, inflation, unemployment, growth,  Business climate, country risk")
+
+# https://www.focus-economics.com/countries/spain/
+# https://santandertrade.com/en/portal/analyse-markets/spain/economic-political-outline#
       col1, col2, col3, col4 = st.columns(4)
       with col1:
        st.session_state['plnincreaseincome']  = st.slider ("Benefit Income", value=setvalue('plnincreaseincome'), format="%i", min_value=-100000, max_value=1000000, step=5000 )
@@ -660,8 +674,8 @@ with tab7:
 
 with tab9:
     placeholder = st.empty()
-    textquestion = st.text_input ("Help")
-    # st.button('askmeforhelp', key='askmeforhelp')  
+    textquestion = st.text_input ("Ask AI for general help, enter a question")
+    #st.button('askmeforhelp', key='askmeforhelp')  
     #chatbot.change_conversation(id)
     if  len(textquestion) > 10:
       message = chatbot.query(textquestion)
@@ -669,3 +683,10 @@ with tab9:
       textquestion = ""
       st.code(message)
 
+with tab10:
+     st.write("Risk trigger default values")
+     risktriggers = {'Inflation': 10, 'Changes': 1, 'Earned Value': 0, 'Sentiment': 70, 'Engagement': 80, 
+        'CPI': 0,
+        'SPI': 0, 'Inspection': 3, 'ROI': 120, 'Late Start': 3, 'Climate': 1, 'Unemployment': 8, 'Business Climate': 'B',
+        'Country Risk': 'B' }
+     st.data_editor(risktriggers)

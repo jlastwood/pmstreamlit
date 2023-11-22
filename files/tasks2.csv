@@ -14,20 +14,20 @@ b,3,a,Epic,01/01/22,03/01/22,40,Mgr,Basic WordPress Development Checklist
 11,3,b,Story,01/01/22,03/01/22,0,Dev," Remove the WordPress default content like the Hello, World! post"
 12,3,b,Story,01/01/22,03/01/22,0,Dev, Delete the wp-config-sample
 13,3,b,Story,01/01/22,03/01/22,0,Dev, Install a WordPress theme
-14,3,b,Story,01/01/22,03/01/22,0,Dev, Install necessary WordPress plugins
+14,8,b,Story,01/01/22,03/01/22,0,Dev, Install necessary WordPress plugins
 15,3,b,Story,01/01/22,03/01/22,0,Dev, Create a sitemap
 16,3,b,Story,01/01/22,03/01/22,0,Dev, Create a 404 page
 17,3,b,Story,01/01/22,03/01/22,0,Dev, Add any additional Administrator users
 18,3,b,Story,01/01/22,03/01/22,0,Dev, Add a favicon
-19,3,b,Story,01/01/22,03/01/22,0,Dev, Add alt tags to all website images
+19,8,b,Story,01/01/22,03/01/22,0,Dev, Add alt tags to all website images
 20,3,b,Story,01/01/22,03/01/22,0,Dev, Combat spam
-21,3,b,Story,01/01/22,03/01/22,0,Dev, Set up a contact form
+21,3,19 20,Story,01/01/22,03/01/22,0,Dev, Set up a contact form
 22,3,b,Story,01/01/22,03/01/22,0,Dev, Update your user profile
 23,3,b,Story,01/01/22,03/01/22,0,Dev, Make sure the timezone is correct
-24,3,b,Story,01/01/22,03/01/22,0,Dev, Start tracking metrics with Google Analytics
+24,5,b,Story,01/01/22,03/01/22,0,Dev, Start tracking metrics with Google Analytics
 25,3,b,Story,01/01/22,03/01/22,0,Dev, Old website URLs are 301 redirected to new URLs
 26,3,b,Story,01/01/22,03/01/22,0,Dev, Add blog categories and remove the “Uncategorized” category
-27,3,b,Story,01/01/22,03/01/22,0,Dev, Test the website on multiple devices and browsers
+27,16,b,Story,01/01/22,03/01/22,0,Dev, Test the website on multiple devices and browsers
 28,3,b,Story,01/01/22,03/01/22,0,Dev, Test Everything!
 c,3,b,Story,01/01/22,03/01/22,0,Dev,WordPress Security Checklist
 ,3,c,Story,01/01/22,03/01/22,0,Dev,
@@ -48,8 +48,8 @@ c,3,b,Story,01/01/22,03/01/22,0,Dev,WordPress Security Checklist
 43,3,c,Story,01/01/22,03/01/22,0,Dev, Review your WordPress file permissions
 44,3,c,Story,01/01/22,03/01/22,0,Dev," Turn on reCAPTCHA for your WordPress user registration, comments, password reset, and login forms"
 45,3,c,Story,01/01/22,03/01/22,0,Dev," Review your WordPress security logs to see a summary of security-related activity on your site, including brute force attacks"
-d ,3,c,Story,01/01/22,03/01/22,0,Dev,WordPress Backup Checklist
-,3,d,Story,01/01/22,03/01/22,0,Dev,
+d,3,c,Story,01/01/22,03/01/22,0,Dev,WordPress Backup Checklist
+99,3,d,Story,01/01/22,03/01/22,0,Dev,
 46,3,d,Story,01/01/22,03/01/22,0,Dev, Install a WordPress backup plugin like BackupBuddy
 47,3,d,Story,01/01/22,03/01/22,0,Dev," Run a manual backup to backup your entire WordPress installation, including the WordPress database, all files, themes, plugins, media library, etc"
 48,3,d,Story,01/01/22,03/01/22,0,Dev, Download the backup zip file of your WordPress website

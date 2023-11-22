@@ -18,13 +18,27 @@ import matplotlib.pyplot as plt
 from scripts.riskgenerate import calculate_risks_json
 
 def color_survived(val):
+    #RAG (dashboard)
     color = 'white'
-    if val == 1:
+    if val == 'G':
       color = 'green' 
-    if val == 2:
-      color = 'red'
+    if val == 'A':
+      color = '#FFBF00' 
+    if val == 'R':
+      color = '#D12F2E'
     return f'background-color: {color}'
-
+def dashboard_rag(val):
+    #  value displayed based on ratio or value 
+    if val >= 6:
+       st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: #D12F2E; font-size: 100%;'>  R  </p>", unsafe_allow_html=True)      
+    elif val >= 3:
+       st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: #FFBF00; font-size: 100%;'>  A  </p>", unsafe_allow_html=True)      
+    elif val >= 1.0:
+       st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: green; font-size: 100%;'>  G  </p>", unsafe_allow_html=True)      
+    elif val < 0.8:
+       st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: #D12F2E; font-size: 100%;'>  R  </p>", unsafe_allow_html=True)      
+    else:
+       st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: #FFBF00; font-size: 100%;'>  A  </p>", unsafe_allow_html=True)      
 # get a list of the bullet points
 def split(s):
     thislist = []
@@ -114,21 +128,27 @@ daytoday = date.today()
 cpi = round(st.session_state.thepmcpi,1)
 spi = round(st.session_state.thepmspi,1)
 freqn = str(st.session_state.plncadence) + 'W'
-#series = pd.date_range(start=st.session_state.pldstartdate, end=st.session_state.pldenddate, periods=st.session_state.reportsinplan, freq='B')
+#series = pd.date_range(start=st.session_state.pldstartdate, end=st.session_state.pldenddate, periods=st.session_state.thepmreportsinplan, freq='B')
 series = pd.date_range(start=st.session_state.pldstartdate, end=st.session_state.pldenddate, freq=freqn)
-seriesdate = [datetime.strftime(d, '%m-%d-%Y') for d in series]
+seriesdate = [datetime.strftime(d, '%Y-%m-%d') for d in series]
 serieslist = pd.DataFrame(seriesdate)
 statuslist = []
+#  todo figure out a way to generate dashboard
 for i in range (0, len(serieslist)):
-   statuslist.append(1)
+  if seriesdate[i] > datetime.today().strftime('%Y-%m-%d'):
+   statuslist.append('0')
+  if seriesdate[i] < datetime.today().strftime('%Y-%m-%d'):
+   statuslist.append('G')
 serieslist['Status'] = statuslist
 bar_theme_2 = {'bgcolor': 'lightgrey','content_color': 'grey','progress_color': 'green'}
 
 reporttitle("Stoplight Report", st.session_state['thepmheader'])
 
+st.markdown("---")
 seriestrans = serieslist.T
 st.table(seriestrans.style.applymap(color_survived))
 
+st.markdown("---")
 cola, colb, colc, cold, cole = st.columns([1,2,1,1,4])
 with cola:
   st.write("Schedule")
@@ -137,7 +157,7 @@ with colb:
 with colc:
   st.write(st.session_state['thepmtimecomplete'], spi)
 with cold:
-  st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: #D12F2E; font-size: 100%;'>  R  </p>", unsafe_allow_html=True)
+  dashboard_rag(spi)
 with cole:
   if spi < 1:
     notes = "<font color='grey'>:warning:" + " Behind schedule - Contingency: " + st.session_state['plptimecontingency'] + "</font>"
@@ -153,7 +173,7 @@ with colb:
 with colc:
   st.write(scopebar)
 with cold:
-  st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: #FFBF00; font-size: 90%;'>  A  </p>", unsafe_allow_html=True)
+  dashboard_rag(len(st.session_state.plscopechange)/10)
 with cole:
   if len(st.session_state['plscopechange']) > 10:
     notec = "<font color='grey'>:warning: " + st.session_state['plpscopecontingency'] + "</font>"
@@ -164,14 +184,15 @@ cola, colb, colc, cold, cole = st.columns([1,2,1,1,4])
 with cola:
   st.write("Quality")
 with colb:
-  qualbar = 0
+  qualbar = qualratio = 0
   if int(st.session_state['plntests']) > 0:
    qualbar = int(st.session_state['plntestsfailed'] / st.session_state['plntests'] * 100)
+   qualration = float(st.session_state['plntestsfailed'] / st.session_state['plntests'])
   hc.progress_bar(qualbar,'Quality',key='thepaqual',sentiment='good',override_theme=bar_theme_2)
 with colc:
-  st.write(qualbar)
+  st.write(qualbar, qualratio, st.session_state.plntestsfailed)
 with cold:
-  st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: #FFBF00; font-size: 100%;'>  A  </p>", unsafe_allow_html=True)
+  dashboard_rag(st.session_state.plntestsfailed)
 with cole:
   if int(st.session_state['thepminspectionflag']) == 1:
     notec = "<font color='grey'>:warning: " + st.session_state['thepminspectionwarning'] + st.session_state['plpscopecontingency'] + "</font>"
@@ -186,7 +207,7 @@ with colb:
 with colc:
   st.write(st.session_state['thepmbudgetcomplete'], cpi)
 with cold:
-  st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: #FFBF00; font-size: 100%;'>  A  </p>", unsafe_allow_html=True)
+  dashboard_rag(cpi)
 with cole:
   if cpi < 1:
     notes = "<font color='grey'>:warning: " + "Over Budget - Contingency:  " + st.session_state['plpbudgetcontingency'] + "</font>"
@@ -226,7 +247,7 @@ with cold:
   st.write(st.session_state['plnfeaturescompleted'])
 st.markdown("---")
 
-st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: green; font-size: 120%;'>Stakeholder Action</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: red; font-size: 120%;'>Management Alert</p>", unsafe_allow_html=True)
 
 st.write("The following issues have been triggered, the risk owner should consider taking action to recover.")
 

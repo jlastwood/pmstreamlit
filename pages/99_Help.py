@@ -1,6 +1,15 @@
 import streamlit as st
 from PIL import Image
 from scripts.thepmutilities import gradiant_header
+import os
+
+def file_list_in_directory():
+  filelist=[]
+  for root, dirs, files in os.walk("files"):
+      for file in files:
+             filename=os.path.join(root, file)
+             filelist.append(filename)
+  return(filelist)
 
 im = Image.open("assets/images/BlueZoneIT.ico")
 st.set_page_config(
@@ -67,3 +76,6 @@ st.write("Print to PDF using browser or streamlit print.  Collapse the left navi
 
 st.subheader("Askme")
 st.write("To use AI to complete narriation, ensure the response field is empty and check the checkbox beside the question.  A proposed response will be output to the screen.  Copy the result into the field, edit and save.  Project name must have a value to use the feature.  This feature is a result of the great work at hugging face.  Huggingface is open source tools and models to solve AI problems.  https://towardsdatascience.com/whats-hugging-face-122f4e7eb11a ")
+
+filelist = file_list_in_directory()
+st.write(filelist)

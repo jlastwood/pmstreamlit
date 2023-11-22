@@ -1,8 +1,8 @@
-ac,Type,Start,finish,Completion Pct,Team,du,name,pr
-St,start,01/01/22,03/01/22,100,PM,1,,St
-a,Story,01/01/22,03/01/22,40,Dev,2,planning activity,St
-b,Story,01/01/22,03/01/22,100,Dev,3,planning activity,a
-c,Milestone,01/01/22,03/01/22,40,Mgr,4,planning activity,b
-d,Epic,01/01/22,03/01/22,40,Mgr,10,planning activity,c
-e,Story,01/01/22,03/01/22,40,Dev,3,planning activity,c
-End,End,01/01/22,03/01/22,1,PM,1,,d e
+ac,Type,Start,Finish,Completion Pct,Team,du,name,pr
+St,start,01/01/22,03/01/22,100,PM,1,Start,St
+a,Milestone,01/01/22,03/01/22,40,PM,2,Project Plan activity,St
+b,Milestone,01/01/22,03/01/22,100,TL,3,Product Design,a
+c,Milestone,01/01/22,03/01/22,0,Mgr,4,Product Build,b
+d,Milestone,01/01/22,03/01/22,0,Inspector,10,Inspection Report,c
+e,Milestone,01/01/22,03/01/22,0,PO,3,Product Acceptance,c
+End,End,01/01/22,03/01/22,1,PM,1,Close,d e

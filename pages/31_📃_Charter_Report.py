@@ -4,6 +4,8 @@ from PIL import Image
 import pandas as pd
 from scripts.thepmutilities import reporttitle, gradiant_header
 import re
+from scripts.riskgenerate import calculate_risks_json
+
 
 # get a list of the bullet points 
 def split(s):
@@ -160,7 +162,8 @@ The PM Monitor charter describes the project plan, goals, objectives and status 
     st.table(st.session_state.thepmevm)
     #st.dataframe(st.session_state.thepmevm, hide_index=True, use_container_width=True)
     st.header(":classical_building: Resources and Risks", anchor=False, help="overview", divider="rainbow")
-
+    st.write("***Team Information***")
+    st.write(st.session_state.thepmteam)
     impactlist = ['High','Very Low', 'Low', 'Moderate', 'High', 'Very High']
     v=f"**Scope Impact** {st.session_state.plnscoperange}-{impactlist[st.session_state.plnscoperange]}"
     st.write(v)
@@ -178,4 +181,22 @@ The PM Monitor charter describes the project plan, goals, objectives and status 
     st.write(v)
     st.write(st.session_state.plpresourcecontingency)
     st.markdown('##')
+
+    phasenumber = st.session_state.plnlistphase
+    CPI = st.session_state.thepmcpi
+    SPI = st.session_state.thepmspi
+    engagementscoreteam = st.session_state.plnactivesam
+    sentimentscoreteam = st.session_state.plnactiveses
+    retention = st.session_state.plnopenroles
+    scopechange = len(st.session_state.plscopechange.split(".")) 
+    if len(st.session_state.plscopechange) < 6:
+       scopechange = 0
+    earnedvalue = st.session_state.plnactiveses
+    roi = st.session_state.plnactiveses
+    latestart = st.session_state.plnactiveses
+    inspectfail = st.session_state.plnactiveses
  
+    st.write("Risks are identified as issues when the risk is trigged during project monitoring.  Issues are reported on the stoplight report with owner and recommended action.") 
+    (myrisks, issues, risks, totalrisks, risksummary)  = calculate_risks_json(phasenumber, SPI, CPI, engagementscoreteam, sentimentscoreteam, retention, scopechange, earnedvalue, roi, latestart, inspectfail) 
+    st.bar_chart(myrisks, x='riskowner', y='riskclassification')
+

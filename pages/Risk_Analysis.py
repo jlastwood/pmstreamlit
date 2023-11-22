@@ -7,6 +7,18 @@ from scripts.risklist import getrisks
 from scripts.thepmutilities import reporttitle, gradiant_header
 from scripts.riskgenerate import calculate_risks_json
 
+#  https://asana.com/resources/risk-register
+#  incorporate this
+#  https://www.stakeholdermap.com/risk/register-common-project-risks.html
+#  https://www.carmichaelireland.ie/app/uploads/2022/03/Sample-Completed-Risk-Register.pdf
+#  https://www.indeed.com/hire/c/info/project-risk-registers
+#  https://risk-academy.ru/download/example-of-a-completed-risk-register/
+#  https://www.dhs.gov/sites/default/files/publications/bw11_foia_cbp_007329_-_007334.pdf
+#  https://www.thepensionsregulator.gov.uk › pd
+#  https://www.warrington.gov.uk/sites/default/files/2019-10/risk_register.pdf
+#  https://www.rocketlane.com/blogs/how-to-create-a-project-risk-register-free-template
+
+
     # set value for score in dictionary for selected risks
     # using timeline decide which risks are closed and probability
 
@@ -85,23 +97,26 @@ with st.container():
 
      #st.subheader("Risk by Type")
      #st.bar_chart(groupscore)
+     col1, col2 = st.columns(2)
 
-     st.subheader("Risk by Type and Impact")
-     c = alt.Chart(dataframe.dropna()).mark_bar().encode(
+     with col1:
+      st.subheader("Risk by Type and Impact")
+      c = alt.Chart(dataframe.dropna()).mark_bar().encode(
        x='risktype',
        y='count(riskimpact)',
        color='riskimpact'
-     )
-     st.altair_chart(c, use_container_width=True)
+      )
+      st.altair_chart(c, use_container_width=True)
 
-     st.subheader("Risk by Owner and Score")
-     st.write("The project manager owns and monitors most risks, but some are owned by other in the team such as the product owner, team or sponsor to monitor and inform the project manager when the risk becomes an issue.  ")
-     d = alt.Chart(dataframe.dropna()).mark_bar().encode(
+     with col2:
+      st.subheader("Risk by Owner and Score")
+      d = alt.Chart(dataframe.dropna()).mark_bar().encode(
        x='riskowner',
        y='count(riskscore)',
        color='riskscore'
-     )
-     st.altair_chart(d, use_container_width=True)
+      )
+      st.altair_chart(d, use_container_width=True)
+      st.write("The project manager owns and monitors most risks, but some are owned by other in the team such as the product owner, team or sponsor to monitor and inform the project manager when the risk becomes an issue.  ")
 
      st.subheader("Risk by Class and Timeline")
      st.write("Risks are closed when the project advances to later phases as they no longer are applicable")

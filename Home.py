@@ -51,9 +51,6 @@ video_file = open('streamlit-Home-2023-11-19-09-11-67.webm', 'rb')
 video_bytes = video_file.read()
 st.video(video_bytes)
 
-with st.sidebar:
-   st.write("this is sidebar")
-   st.markdown('<a href="/Save.py" target="_self">Next page</a>', unsafe_allow_html=True)
 
 st.markdown("---")
 colr = st.columns(2)
