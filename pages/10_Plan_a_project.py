@@ -4,7 +4,7 @@ from datetime import timedelta, date, datetime
 import pandas as pd
 from scripts.thepmutilities import evreport, plancomment, get_grade, gradiant_header
 import altair as alt
-from st_aggrid import AgGrid
+#from st_aggrid import AgGrid
 from hugchat import hugchat
 from hugchat.login import Login
 
