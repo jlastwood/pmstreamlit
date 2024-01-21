@@ -206,7 +206,7 @@ with colc:
 with cold:
   dashboard_rag(st.session_state.plntestsfailed)
 with cole:
-  if int(st.session_state['thepminspectionflag']) == 1:
+  if int(st.session_state['thepminspectflag']) == 1:
     notec = "<font color='grey'>:warning: " + st.session_state['thepminspectionwarning'] + st.session_state['plpscopecontingency'] + "</font>"
   else:
     notec = ""
