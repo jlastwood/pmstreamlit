@@ -4,7 +4,9 @@ import streamlit as st
 #  from forex_python.converter import CurrencyRates
 import math
 import pandas as pd
-import datetime
+# import datetime
+from datetime import datetime 
+from datetime import date
 
 # https://forex-python.readthedocs.io/en/latest/usage.html
 # price of oil because USD is based on oil
@@ -115,8 +117,10 @@ def evreport(projectrevenue, projectbudget, projecthours, projectrate, projectba
       cv = ev - acwp
       if acwp > 0:
         cpi = ev/acwp
-      #if spi > 0 and cpi > 0:
-      eac = float(acwp + ((projectbudget - ev)/(spi * cpi)))
+      if spi > 0 and cpi > 0:
+        eac = float(acwp + ((projectbudget - ev)/(spi * cpi)))
+      else:
+        eac = projectbudget
       etc = float(eac - acwp)
       #  BAC is project budget, only change if approved change in scope
       bac = projectbudget
@@ -176,7 +180,7 @@ def plancomment(dateStart, dateEnd, daystoday, daystoend, timecomplete, coreteam
    weekstotal = (daystoday / 7) 
    weeksend = int(daystoend / 7) 
    cadnumber = cadence
-   commentnote = f'Project {projectname} ({projectid}) sponsored by {pmname} is a {pmclass} project.  The project is currently in the {prphase} phase with planned completion in {weeksend:.0f} week(s) on {dateEnd} . Project initiation is {dateStart}. Status reports are updated every {cadnumber} week(s).  \n  \n '
+   commentnote = f'Project {projectname} ({projectid}) sponsored by {pmname} is a {pmclass} project.  Project was initiated on {dateStart} and is currently in the {prphase} phase with planned completion in {weeksend:.0f} week(s) on {dateEnd} . Project management reports are delivered every {cadnumber} week(s).  \n  \n '
    return(commentnote)
 
 # weather events

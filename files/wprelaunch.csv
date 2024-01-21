@@ -1,0 +1,181 @@
+,0,1
+0,plspname,John S johns@example.com
+1,plscopeoutofscope,None
+2,plddesigndate,2023-12-23
+3,plncycle,1
+4,plnactivesamuser,0
+5,plpmid,
+6,plmlistscopelist,['None']
+7,pllisttype,3
+8,plpresourcecontingency,None
+9,plptimecontingency,None
+10,thepmcpi,0
+11,plnincreaseincome,0
+12,thepmphase,2
+13,plncadence,2
+14,plpoperationname,None
+15,disabled,False
+16,plpstanduplink,None
+17,pldbuilddate,2023-12-23
+18,thepmquality,There are 0  tests planned.  The inspector is None.  The inspection report is planned on 2023-12-23  Pass to fail rate is 0%. Test coverage is 0%.  None . 
+19,plpfinancename,None
+20,plpteamcontingency,None
+21,plnhoursconficence,0
+22,plnestimatecomplete,0
+23,plnactors,0
+24,plnscopenumbercomp,0
+25,plcsmcomment,
+26,plnlistphase,2
+27,pldacceptdate,2023-12-23
+28,thepmmilestones,"                  reportdate            plandate  Milestone
+0 2023-12-04 00:00:00.000000 2023-12-04 00:00:00   Baseline
+1 2023-12-20 19:12:00.000000 2023-12-20 19:12:00   Baseline
+2 2024-01-06 14:24:00.000000 2024-01-06 14:24:00   Baseline
+3 2024-01-23 09:36:00.000000 2024-01-23 09:36:00   Baseline
+4 2024-02-09 04:48:00.000000 2024-02-09 04:48:00   Baseline
+5 2024-02-26 00:00:00.000000 2024-02-26 00:00:00   Baseline
+0 2023-12-23 00:00:00.000000 2023-12-23 00:00:00   5-Accept
+1 2023-12-23 00:00:00.000000 2023-12-23 00:00:00   5-Accept
+0 2023-12-23 00:00:00.000000 2023-12-23 00:00:00  4-Inspect
+1 2023-12-23 00:00:00.000000 2023-12-23 00:00:00  4-Inspect
+0 2023-12-23 00:00:00.000000 2023-12-23 00:00:00    3-Build
+1 2023-12-23 00:00:00.000000 2023-12-23 00:00:00    3-Build
+0 2023-12-23 00:00:00.000000 2023-12-23 00:00:00   2-Design
+1 2023-12-23 00:00:00.000000 2023-12-23 00:00:00   2-Design
+0 2023-12-16 00:00:00.000000 2023-12-23 00:00:00     1-Plan
+1 2023-12-23 00:00:00.000000 2023-12-23 00:00:00     1-Plan
+0 2023-12-23 12:15:27.758259 2023-12-23 00:00:00      Today
+1 2023-12-23 12:15:27.758259 2024-02-26 00:00:00      Today"
+29,thepmdelivery,0
+30,plnhoursused,0
+31,plspurpose,"The purpose of a website relaunch and SEO (Search Engine Optimization) project is to improve the overall quality, functionality, and search engine ranking of a website. This can be achieved by addressing various aspects of the website, including:
+
+1. User Experience (UX): Enhancing the user experience by improving navigation, content organization, and visual design, making it easier for visitors to find what they're looking for and achieve their goals.
+2. Technical SEO: Ensuring that the website's technical infrastructure is optimized for search engines, with improvements such as faster loading speeds, mobile-friendliness, and crawlability.
+3. Content Quality: Updating and optimizing existing content, creating new high-quality content, and ensuring that all content is relevant to the target audience and aligned with the company's business goals.
+4. Keyword Strategy: Conducting keyword research to identify relevant keywords and phrases, and incorporating them into the website's content in a natural and organic way.
+5. Link Building: Obtaining high-quality backlinks from authoritative sources to increase the website's authority and improve its rankings in search results.
+6. Analytics and Tracking: Setting up or updating analytics tools to track website performance, user behavior, and conversion rates, allowing for data-driven decisions to be made during the optimization process.
+7. Branding and Identity: Ensuring that the website accurately reflects the company's brand identity and values, building trust and credibility with potential customers.
+8. Competitive Advantage: Differentiating the website from competitors, providing unique value propositions, and highlighting the company's unique selling points.
+9. Accessibility: Ensuring that the website is accessible to all users, regardless of physical abilities or device usage, by following accessibility guidelines and best practices.
+10. Future Growth: Laying the groundwork for future growth and expansion, by implementing scalable solutions and preparing the website for potential increases in traffic and engagement.
+
+The ultimate goal of a website relaunch and SEO project is to create a high-performing website that attracts, engages, and converts visitors into customers, ultimately driving business growth and revenue."
+32,pldinspectdateplan,2023-12-23
+33,plntests,0
+34,plscopemusthave,"Here are three must-have features of a website relaunch and SEO project:
+
+1. Keyword Research and Strategy: A thorough keyword research and strategy is essential for a successful website relaunch and SEO project. This involves identifying the most relevant and profitable keywords for your business, analyzing competitors' strategies, and developing a plan to incorporate those keywords naturally throughout your website's content, titles, descriptions, headings, and metadata. This will help search engines understand the relevancy and importance of your content, increasing your chances of ranking higher in search engine results pages (SERPs).
+2. Mobile-Friendliness and Page Speed: With the majority of internet users accessing websites through mobile devices, a mobile-friendly website is no longer a luxury, it's a necessity. A website relaunch is the perfect opportunity to ensure that your website is fully responsive, loads quickly, and provides a seamless user experience across all devices. Page speed is also crucial, as slow-loading websites can negatively impact user experience and search engine rankings. A website relaunch should prioritize optimizing images, minifying codes, and leveraging browser caching to ensure fast page load times.
+3. Content Quality and Quantity: High-quality, engaging, and informative content is essential for a successful website relaunch and SEO project. Your website's content should be well-researched, well-written, and tailored to your target audience's needs and interests. In addition to having high-quality content, it's important to have enough content to satisfy search engines and keep users engaged. A website relaunch is an opportunity to assess your current content, remove low-quality or thin content, and develop a content marketing strategy that aligns with your business goals and targets your ideal customer personas.
+
+By incorporating these three must-have features into your website relaunch and SEO project, you can improve your website's user experience, search engine rankings, and ultimately, drive more conversions and grow your business."
+35,plntestscritical,0
+36,thepmphasename,Design
+37,plnopenroles,0
+38,thepmgrade,A product with 0 features has a grade of None.  The current grade is None which measures the number of features delivered and passed inspection. The number of actors or personas is 0 increasing actors will increase cost however will improve grade.  Delivery of nice to have features or high quality non-functional attributes will also improve the grade.  The non-functional attributes are None
+39,thepmplannote,"Project Website relaunch and SEO  (1.0) sponsored by John S johns@example.com is a Brand Marketing project.  The project is currently in the Design phase with planned completion in 12 week(s) on 2024-02-26 . Project was initiated on 2023-12-04. Project management reports are delivered every 2 week(s).  
+  
+ "
+40,plpbudgetcontingency,None
+41,plpmcustname,None
+42,pldinspectdate,2023-12-23
+43,pldplandate,2023-12-23
+44,pldbenefitdate,2023-12-23
+45,thepmtimecomplete,22
+46,thepaqual,
+47,thepmreportsinplan,6
+48,plsbenchmarks,None
+49,plpactivitylink,None
+50,thepascope,
+51,plsapprovalchange,None
+52,plnschedulerange,0
+53,plnteamweeks,0
+54,plpmreport,
+55,thepaschedule,
+56,pllistexpensecurrency,0
+57,plnavgrate,0
+58,plnusers,0
+59,pldcharterdate,2023-12-18
+60,plsqualitygoal,None
+61,plscopenicetohave,None
+62,plsqualityreport,None
+63,thepminspectionwarning,Inspection plan missing or failed.
+64,plnscoperange,0
+65,thepmevm,"Empty DataFrame
+Columns: []
+Index: [0]"
+66,plpname,Website relaunch and SEO 
+67,plscopechange,None
+68,plpsolutionname,None
+69,thepmplanscope,"Options:  
+
+  None  
+
+ Required:  
+  Here are three must-have features of a website relaunch and SEO project:
+
+1. Keyword Research and Strategy: A thorough keyword research and strategy is essential for a successful website relaunch and SEO project. This involves identifying the most relevant and profitable keywords for your business, analyzing competitors' strategies, and developing a plan to incorporate those keywords naturally throughout your website's content, titles, descriptions, headings, and metadata. This will help search engines understand the relevancy and importance of your content, increasing your chances of ranking higher in search engine results pages (SERPs).
+2. Mobile-Friendliness and Page Speed: With the majority of internet users accessing websites through mobile devices, a mobile-friendly website is no longer a luxury, it's a necessity. A website relaunch is the perfect opportunity to ensure that your website is fully responsive, loads quickly, and provides a seamless user experience across all devices. Page speed is also crucial, as slow-loading websites can negatively impact user experience and search engine rankings. A website relaunch should prioritize optimizing images, minifying codes, and leveraging browser caching to ensure fast page load times.
+3. Content Quality and Quantity: High-quality, engaging, and informative content is essential for a successful website relaunch and SEO project. Your website's content should be well-researched, well-written, and tailored to your target audience's needs and interests. In addition to having high-quality content, it's important to have enough content to satisfy search engines and keep users engaged. A website relaunch is an opportunity to assess your current content, remove low-quality or thin content, and develop a content marketing strategy that aligns with your business goals and targets your ideal customer personas.
+
+By incorporating these three must-have features into your website relaunch and SEO project, you can improve your website's user experience, search engine rankings, and ultimately, drive more conversions and grow your business.  
+
+  Out of Scope:  None None"
+70,thepmteam,"The team is composed of 0  members and have collaborated together for 0 weeks.  
+
+   The solution architect is None. The Operations Lead is None. The inspector is None.  There are currently 0 open roles. "
+71,plnspend,0
+72,streamlit_elements.core.callback.elements_callback_manager,{'streamlit_elements.core.frame.elements_frame.dashboard': <streamlit_elements.core.callback.ElementsCallbackManager object at 0x123d2f460>}
+73,plnscopenumberwish,0
+74,thepmspi,0
+75,pldstartdate,2023-12-04
+76,plnactiveses,0
+77,plsbenefits,"Here are three benefits of a website relaunch and SEO project:
+
+1. Improved User Experience: A website relaunch can significantly improve the user experience by modernizing the design, simplifying navigation, and enhancing the overall usability of the site. This can lead to increased visitor engagement, longer session times, and ultimately, higher conversion rates.
+2. Increased Search Engine Rankings: A well-executed SEO strategy can help a website rank higher in search engine results pages (SERPs), making it more visible to potential customers. By optimizing content, improving technical SEO elements, and building high-quality backlinks, a website can increase its chances of ranking higher for targeted keywords, which can drive more qualified traffic to the site.
+3. Increased Conversion Rates: A website relaunch and SEO project can also lead to increased conversion rates. By optimizing the website's design, layout, and content, it becomes easier for visitors to take the desired action, whether it's filling out a form, making a purchase, or subscribing to a newsletter. Additionally, SEO efforts can attract more targeted traffic, which can result in a higher percentage of conversions.
+
+Overall, a website relaunch and SEO project can have a significant impact on a business's online presence, leading to improved user experience, increased visibility in search engines, and ultimately, increased conversions and revenue."
+78,plpstanduplinkusers,None
+79,plntestsrun,0
+80,plpinspectorname,None
+81,plpscopecontingency,None
+82,plnresourcerange,0
+83,plnteamrange,0
+84,plnbenefitperiod,0
+85,plmlistqualitytypes,['None']
+86,plproigoal,None
+87,plnincreaseexpense,0
+88,visibility,collapsed
+89,plpnumber,1.0
+90,plnhours,0
+91,thepmpabudget,
+92,pldenddate,2024-02-26
+93,plntestsfailed,0
+94,thepmevsummary,"No Earned Value report,  missing budget"
+95,plnactivesesuser,0
+96,thepminspectionflag,1
+97,plnstakeholder,0
+98,plpmname,Janet A janet@example.com
+99,plnbudgetrange,0
+100,thepmheader,"                     Project                   Sponsor       Phase
+0  Website relaunch and SEO                        1.0      Design
+1  Janet A janet@example.com  John S johns@example.com  2023-12-18"
+101,plscopeterms,None
+102,plsotherchange,None
+103,plntestsfailallow,0
+104,plpaccountname,None
+105,plmlistscopeoption,['None']
+106,plnactivesam,0
+107,pllistincomecurrency,0
+108,plnscopenumbersuccess,0
+109,plnteam,0
+110,plnscopenumber,0
+111,streamlit_elements.core.frame.elements_frame.dashboard,
+112,thepmbudgetcomplete,0
+113,thepmroisummary,"The roi is 0.000 with an investment of 0 and a benefit of 0 to begin December 23, 2023 "
+114,thepmcycle,1
+115,plnbudget,0
