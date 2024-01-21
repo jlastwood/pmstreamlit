@@ -1,5 +1,5 @@
 altair==5.1.2
-pillow
+pillow==9.5.0
 hugchat
 attrs==23.1.0
 blinker==1.7.0
