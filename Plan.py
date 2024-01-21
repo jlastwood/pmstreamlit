@@ -6,8 +6,8 @@ from scripts.thepmutilities import evreport, plancomment, get_grade, gradiant_he
 import altair as alt
 from hugchat import hugchat
 from hugchat.login import Login
-from streamlit_extras.app_logo import add_logo
-from streamlit_extras.switch_page_button import switch_page
+#from streamlit_extras.app_logo import add_logo
+#from streamlit_extras.switch_page_button import switch_page
 import extra_streamlit_components as stx
 
 st.session_state.update(st.session_state)
@@ -98,9 +98,9 @@ with st.sidebar:
   else:
         labelvis="collapsed"
 
-  want_to_contribute = st.button("Help")
-  if want_to_contribute:
-        switch_page("Help")
+  #want_to_contribute = st.button("Help")
+  #if want_to_contribute:
+  #      switch_page("Help")
 
 theme_scope = {'bgcolor': '#f9f9f9','title_color': 'orange','content_color': 'orange','icon_color': 'orange', 'icon': 'fa fa-check-circle'}
 font_fmt = {'font-class':'h4','font-size':'50%'}

@@ -1,6 +1,7 @@
 altair==5.1.2
-pillow==9.5.0
+pillow
 hugchat
+matplotlib
 attrs==23.1.0
 blinker==1.7.0
 cachetools==5.3.2
@@ -44,3 +45,4 @@ tzlocal
 urllib3==2.1.0
 validators==0.22.0
 zipp==3.17.0
+streamlit_extras
