@@ -95,8 +95,10 @@ with st.sidebar:
   want_help = st.toggle("Inline Help")
   if want_help:
         labelvis="visible"
+        expander=True
   else:
         labelvis="collapsed"
+        expander=False
 
   #want_to_contribute = st.button("Help")
   #if want_to_contribute:
@@ -114,7 +116,7 @@ else:
 ##  Introduction to Planning
 
 with st.container():
-  with st.expander("Playbook Information"):
+  with st.expander("Playbook Information", expanded=expander):
      if st.session_state.thepmcycle > 1:
       st.image(il)
      else:
@@ -129,7 +131,7 @@ with st.container():
 
      ##  The basic intro information 
 with st.container():
-      with st.expander("Project Information"):
+      with st.expander("Project Information", expanded=expander):
         st.write("A project is finite, has a start and and end timeframe and is unique. A project is undertaken to reach a goal, implement change, deliver a new product, service or process.  The Project Plan outlines the timeline and the benefits, scope and contingency plans.  The plan provides the necessary information for the project manager and The PM Monitor to report on the progress of the project, manage risks and identify issues.")
       plancontainer = st.empty()
       disableplan = False
@@ -219,7 +221,7 @@ with st.container():
 
 with st.container():
        st.subheader("Change")
-       with st.expander("Change information"):
+       with st.expander("Change information", expanded=expander):
           st.write("Change information is collected during control and monitoring.  Capture changes to the scope, schedule, cost or quality goals and make a note of who reviewed and approved the change.")
        scopechange = st.text_area ("What scope has been added or removed after the start of this project? ", value=setvalue('plscopechange'), key='plscopechange')
        otherchange = st.text_area ("What other changes have been made to this project? schedule, cost, quality ", value=setvalue('plsotherchange'), key='plsotherchange')
@@ -227,7 +229,7 @@ with st.container():
 
 with st.container():
        st.subheader("Scope")
-       with st.expander("Scope Information"):
+       with st.expander("Scope Information", expanded=expander):
          st.write("The scope information outlines the features that the product should have. Scope also clarifies what is not planned and what may be negotiable.  When monitoring the project, identify any scope changes.  It is important to track out of scope items.  ")
 
          st.write("The following is a narrative explaining the scope and goal of this project.   If there is flexibility then separate the must have and nice to have scope.")
@@ -256,9 +258,9 @@ with st.container():
        st.text_area ("What is out of scope?", value=setvalue('plscopeoutofscope'), key='plscopeoutofscope', label_visibility=labelvis, disabled=disableplan)
        col4, col5 = st.columns(2)
        with col5:
-        st.multiselect( label='Select non functional attributes', help='Press enter to add', options=['Security', 'Availability', 'Usability', 'Maintainability','Documentation', 'Accessibility', 'Compliance', 'Robustness', 'Reliablity', 'Performance', 'Localization', 'Compatiblity', 'Portability', 'Scalability', 'None'], default=setvalue('plmlistscopelist'), key='plmlistscopelist', max_selections = 4,label_visibility=labelvis, disabled=disableplan)
+        st.multiselect( label='Select non functional attributes', help='Press enter to add', options=['None', 'Security', 'Availability', 'Usability', 'Maintainability','Documentation', 'Accessibility', 'Compliance', 'Robustness', 'Reliablity', 'Performance', 'Localization', 'Compatiblity', 'Portability', 'Scalability', 'None'], default=setvalue('plmlistscopelist'), key='plmlistscopelist', max_selections = 4,label_visibility=labelvis, disabled=disableplan)
        with col4:
-         st.multiselect( label='Select technical architecture attributes and resources in the scope', options=['CMS', 'Web Framework', 'SEO', 'Search', 'Cloud Hosting', 'OnPrem Hosting', 'Automation',  'ERP', 'CDN', 'CI/CD', 'Custom Theme', 'No/Low Code', 'Native Mobile App', 'Process Model', 'Database', 'Testing', 'Decommission', 'Data Migration', 'SAAS', 'None'], default=setvalue('plmlistscopeoption'), key='plmlistscopeoption', max_selections = 4,label_visibility=labelvis, disabled=disableplan)
+         st.multiselect( label='Select technical architecture attributes and resources in the scope', options=['None', 'CMS', 'Web Framework', 'SEO', 'Search', 'Cloud Hosting', 'OnPrem Hosting', 'Automation',  'ERP', 'CDN', 'CI/CD', 'Custom Theme', 'No/Low Code', 'Native Mobile App', 'Process Model', 'Database', 'Testing', 'Decommission', 'Data Migration', 'SAAS', 'None'], default=setvalue('plmlistscopeoption'), key='plmlistscopeoption', max_selections = 4,label_visibility=labelvis, disabled=disableplan)
        if len(scopechange) > 15:
           scopechange = f'There are scope changes. {scopechange}'
        st.session_state['thepmplanscope'] = f'Required:  \n  {st.session_state.plscopemusthave} \n\n  Options:  \n\n  {st.session_state.plscopenicetohave}  \n\n \n\n  Out of Scope:  {st.session_state.plscopeoutofscope} \n\n Change:  {scopechange}'
@@ -268,8 +270,8 @@ with st.container():
 ##  Schedule
 with st.container():
       milestonestatus = {0: "Not started", 1: "In Progress", 2: "On Hold", 3: "Complete"}
-      st.subheader("Life Cycle")
-      with st.expander("Schedule and Status Product delivery"):
+      st.subheader("Life Cycle Plan and Status")
+      with st.expander("Schedule and Status Product delivery", expanded=expander):
         st.write("The life cycle of a product defines the phases of the product.   A project must complete the product planning phase, and can be executing more than one phase concurrently.  Phases have activities defined in the WBS. ")
         st.write("When monitoring, choose a status value RAG (Green - Phase is on track,  Amber - Phase has missed some targets but overall end date and budget is not at risk,  Red - Product development is likely to deliver over budget or late.  There will be management action items in the stoplight report. ")
 
@@ -277,23 +279,23 @@ with st.container():
       cola, colb, cold = st.columns([1,3,3])
       cola.write("Plan")
       colb.date_input ("Plan Date", setvalue('pldplandate'), key='pldplandate', help="Enter the target product plan date",label_visibility=labelvis, disabled=disableplan, min_value=st.session_state.pldstartdate, max_value=st.session_state.pldenddate)
-      cold.select_slider('Status Reporting', options=statusoptions, key='plmplanstatus', label_visibility=labelvis)
+      cold.select_slider('Status Reporting', options=statusoptions, key='plsplanstatus', label_visibility=labelvis)
       cola, colb, cold = st.columns([1,3,3])
       cola.write("Design")
       colb.date_input ("Design Date", setvalue('plddesigndate'), key='plddesigndate', help="Enter the target product design date", label_visibility=labelvis,disabled=disableplan, min_value=st.session_state.pldstartdate, max_value=st.session_state.pldenddate)
-      cold.select_slider('Status Reporting', options=statusoptions, key='plmdesignstatus', label_visibility=labelvis)
+      cold.select_slider('Status Reporting', options=statusoptions, key='plsdesignstatus', label_visibility=labelvis)
       cola, colb, cold = st.columns([1,3,3])
       cola.write("Build")
       colb.date_input ("Build Date", setvalue('pldbuilddate'), key='pldbuilddate', help="Enter the target product build date", label_visibility=labelvis,disabled=disableplan, min_value=st.session_state.pldstartdate, max_value=st.session_state.pldenddate)
-      cold.select_slider('Status Reporting', options=statusoptions, key='plmbuildstatus', label_visibility=labelvis)
+      cold.select_slider('Status Reporting', options=statusoptions, key='plsbuildstatus', label_visibility=labelvis)
       cola, colb, cold = st.columns([1,3,3])
       cola.write("Inspect")
       colb.date_input ("Inspect Date", setvalue('pldinspectdateplan'), key='pldinspectdateplan', help="Enter the target product inspect date", label_visibility=labelvis,disabled=disableplan, min_value=st.session_state.pldstartdate, max_value=st.session_state.pldenddate)
-      cold.select_slider('Status Reporting', options=statusoptions, key='plminspectstatus', label_visibility=labelvis)
+      cold.select_slider('Status Reporting', options=statusoptions, key='plsinspectstatus', label_visibility=labelvis)
       cola, colb, cold = st.columns([1,3,3])
       cola.write("Accept")
       colb.date_input ("Accept Date", setvalue('pldacceptdate'), key='pldacceptdate', help="Enter the target product accept date", label_visibility=labelvis,disabled=disableplan, min_value=st.session_state.pldstartdate, max_value=st.session_state.pldenddate)
-      cold.select_slider('Status Reporting', options=statusoptions, key='plmacceptstatus', label_visibility=labelvis)
+      cold.select_slider('Status Reporting', options=statusoptions, key='plsacceptstatus', label_visibility=labelvis)
       sdate = st.session_state['pldstartdate']
       #[sdate+timedelta(days=x) for x in range((edate-sdate).days)]
       x = 1 
@@ -388,7 +390,7 @@ with st.container():
 with st.container():
    with st.container():
       st.subheader("Team Information")
-      with st.expander("Describe the team"):
+      with st.expander("Describe the team" , expanded=expander):
         st.write("Projects are executed and implemented by people, the team, the stakeholders and are implemented to provide benefit to users or customers.  The complexity communication, controlling  and establishing trust between the team and the stakeholders is a factor of the size of the team, and how long they have been working together.  Trust is earned, not given, and as trust increases, performance will improve and quality will follow.  Typically engagement and team sentiment is high at the beginning of the project and decreases over time, and engagement of the stakeholders follows the opposite pattern  ")
         st.write("Describe the size of the team, number of users, actors and stakeholders")
       col1, col2, col3, col4 = st.columns(4)
@@ -503,7 +505,7 @@ with st.container():
 
 with st.container():
       st.subheader("Grade")
-      with st.expander("What is grade?"):
+      with st.expander("What is grade?" , expanded=expander):
         st.write("Enter details to calculate a grade, number of features planned, completed and inspected.  The quality of the product reports if the product is working, the grade is about product scope, how many features does the product have.  A product regardless of its service must be high-quality, however a product does not have to be high-grade, it can have minimal features and meet the goals of the sponsor.  Normally higher grade products, with more features have more risks and most cost.")
       col1, col2, col3 = st.columns(3)
       with col1:
@@ -521,7 +523,7 @@ with st.container():
       st.success(st.session_state.thepmgrade) 
 with st.container():
       st.subheader("Cost Planning")
-      with st.expander("Cost Information"):
+      with st.expander("Cost Information" , expanded=expander):
         st.write("Changes incur costs, and these costs are monitored to ensure that the investment is in line with the value of the change to the business.  Using feature completion, and timelines we calculate cost performance index (CPI) and schedule performance index (SPI) which are indicators if the project is in control. During planning and design, earned value will be 0, when in  execution your earned value will be realized as features are inspected and accepted")
       currchoice = pd.DataFrame({'Item': ['None', 'USD', 'CDN', 'EUR'], 'Value': [0, 1, 2, 3]})
       col4, col5 = st.columns(2)
@@ -540,7 +542,7 @@ with st.container():
       with col4:
        st.slider('Estimate Confidence', min_value=0, max_value=100, value=setvalue('plnhoursconfidence'), step=5, key='plnhoursconficence', disabled=disableplan)
       st.subheader("Cost Monitoring")
-      with st.expander("Cost monitoring and control"):
+      with st.expander("Cost monitoring and control" , expanded=expander):
        st.write("During cost monitoring, capture the actual spend, and resource hours or resource usage.") 
       col4, col5 = st.columns(2)
       with col4:
@@ -548,7 +550,7 @@ with st.container():
       with col5:
        st.slider('Work Hours Performed', min_value=-1, max_value=st.session_state.plnhours, value=setvalue('plnhoursused'), step=10, key='plnhoursused')
       if st.session_state.plnhours > 1:
-       st.session_state['plnestimatecomplete'] =  ( st.session_state.plnhoursused / st.session_state.plnhours ) * 100
+       st.session_state['plnestimatecomplete'] =  int(( st.session_state.plnhoursused / st.session_state.plnhours ) * 100)
       else:
        st.session_state.plnestimatecomplete = 0
       plbudget = st.session_state['plnbudget']
@@ -569,7 +571,7 @@ with st.container():
       st.subheader("Return on Investment")
      #https://www.investopedia.com/articles/basics/10/guide-to-calculating-roi.asp
      #[200~https://www.coface.com/news-economy-and-insights/business-risk-dashboard/country-risk-files/canada
-      with st.expander('What is ROI'):
+      with st.expander('What is ROI' , expanded=expander):
         st.write("Measure the benefits or return on the investment over time based on the benefits, either savings or increased income after release.  Provide the date when new benefits are expected to start, and the number of periods to allocate the investment.  A benefit date before end of project is a sign of agile delivery or iterative delivery to give value in increments, or a maintanance project.  The ROI is a number that is used to measure the value of the investment in this project against other projects in your portfolio. Consider factors like country, gdp, inflation, unemployment, growth,  Business climate, country risk and where the investment money is sourced.")
 
 # https://www.focus-economics.com/countries/spain/
@@ -686,7 +688,7 @@ with st.container():
     #  st.code(message)
 
 with st.container():
-   with st.expander("Risk Trigger settings"):
+   with st.expander("Risk Trigger settings" , expanded=expander):
      st.write("Risk trigger default values.  Currently these are for information purposes only and cannot be changed in the application.  ")
      risktriggers = {'Inflation': 10, 'Changes': 1, 'Earned Value': 0, 'Sentiment': 70, 'Engagement': 80, 
         'CPI': 0,

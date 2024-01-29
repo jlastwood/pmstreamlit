@@ -20,9 +20,9 @@ def upload_saved_settings(saved_settings):
         """Set session state values to what specified in the saved_settings."""
         saved_settings.fillna('None', inplace = True)
         for i in range(len(saved_settings)):
-          #st.write(saved_settings.iloc[i, 2])
-          #if isinstance(saved_settings.iloc[i, 2],type(str)):
-            #st.write(saved_settings.iloc[i,1], saved_settings.iloc[i,2])
+            #st.write(saved_settings.iloc[i, 2])
+            #if isinstance(saved_settings.iloc[i, 2],type(str)):
+            #  st.write(saved_settings.iloc[i,1], saved_settings.iloc[i,2])
             if saved_settings.iloc[i, 2] == 'None':
               st.session_state[saved_settings.iloc[i, 1]] = 'None'
             if saved_settings.iloc[i, 2] == ' ':
@@ -35,16 +35,22 @@ def upload_saved_settings(saved_settings):
               st.session_state[saved_settings.iloc[i, 1]] = int(saved_settings.iloc[i, 2])
             if saved_settings.iloc[i, 1].startswith('plrlist'):
               st.session_state[saved_settings.iloc[i, 1]] = int(saved_settings.iloc[i, 2])
-            if saved_settings.iloc[i, 1].startswith('pllist'):
-              st.session_state[saved_settings.iloc[i, 1]] = int(saved_settings.iloc[i, 2])
-            #if saved_settings.iloc[i, 1].startswith('plmlist'):
-            #  string_without_brackets = saved_settings.iloc[i, 2].strip("[]")
-            #  string_without_brackets = string_without_brackets.replace("'", "")
-            #  string_list = string_without_brackets.split(", ")
-            #  for x in string_list:
-            #   if x != "":
-            #     if x not in st.session_state[saved_settings.iloc[i, 1]]:  # prevent duplicates
-            #        st.session_state[saved_settings.iloc[i, 1]].append(x)
+            if saved_settings.iloc[i, 1].startswith('plm'):
+              st.session_state[saved_settings.iloc[i, 1]] = saved_settings.iloc[i, 2]
+              #if  saved_settings.iloc[i, 2] == "Red":
+              #  st.session_state[saved_settings.iloc[i, 1]] = 1
+            #if saved_settings.iloc[i, 1].startswith('pllist'):
+            #  st.session_state[saved_settings.iloc[i, 1]] = int(saved_settings.iloc[i, 2])
+            if saved_settings.iloc[i, 1].startswith('plmlist'):
+              string_without_brackets = saved_settings.iloc[i, 2].strip("[]")
+              string_without_brackets = string_without_brackets.replace("'", "")
+              string_list = string_without_brackets.split(", ")
+              st.write(saved_settings.iloc[i,1], saved_settings.iloc[i,2], string_list)
+              for x in string_list:
+               st.write(x)
+               if x != "":
+                 if x not in st.session_state[saved_settings.iloc[i, 1]]:  # prevent duplicates
+                    st.session_state[saved_settings.iloc[i, 1]].append(x)
             if saved_settings.iloc[i, 1].startswith('pld') and len(saved_settings.iloc[i, 2]) > 6:
               datetime1 = saved_settings.iloc[i, 2]
               if len(datetime1) > 9:
@@ -80,7 +86,7 @@ if uploaded_file is not None:
         uploaded_settings = pd.read_csv(uploaded_file)
         upload_saved_settings(uploaded_settings)
         st.warning("**WARNING**: Plan uploaded")
-        switch_page("Plan")
+#        switch_page("Plan")
 #else:
 
 st.markdown("""---""")
