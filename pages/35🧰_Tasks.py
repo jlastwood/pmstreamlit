@@ -1,7 +1,7 @@
 import streamlit as st
 import pandas as pd 
 import plotly.express as px
-#from cheche_pm import Project
+from cheche_pm import Project
 from  PIL import Image
 import io 
 import graphviz
@@ -17,6 +17,7 @@ from scripts.thepmutilities import reporttitle, gradiant_header
 # https://codepal.ai/code-generator/query/DewVO5lk/python-cpm-algorithm
 # https://github.com/vamsi-aribandi/PERTgen/blob/master/pert.py
 st.session_state.update(st.session_state)
+st.set_option('deprecation.showPyplotGlobalUse', False)
 
 def make_pert_chart(graph, startTimes, completionTimes, slackTimes, criticalPaths):
     
@@ -114,41 +115,106 @@ reporttitle("Task Analysis", st.session_state['thepmheader'])
 
 st.write("The PM monitor activity analysis is not intended as a replacement to your task management system.  Instead it is used to analyse the information to provide insight into potential issues with tasks started late, or tasks on the critical path not completed")
 
-tottasks = latetasks = closedtasks = cpmlate = 0
-col3, col4, col5, col6 = st.columns(4)
-col3.metric("Total Tasks", tottasks)
-col4.metric("Late Start", latetasks)
-col5.metric("Critical Path Late", cpmlate)
-col6.metric("Completed Tasks", closedtasks)
-
-# reporttitle("Activity", st.session_state['thepmheader'])
 
 st.subheader('Gantt and WBS (Work Breakdown Structure)')
 
 uploaded_file = st.file_uploader("WBS is a deliverable orientied hierarchical decomposition of work to be executed by the project team.  Fill out the project plan activities and upload your file here. After you upload the file, you can edit your activities within the app.  If you are performing a fixed price or have a complex project to manage, you will want to create a WBS and map the related activities so that you can assign work concurrently to multiple team members and to link work and notify team members when their work can start.   The tasks are related to the project objectives and completion of the work will create the required deliverables. ", type=['csv'])
 st.write("Analyse the results and update the plan and status.  Monitor activities that are late and on the critical path, activities that are late and not assigned, monitor the load of resources.  If you are tracking time, monitor overall estimate to completion rates")
 
-# df = pd.Dataframe()
-
-#if uploaded_file is None:
-#   st.error('WBS missing. Please enter or import a plan')
-#   st.stop()
-
 if uploaded_file is not None:
-    Tasks=pd.read_csv(uploaded_file, quotechar='"', delimiter=',', skipinitialspace=True)
+    Tasks=pd.read_csv(uploaded_file, quotechar='"', delimiter=',', skipinitialspace=True, keep_default_na=False)
+    st.warning('WBS not found, using phase tasks')
 else:
-    Tasks = pd.read_csv('files/tasks.csv', sep=',')
+    Tasks = pd.read_csv('files/tasks2.csv', sep=',')
+
+# fix missing values
+values = {'pr': 'Start', 'Duration': int(1), 'Assign': 'Team', 'Completion Pct': 0}
+Tasks.fillna(value=values, inplace=True)
+#new_df = df.drop_duplicates(subset='ORDER ID')
+Tasks = Tasks.astype({'Duration':'int'})
+
+assigned = Tasks.Assign.unique().tolist()
+max_resources = len(assigned)
+max_array = [1]*len(assigned)
+
+for x in assigned:
+    Tasks[x] = 0
+    Tasks.loc[Tasks["Assign"] == x, x] = 1
+
+p = Project()
+#p.add_activity(activity_name='A',activity_duration=2,activity_precedence = [None], activity_resources= [2,4,5])
+for index, row in Tasks.iterrows():
+   # handle more than one
+   var = str(row['pr'])
+   prec = list(var.split(" "))
+   index = assigned.index(row['Assign'])
+   rlist = [0]*len(assigned)
+   rlist[index] = 1
+   cost = int(row['Duration']*st.session_state.plnavgrate*5)
+   p.add_activity(a_desc=row['Description'],activity_name=row['ac'],activity_duration=row['Duration'],activity_precedence = prec, activity_resources= rlist, activity_cost=cost)
+#st.table(Tasks)
+
+p.create_project_dict()
+PROJECT = pd.DataFrame(p.PROJECT).T
+st.write(PROJECT)
+
+Tasks_cpm = p.CPM(verbose=True)
+#st.write("CPM report")
+#st.table(Tasks_cpm)
+Tasks_cp = p.get_critical_path()
+st.write("Critical Path")
+st.write(str(Tasks_cp))
+Tasks_sched = pd.DataFrame(p.cpm_schedule).T
+#st.write("Schedule")
+#st.table(Tasks_sched)
+
+PL = p.get_priority_list(priority_rule= 'LRD',verbose=True,save=True)
+#st.table(PL)
+
+psg = p.PSG(PL,max_resources=max_array,verbose=False)
+#st.table(psg)
+
+plt1 = p.plot_network_diagram(plot_type = 'nx')
+st.pyplot(plt1, use_container_width=True)
+
+res = p.get_resources()
+st.write(res)
+
+startdate = st.session_state.pldstartdate.strftime("%Y-%m-%d")
+firstdate = st.session_state.pldstartdate 
+todaydate = datetime.now()
+
+#best_heuristic = PROJECT.run_all_pl_heuristics()[psg]
+
+#  start tasks at end of design
+Tasks_dates = p.generate_datetime_schedule(solution = psg,start_date=startdate,weekends_work=False,max_resources=max_array,verbose=False)
+
+Project_dates = pd.merge(Tasks_dates, PROJECT, left_index=True, right_index=True)
+st.dataframe(Project_dates)
+#plt2= p.plot_date_gantt(Tasks_dates, plot_type = 'matplotlib')
+#st.pyplot(plt2, use_container_width=True)
+
+
+#plt3 = p.plot_resource_levels(psg)
+#st.pyplot(plt3)
+
+#plt4 = p.RCPSP_plot(psg,resource_id=0)
+#st.pyplot(plt4)
+
+# resource consumption
+
+# max resource capacity
 
 if True:
-
+    # do not need this any longer
     graph = defaultdict(list)
     duration = {}
 
     # input start, duration, type, name
     Tasks['Start'] = Tasks['Start'].astype('datetime64[ns]')
     #Tasks['Finish'] = Tasks['Finish'].astype('datetime64[ns]')
-    Tasks['du'] = Tasks['du'].astype('int')
-    Tasks['du'] = Tasks['du'].fillna(0)
+    Tasks['Duration'] = Tasks['Duration'].astype('int')
+    Tasks['Duration'] = Tasks['Duration'].fillna(0)
     # force type to int
     firstdate = Tasks['Start'].iloc[0].date()
     # firstdate = (st.session_state.ldstartdate)
@@ -156,105 +222,39 @@ if True:
     # get diff startdate and firstdate
     # Tasks['Start'] = firstdate
     Tasks['Start'] = Tasks['Start'] + pd.Timedelta(days=daysoffset)
-    #Tasks['Start'] = Tasks['Start'] + pd.Timedelta(days=daysoffset)
-    Tasks['Finish'] = Tasks['Start'] + pd.to_timedelta(Tasks['du'], unit='D') 
-    # Tasks = st.dataframe( Tasks[Tasks['Type'] == 'Milestone'] )
-    #df.replace('-', np.nan)
+    Tasks['Finish'] = Tasks['Start'] + pd.to_timedelta(Tasks['Duration'], unit='D') 
+    #Tasks = st.dataframe( Tasks[Tasks['Type'] == 'Milestone'] )
+    Tasks.loc[Tasks['pr'] == "Start", 'pr'] = "plan"
 
-    # st.dataframe(Tasks)
+    tottasks = len(Tasks) 
+    latetasks = closedtasks = cpmlate = 0
+    col3, col4, col5, col6 = st.columns(4)
+    col3.metric("Total Tasks", tottasks)
+    col4.metric("Late Start", latetasks)
+    col5.metric("Critical Path Late", cpmlate)
+    col6.metric("Completed Tasks", closedtasks)
 
-    for index, row in Tasks.iterrows():
-         nodes = row['pr'].split(' ')
-         for node in nodes:
-               graph[node].append(row['ac'])
-         duration[row['ac']] = int(row['du'])
+    #for index, row in Tasks.iterrows():
+    #     nodes = row['pr'].split(' ')
+    #     for node in nodes:
+    #           graph[node].append(row['ac'])
+    #     duration[row['ac']] = int(row['Duration'])
 
-    no_axis_title = axis = alt.Axis(title="")
-    x_scale = alt.Scale(domain=(st.session_state.pldstartdate.isoformat(), st.session_state.pldenddate.isoformat()), nice=10) 
+    #no_axis_title = axis = alt.Axis(title="")
+    #x_scale = alt.Scale(domain=(st.session_state.pldstartdate.isoformat(), st.session_state.pldenddate.isoformat()), nice=10) 
 
-    tasks = duration.keys()
-    #initialize start times
-    startTimes = {}
-    for task in graph:
-        startTimes[task] = 0
-    graph.pop('NONE', None)
-
-    while len(startTimes) < len(tasks): # while any node doesn't have a start time
-        for task in tasks: # loop through all tasks
-            if task not in startTimes: # if the task doesn't have a start time yet
-                startTime = 0 # initialize start time to be some minimum value
-                flag = True
-                for parent in graph: # look for all tasks it depends on i.e. all nodes pointing to it
-                    # error if parent is missing st.write(parent, task)
-                    if task in graph[parent]: # we found a parent
-                        if parent in startTimes: # if the parent has a start time, compare it to current max
-                            startTime = max(startTime, (startTimes[parent] + duration[parent]))
-                        else: # else, one of the parents doesn't have a start time, so we can't calculate start time of current task yet
-                            flag = False
-                if flag:
-                   startTimes[task] = startTime
-
-    # calculate completion times
-    completionTimes = {}
-    for task in tasks:
-        completionTimes[task] = startTimes[task] + duration[task]
-    
-    # st.write('completion times: {}'.format(completionTimes))
-
-    # calculate slack times
-    slackTimes = {}
-    for task in tasks:
-        slackTime = 9999999999999999999;
-        for node in graph[task]:
-            slackTime = min(slackTime, startTimes[node] - completionTimes[task])
-        if not graph[task]:
-            slackTimes[task] = 0
-        else:
-            slackTimes[task] = slackTime
-    
-    # st.write('slack times: {}'.format(slackTimes), type(slackTimes), len(slackTimes))
-    
-    criticalPaths = [[]]
-    for node in graph:
-        if startTimes[node] == 0:
-            find_paths(graph, node, slackTimes, criticalPaths)
-    criticalPaths.pop()
-    st.write("Critical Path")
-    st.dataframe(criticalPaths)
-
-    # push lists back to data frame 
-    abca = list(slackTimes.values())
-    #abca.append(0)
-    Tasks['slack'] =  pd.Series(abca)
-    abcb = list(startTimes.values())
-    Tasks['startdays'] = pd.Series(abcb)
-    Tasks['startdays'] = pd.to_numeric(Tasks['startdays'])
-    abcc = list(completionTimes.values())
-    Tasks['enddays'] = pd.Series(abcc)
-    Tasks['enddays'] = pd.to_numeric(Tasks['enddays'])
-
-    # now set the start and end dates
-    firstdate = st.session_state.pldstartdate 
-    todaydate = datetime.now()
-    st.write(firstdate, todaydate)
-    # daysoffset = (st.session_state['pldstartdate']-firstdate).days
-    # get diff startdate and firstdate
-
-    Tasks['Start'] = Tasks['Start'] + pd.to_timedelta(Tasks['startdays'], unit='d')
-    Tasks['Finish'] = Tasks['Start'] + pd.to_timedelta(Tasks['enddays'], unit='d')
-    # Tasks['Status'] = Tasks['Start'] + pd.to_timedelta(Tasks['enddays'], unit='d')
     conditions = [
     (Tasks['Completion Pct'] == 0),
     (Tasks['Completion Pct'] >= 1) & (Tasks['Completion Pct'] < 100),
     (Tasks['Completion Pct'] == 100)
     ]
 
-# create a list of the values we want to assign for each condition
+    # create a list of the values we want to assign for each condition
     values = ['NotStarted', 'InProgress', 'Completed']
     Tasks['Status'] = np.select(conditions, values)
     #st.write(Tasks[(Tasks["Start"] < pd.to_datetime(todaydate)) & (Tasks["Status"] == 'NotStarted')])
 
-    st.write("Filter or view activities") 
+    #st.write("Filter or view activities") 
 
     #grid_response = AgGrid(
     #    Tasks,
@@ -273,19 +273,19 @@ if True:
       dep = str(row['pr']).split()
       for xdep in dep:
         graph.node(str(row['ac']), shape = "box", fillcolor = "lightgrey", style = "filled")
-        graph.edge(xdep, str(row['ac']), label=str(row['du']))
+        graph.edge(xdep, str(row['ac']), label=str(row['Duration']))
     st.graphviz_chart(graph)
 
     st.subheader("Late start tasks")
     st.write("Show 5 tasks that are late, percentage complete is 0 and start date is less than the report date")
-    st.dataframe(Tasks[(Tasks["Start"] < pd.to_datetime(todaydate)) & (Tasks["Status"] == 'NotStarted')][['ac', 'du', 'Team', 'name', 'Start']])
+    st.dataframe(Tasks[(Tasks["Start"] < pd.to_datetime(todaydate)) & (Tasks["Status"] == 'NotStarted')][['ac', 'Duration', 'Assign', 'Start']])
     #display(dataFrame[(dataFrame['Salary']>=100000) & (dataFrame['Age']<40) & dataFrame['JOB'].str.startswith('P')][['Name','Age','Salary']])
     st.subheader("What is the team working on now")
-    columns = ['ac','du','name', 'Start']
+    columns = ['Duration','ac', 'Start']
     st.dataframe( Tasks[Tasks['Status'] == "InProgress"][columns])
-    st.subheader("Size of Project Build")
-    totalbuild = Tasks['du'].sum()
-    totalcomplete = Tasks.loc[Tasks['Status'] == 'Completed', 'du'].sum()
+    st.subheader("Size of Product Build in days")
+    totalbuild = Tasks['Duration'].sum()
+    totalcomplete = Tasks.loc[Tasks['Status'] == 'Completed', 'Duration'].sum()
     st.write(totalbuild)
     st.write(totalcomplete)
     #st.metric("Total build", totalbuild, totalcomplete)
@@ -296,20 +296,21 @@ if True:
     
     #Main interface - section 3
     st.subheader('Step 3: Generate the Gantt chart')
-    
-    Options = st.selectbox("View Gantt Chart by:", ['Team','Completion Pct'],index=0)
-    if st.button('Generate Gantt Chart'): 
-        fig = px.timeline(
-                        Tasks, 
-                        x_start="Start", 
-                        x_end="Finish", 
-                        y="ac",
-                        color=Options,
-                        hover_name="name"
+    Tasks_dates['Task'] = Tasks_dates.index
+ 
+    #Options = st.selectbox("View Gantt Chart by:", ['Assign','Completion Pct'],index=0)
+    #if st.button('Generate Gantt Chart'): 
+    fig = px.timeline(
+                        Tasks_dates, 
+                        x_start="ES_date", 
+                        x_end="EF_date", 
+                        y="Task",
+                        color="D",
+                        hover_name="Task"
                         )
 
-        fig.update_yaxes(autorange="reversed")          #if not specified as 'reversed', the tasks will be listed from bottom up       
-        fig.update_layout(
+    fig.update_yaxes(autorange="reversed")          #if not specified as 'reversed', the tasks will be listed from bottom up       
+    fig.update_layout(
                         title='Project Plan Gantt Chart',
                         hoverlabel_bgcolor='#DAEEED',   #Change the hover tooltip background color to a universal light blue color. If not specified, the background color will vary by team or completion pct, depending on what view the user chooses
                         bargap=0.2,
@@ -330,9 +331,9 @@ if True:
                                 )
                     )
         
-        fig.update_xaxes(tickangle=0, tickfont=dict(family='Rockwell', color='blue', size=15))
+    fig.update_xaxes(tickangle=0, tickfont=dict(family='Rockwell', color='blue', size=15))
 
-        st.plotly_chart(fig, use_container_width=True)  #Display the plotly chart in Streamlit
+    st.plotly_chart(fig, use_container_width=True)  #Display the plotly chart in Streamlit
 
         #st.subheader('Export the interactive Gantt chart to HTML and share with others!') #Allow users to export the Plotly chart to HTML
         #buffer = io.StringIO()
@@ -344,37 +345,37 @@ if True:
         #    file_name='Gantt.html',
         #    mime='text/html'
         #) 
-    else:
-        st.write('---') 
+    #else:
+    #    st.write('---') 
 
-    st.subheader("Heatmap Team by Month")
+    st.subheader("Heatmap Assign by Month")
     heatmap = alt.Chart(Tasks).mark_rect().encode(
-       alt.Y('Team'),
+       alt.Y('Assign'),
        alt.X('monthdate(Finish):O'),
-       alt.Color('sum(du)', scale=alt.Scale(scheme='redyellowblue'))
+       alt.Color('sum(Duration)', scale=alt.Scale(scheme='redyellowblue'))
     ) 
     st.altair_chart(heatmap, use_container_width=True)
 
     alt_work = alt.Chart(Tasks).mark_point().encode(
-     x=alt.Y('du', axis=alt.Axis(title="Duration task")),
+     x=alt.Y('Duration', axis=alt.Axis(title="Duration task")),
      y=alt.X('Type', axis=alt.Axis(title="Phase Name")),
      tooltip='Type',
-     color=alt.Color('sum(du)', scale=alt.Scale(scheme='redyellowblue'))
+     color=alt.Color('sum(Duration)', scale=alt.Scale(scheme='redyellowblue'))
      )
    
     st.altair_chart(alt_work, use_container_width=True)
 
     alt_util = alt.Chart(Tasks).mark_area(interpolate="monotone").encode(
      x=alt.X('monthdate(Start):O'),
-     y=alt.Y('sum(du)', axis=alt.Axis(title="Sum hours required")),
-     color='Team'
+     y=alt.Y('sum(Duration)', axis=alt.Axis(title="Sum hours required")),
+     color='Assign'
     )
     st.altair_chart(alt_util, use_container_width=True)
 
     alt_cat = alt_util.mark_line().encode(
      x=alt.X('monthdate(Start):O'),
-     y=alt.Y('sum(du)', axis=alt.Axis(title="FTE required")),
-     color='Team'
+     y=alt.Y('sum(Duration)', axis=alt.Axis(title="FTE required")),
+     color='Assign'
     )
     st.altair_chart(alt_cat, use_container_width=True)
 
@@ -395,19 +396,19 @@ if True:
           , 'Process' : 'rgb(0,0,128)'
           , 'Process - Date TBD' : 'rgb(211,211,210)'}
     
-    orders = list(Tasks['name'])
+    orders = list(Tasks['ac'])
     fig = px.timeline(Tasks
                   , x_start="Start"
                   , x_end="Finish"
-                  , y="Team"
-                  , hover_name="name"
+                  , y="Assign"
+                  , hover_name="ac"
 #                   , facet_col="Dimension"
 #                   , facet_col_wrap=40
 #                   , facet_col_spacing=.99
 #                   , color_discrete_sequence=['green']*len(df)
                   , color_discrete_sequence=px.colors.qualitative.Prism
                   , opacity=.7
-#                   , text="name"
+#                   , text="ac"
                   , range_x=None
                   , range_y=None
                   , template='plotly_white'

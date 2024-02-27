@@ -28,6 +28,8 @@ def dashboard_rag(val):
        st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: #D12F2E; font-size: 100%;'>  R  </p>", unsafe_allow_html=True)      
     elif val >= 3:
        st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: #FFBF00; font-size: 100%;'>  A  </p>", unsafe_allow_html=True)      
+    elif val == 0:
+       st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: green; font-size: 100%;'>  G  </p>", unsafe_allow_html=True)      
     elif val >= 1.0:
        st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: green; font-size: 100%;'>  G  </p>", unsafe_allow_html=True)      
     elif val < 0.8:
@@ -128,39 +130,51 @@ series = pd.date_range(start=st.session_state.pldstartdate, end=st.session_state
 seriesdate = [datetime.strftime(d, '%Y/%m/%d') for d in series]
 serieslist = pd.DataFrame(seriesdate).astype(str)
 statuslist = []
+seriesphase = []
 #  todo figure out a way to generate dashboard
 for i in range (0, len(serieslist)):
-      seriesvalue = st.session_state.plmplanstatus
+      seriesvalue = st.session_state.plsplanstatus
+      seriesphasev = "Plan"
       y = 0
-      if st.session_state.pldacceptdate.strftime('%Y/%m/%d') > seriesdate[i] > st.session_state.pldinspectdate.strftime('%Y/%m/%d'):
-        seriesvalue = st.session_state.plmacceptstatus
+      if st.session_state.pldacceptdate.strftime('%Y/%m/%d') > seriesdate[i] >= st.session_state.pldinspectdate.strftime('%Y/%m/%d'):
+        seriesvalue = st.session_state.plsacceptstatus
         y = 1        
-      elif st.session_state.pldinspectdate.strftime('%Y/%m/%d') > seriesdate[i] > st.session_state.pldbuilddate.strftime('%Y/%m/%d'):
-          seriesvalue = st.session_state.plminspectstatus
+        seriesphasev = "Accept"
+      elif st.session_state.pldinspectdate.strftime('%Y/%m/%d') > seriesdate[i] >= st.session_state.pldbuilddate.strftime('%Y/%m/%d'):
+          seriesvalue = st.session_state.plsinspectstatus
           y =  2       
-      elif st.session_state.pldbuilddate.strftime('%Y/%m/%d') > seriesdate[i] > st.session_state.plddesigndate.strftime('%Y/%m/%d'):
-          seriesvalue = st.session_state.plmbuildstatus
+          seriesphasev = "Inspect"
+      elif st.session_state.pldbuilddate.strftime('%Y/%m/%d') > seriesdate[i] >= st.session_state.plddesigndate.strftime('%Y/%m/%d'):
+          seriesvalue = st.session_state.plsbuildstatus
           y =  3       
-      elif st.session_state.plddesigndate.strftime('%Y/%m/%d') > seriesdate[i] > st.session_state.pldplandate.strftime('%Y/%m/%d'):
-          seriesvalue = st.session_state.plmdesignstatus
+          seriesphasev = "Build"
+      elif st.session_state.plddesigndate.strftime('%Y/%m/%d') > seriesdate[i] >= st.session_state.pldplandate.strftime('%Y/%m/%d'):
+          seriesvalue = st.session_state.plsdesignstatus
           y =  4       
+          seriesphasev = "Design"
       if seriesdate[i] > datetime.today().strftime('%Y/%m/%d'):
-        seriesvalue = 'None'
+        seriesvalue = ''
+        seriesphasev = ""
       statuslist.append(seriesvalue)
+      seriesphase.append(seriesphasev)
       # st.write(i, y, seriesvalue, seriesdate[i], st.session_state.plddesigndate.strftime('%Y/%m/%d'))
   #if seriesdate[i] < datetime.today().strftime('%Y/%m/%d'):
   # statuslist.append('G')
+serieslist['Phase'] = seriesphase
 serieslist['Status'] = statuslist
 bar_theme_2 = {'bgcolor': 'lightgrey','content_color': 'grey','progress_color': 'green'}
 
 reporttitle("Stoplight Report", st.session_state['thepmheader'])
 
-st.markdown("---")
+#st.markdown("---")
+st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: green ; font-size: 120%;'>Project Status by Phase</p>", unsafe_allow_html=True)
+
 seriestrans = serieslist.T
 seriestrans = seriestrans.astype(str)
 st.table(seriestrans.style.applymap(color_survived))
 
-st.markdown("---")
+st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: green ; font-size: 120%;'>Project Status by Knowledge Area</p>", unsafe_allow_html=True)
+st.write(" ")
 cola, colb, colc, cold, cole = st.columns([1,2,1,1,4])
 with cola:
   st.write("Schedule")
@@ -172,23 +186,24 @@ with cold:
   dashboard_rag(spi)
 with cole:
   if spi < 1:
-    notes = "<font color='grey'>:warning:" + " Behind schedule - Contingency: " + st.session_state['plptimecontingency'] + "</font>"
+    notes = "<font color='grey'>:warning:" + " Behind schedule - see management actions " + "</font>"
   else:
     notes = "<font color='grey'>" + "On or ahead of schedule" + "</font>"
   st.markdown("{}".format(notes), unsafe_allow_html=True)
 cola, colb, colc, cold, cole = st.columns([1,2,1,1,4])
+changes = st.session_state.plscopechange.count(".")
 with cola:
   st.write("Scope")
 with colb:
   scopebar =  st.session_state['thepmdelivery']
   hc.progress_bar(scopebar,'Features',key='thepascope',sentiment='good',override_theme=bar_theme_2)
 with colc:
-  st.write(scopebar)
+  st.write(scopebar, changes)
 with cold:
-  dashboard_rag(len(st.session_state.plscopechange)/10)
+  dashboard_rag(changes)
 with cole:
-  if len(st.session_state['plscopechange']) > 10:
-    notec = "<font color='grey'>:warning: " + st.session_state['plpscopecontingency'] + "</font>"
+  if changes > 1:
+    notec = "<font color='grey'>:warning: Scope changes" + "</font>"
   else:
     notec = ""
   st.markdown("{}".format(notec), unsafe_allow_html=True)
@@ -198,16 +213,16 @@ with cola:
 with colb:
   qualbar = qualratio = 0
   if int(st.session_state['plntests']) > 0:
-   qualbar = int(st.session_state['plntestsfailed'] / st.session_state['plntests'] * 100)
-   qualration = float(st.session_state['plntestsfailed'] / st.session_state['plntests'])
+   qualbar = int((st.session_state.plntestsrun - st.session_state['plntestsfailed']) / st.session_state['plntests'] * 100)
+   qualratio = int(st.session_state['plntestsfailed'] / st.session_state['plntests']) * 100
   hc.progress_bar(qualbar,'Quality',key='thepaqual',sentiment='good',override_theme=bar_theme_2)
 with colc:
-  st.write(qualbar, qualratio, st.session_state.plntestsfailed)
+  st.write(qualbar, st.session_state.plntestsrun, st.session_state.plntestsfailed)
 with cold:
   dashboard_rag(st.session_state.plntestsfailed)
 with cole:
   if int(st.session_state['thepminspectflag']) == 1:
-    notec = "<font color='grey'>:warning: " + st.session_state['thepminspectionwarning'] + st.session_state['plpscopecontingency'] + "</font>"
+    notec = "<font color='grey'>:warning: " + st.session_state['thepminspectionwarning'] + "</font>"
   else:
     notec = ""
   st.markdown("{}".format(notec), unsafe_allow_html=True)
@@ -222,7 +237,7 @@ with cold:
   dashboard_rag(cpi)
 with cole:
   if cpi < 1:
-    notes = "<font color='grey'>:warning: " + "Over Budget - Contingency:  " + st.session_state['plpbudgetcontingency'] + "</font>"
+    notes = "<font color='grey'>:warning: " + "Over Budget - see management actions  "  + "</font>"
   else:
     notes = "<font color='grey'>" + "On or ahead of budget" + "</font>"
   st.markdown("{}".format(notes), unsafe_allow_html=True)
@@ -239,15 +254,13 @@ with cola:
   st.write("Estimate to Complete")
 with colb:
   st.write(st.session_state['thepmtimecomplete'])
-#with colc:
-#  st.write("Features Completed")
-#with cold:
-#  st.write(st.session_state['plnscopenumbersuccess'])
-st.markdown("---")
+with colc:
+  st.write("Inspections Completed")
+with cold:
+  st.write(st.session_state.plntestsrun)
+#st.markdown("---")
 
-st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: red; font-size: 120%;'>Management Alert</p>", unsafe_allow_html=True)
-
-st.write("The following issues have been triggered, the risk owner should consider taking action to recover.")
+st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: #D12F2E; font-size: 120%;'>Management Actions</p>", unsafe_allow_html=True)
 
 phasenumber = st.session_state.thepmphase
 CPI = st.session_state.thepmcpi
@@ -256,22 +269,26 @@ engagementscoreteam = st.session_state.plnactivesam
 sentimentscoreteam = st.session_state.plnactiveses
 retention = st.session_state.plnopenroles
 scopechange = len(st.session_state.plscopechange.split("."))
-if len(st.session_state.plscopechange) < 6:
+if len(st.session_state.plscopechange) < 2:
    scopechange = 0
-earnedvalue = st.session_state.plnactiveses
-roi = st.session_state.plnactiveses
+earnedvalue = st.session_state.thepmannualroi
+roi = st.session_state.thepmannualroi
 latestart = st.session_state.plnactiveses
-inspectfail = st.session_state.plnactiveses
+inspectfail = st.session_state.thepminspectflag
 
 (myrisks, issues, risks, totalrisks, risksummary)  = calculate_risks_json(phasenumber, SPI, CPI, engagementscoreteam, sentimentscoreteam, retention, scopechange, earnedvalue, roi, latestart, inspectfail)
 
-cols = ['risktype', 'riskowner', 'riskscore', 'riskdescription']
+cols = ['riskselect', 'risktype', 'riskowner', 'riskscore', 'riskdescription']
+values = st.session_state.plpnoriskreport.split(",")
 myissues = (myrisks[myrisks['riskselect'] == 'I'])
-subissues = myissues[cols]
+for value in values:
+  myissues = (myissues[myissues['risktype'] != value])
+#myissues = myrisks['riskselect'].notna()j
+subissues = myissues[cols].sort_values(by=['riskselect', 'riskscore'])
 
-st.table(subissues)
+st.table(subissues.head(5))
 
-st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: red; font-size: 120%;'>Project Manager Report</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: #D12F2E; font-size: 120%;'>Project Manager Report</p>", unsafe_allow_html=True)
 if len(videopmreport) < 10:
   st.warning("PM report is missing no stoplight report engagement analysis")
 else:
@@ -292,7 +309,7 @@ else:
  plt.axis('off')
  plt.show()
  with col2:
-  st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: green; font-size: 120%;'>Management Report </p>", unsafe_allow_html=True)
+  st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: green; font-size: 120%;'>Topics </p>", unsafe_allow_html=True)
   st.pyplot(plt)
   st.write(st.session_state.pmpvidsummary)
 
@@ -309,6 +326,9 @@ with col2:
  st.write('.  \n'.join(st.session_state.plmlistscopeoption))
  st.write("Quality Reports")
  st.write('.  \n'.join(st.session_state.plmlistqualitytypes))
+st.write("##")
+successmsg = f'The PM Monitor Stoplight report presented by {st.session_state.plpmname} on {st.session_state.pldcharterdate}.  Thank you for using The PM Monitor. thepmmonitor.streamlit.app. '
+st.success(successmsg)
 #df[(df['date'] > '2013-01-01') & (df['date'] < '2013-02-01')]
 #final_table_columns = ['id', 'name', 'year']
 #pandas_df = pandas_df[ pandas_df.columns.intersection(final_table_columns)]

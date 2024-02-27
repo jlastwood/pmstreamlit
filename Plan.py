@@ -253,14 +253,21 @@ with st.container():
          message = chatbot.query(query)
          st.code(message)
 
+       cbd = st.checkbox("Askme for definitions and terms.", disabled=disableplan)
        st.text_area ("Dictionary.  Define any terms used in this product or design", value=setvalue('plscopeterms'), key='plscopeterms' , label_visibility=labelvis, disabled=disableplan)
+       if cbd and len(st.session_state.plscopeterms) < 10:
+         query = "What are some common terms and definitions used in a " + st.session_state.plpname + " project?"
+         info = chatbot.get_conversation_info()
+         st.write("Asking AI for a response", cb2, info.id, info.title, info.model, info.system_prompt, query, "The response is provided below, paste and edit in the form above")
+         message = chatbot.query(query)
+         st.code(message)
 
        st.text_area ("What is out of scope?", value=setvalue('plscopeoutofscope'), key='plscopeoutofscope', label_visibility=labelvis, disabled=disableplan)
        col4, col5 = st.columns(2)
        with col5:
-        st.multiselect( label='Select non functional attributes', help='Press enter to add', options=['None', 'Security', 'Availability', 'Usability', 'Maintainability','Documentation', 'Accessibility', 'Compliance', 'Robustness', 'Reliablity', 'Performance', 'Localization', 'Compatiblity', 'Portability', 'Scalability', 'None'], default=setvalue('plmlistscopelist'), key='plmlistscopelist', max_selections = 4,label_visibility=labelvis, disabled=disableplan)
+        st.multiselect( label='Select non functional attributes', help='Press enter to add', options=['None', 'Security', 'Availability', 'Usability', 'Maintainability','Operating Documentation', 'Users Guides', 'Accessibility', 'Compliance', 'Robustness', 'Reliablity', 'Performance', 'Localization', 'Compatiblity', 'Portability', 'Scalability'], default=setvalue('plmlistscopelist'), key='plmlistscopelist', max_selections = 4,label_visibility=labelvis, disabled=disableplan)
        with col4:
-         st.multiselect( label='Select technical architecture attributes and resources in the scope', options=['None', 'CMS', 'Web Framework', 'SEO', 'Search', 'Cloud Hosting', 'OnPrem Hosting', 'Automation',  'ERP', 'CDN', 'CI/CD', 'Custom Theme', 'No/Low Code', 'Native Mobile App', 'Process Model', 'Database', 'Testing', 'Decommission', 'Data Migration', 'SAAS', 'None'], default=setvalue('plmlistscopeoption'), key='plmlistscopeoption', max_selections = 4,label_visibility=labelvis, disabled=disableplan)
+         st.multiselect( label='Select technical architecture attributes and resources in the scope', options=['None', 'CMS', 'Web Framework', 'Google services', 'Microsoft Services', 'Meta Services', 'ChatGPT', 'SEO', 'Search', 'Cloud Hosting', 'OnPrem Hosting', 'Automation Framework', 'ERP', 'CDN', 'CI/CD', 'Custom Theme', 'No/Low Code Framework', 'Native Mobile App', 'Process Model System', 'Database System', 'Test Framework', 'Decommission Activities', 'Data Migration Activity', 'SAAS Application'], default=setvalue('plmlistscopeoption'), key='plmlistscopeoption', max_selections = 4,label_visibility=labelvis, disabled=disableplan)
        if len(scopechange) > 15:
           scopechange = f'There are scope changes. {scopechange}'
        st.session_state['thepmplanscope'] = f'Required:  \n  {st.session_state.plscopemusthave} \n\n  Options:  \n\n  {st.session_state.plscopenicetohave}  \n\n \n\n  Out of Scope:  {st.session_state.plscopeoutofscope} \n\n Change:  {scopechange}'
@@ -324,7 +331,7 @@ with st.container():
         })
       st.session_state['thepmphasename'] = phaselist[x]
       st.session_state['thepmplannote'] = plancomment(st.session_state['pldstartdate'], st.session_state['pldenddate'], daystoday, daystoend, st.session_state['thepmtimecomplete'], 3, st.session_state['plpnumber'], st.session_state['plpname'], st.session_state['plsbenefits'], st.session_state['plncadence'], phaselist[st.session_state['thepmphase']], st.session_state['plspname'], classlist[selected_class])
-      st.write("There will be ", reportsinplan, " Status Reports")
+      st.write("There will be ", reportsinplan, "Project manager monitoring and Status Reports")
       plancontainer.success(st.session_state.thepmplannote) 
       series = pd.DataFrame(pd.date_range(start=st.session_state.pldstartdate, end=st.session_state.pldenddate, periods=st.session_state.thepmreportsinplan, normalize=True))
       seriesb = pd.DataFrame(pd.date_range(start=st.session_state.pldstartdate, end=st.session_state.pldenddate, periods=st.session_state.thepmreportsinplan))
@@ -428,9 +435,11 @@ with st.container():
       with col3:
        st.text_input ("Task Activity Source Link (URL)", value=setvalue('plpactivitylink'), key='plpactivitylink', disabled=disableplan )
        st.text_input ("Documentation Folder (URL)", value=setvalue('plpdocumentslink'), key='plpdocumentslink', disabled=disableplan )
+       st.text_input ("Live Site (URL)", value=setvalue('plplivesitelink'), key='plplivesiteink', disabled=disableplan )
       with col4:
        st.text_input ("Team Standup Channel Link (URL)" , value=setvalue('plpstanduplink'), key='plpstanduplink', disabled=disableplan)
        st.text_input ("Team Source Code Git Link (URL)" , value=setvalue('plpgithublink'), key='plpgithublink', disabled=disableplan)
+       st.text_input ("Stage Site (URL)", value=setvalue('plpstagesitelink'), key='plpstageiteink', disabled=disableplan )
       with col5:
        st.text_input ("Product Owner Design Link (URL)" , value=setvalue('plpproductownerdesignlink'), key='plpproductownerdesignlink', disabled=disableplan)
        st.text_input ("User Chat Channel Link (URL)" , value=setvalue('plpstanduplinkusers'), key='plpstanduplinkusers', disabled=disableplan)
@@ -467,8 +476,7 @@ with st.container():
          st.code(message)
       st.multiselect(
          label='Select types of quality inspection attributes',
-         options=['Component or by Piece Testing', 'Pre Production Testing(PPI)', 'Pre Shipment/Final Inspection(PSI)', 'Security Test', 'Regulatory/Compliance Testing', 'Code Scanner', 'None'],
-         default=setvalue('plmlistqualitytypes'), key='plmlistqualitytypes', max_selections = 5, disabled=disableplan)
+         options=['Component or by Piece Testing', 'Pre Production Testing(PPI)', 'Pre Shipment/Final Inspection(PSI)', 'Security Test', 'Regulatory/Compliance Testing', 'Code Scanner', 'None'], default=setvalue('plmlistqualitytypes'), key='plmlistqualitytypes', max_selections = 5, disabled=disableplan)
 
       st.subheader("Quality Monitoring")
       st.text_area ("Quality Report", value=setvalue('plsqualityreport'), key='plsqualityreport')
@@ -534,11 +542,15 @@ with st.container():
        selected_cur2 = st.selectbox("Expense Currency", currchoice.Item, index=setvalue('pllistexpensecurrency'), disabled=disableplan) 
        st.session_state['pllistexpensecurrency'] = currchoice.loc[currchoice.Item == selected_cur2]["Value"].iloc[0]
       st.slider('Budget', min_value=0, max_value=200000, value=setvalue('plnbudget'), step=5000, key='plnbudget', disabled=disableplan)
-      col1, col2, col3, col4, col5 = st.columns(5)
+      col1, col2, col3, col4 = st.columns(4)
       with col1:
        st.slider('Estimated Work Hours', min_value=0, max_value=2000, value=setvalue('plnhours'), step=10, key='plnhours', disabled=disableplan)
       with col2:
        st.slider('Average Rate', min_value=0, max_value=200, value=setvalue('plnavgrate'), step=5, key='plnavgrate', disabled=disableplan)
+      with col3:
+       st.slider('Team hours per week', min_value=0, max_value=200, value=setvalue('plnhrsweek'), step=5, key='plnhrsweek', disabled=disableplan, help="To calculate team velocity or how much work they will complete in a period, enter the total capacity in hours")
+      tasks = int(st.session_state.plnhours / 3)
+      weeksinbuild = 3
       with col4:
        st.slider('Estimate Confidence', min_value=0, max_value=100, value=setvalue('plnhoursconfidence'), step=5, key='plnhoursconficence', disabled=disableplan)
       st.subheader("Cost Monitoring")
@@ -546,7 +558,7 @@ with st.container():
        st.write("During cost monitoring, capture the actual spend, and resource hours or resource usage.") 
       col4, col5 = st.columns(2)
       with col4:
-       st.slider('Spend to Date', min_value=0, max_value=250000, value=setvalue('plnspend'), step=500, key='plnspend')
+       st.slider('Spend to Date', min_value=-1, max_value=st.session_state.plnbudget, value=setvalue('plnspend'), step=500, key='plnspend')
       with col5:
        st.slider('Work Hours Performed', min_value=-1, max_value=st.session_state.plnhours, value=setvalue('plnhoursused'), step=10, key='plnhoursused')
       if st.session_state.plnhours > 1:
@@ -601,19 +613,21 @@ with st.container():
       if plbudget > 0:
         roi = (st.session_state['plnincreaseincome'] - st.session_state['plnincreaseexpense'] - plbudget) / (plbudget + etc) * 100
         rateofreturn = (st.session_state['plnincreaseincome'] - st.session_state['plnincreaseexpense'] - (plbudget + etc)) / (plbudget + etc)
-     # annualroi = (1 + rateofreturn) ^ (1 / st.session_state['plnbenefitdate']) - 1
+      #st.session_state['thepmannualroi'] = (1 + rateofreturn) ^ (1 / 12 - 1)
+      st.session_state['thepmannualroi'] = 10
      # st.write(annualroi)
       st.session_state['thepmroisummary'] = f'The roi is {roi:.3f} with an investment of {plbudget:.0f} and a benefit of {benefitdelta:.0f} to begin {benefitdate :%B %d, %Y} '
-      st.write(st.session_state.thepmroisummary)
+      st.write(st.session_state.thepmroisummary, st.session_state.thepmannualroi)
 
 with st.container():
    with st.container():
       st.subheader("Environment and Constraints")
-      st.write("What constraints impact time, scope, quality or cost. Little to no flexibility in time, cost or scope is normally a risk but can be a constraint when the probability of risks are almost certain.  Environmental issues are risks that are expected to occur in a project such as weather events, or limits of people and resources, when plans are not clear or finalized they become a constraint.")
-      st.write("Describe the approach and authority of the project team to limit impact of issues with Scope, Time, Budget or Resources. Choose a range on the slider related to the impact with 5 highest impact.  Example, if scope changes will have a significant impact on the product or the plan (5 - High) or are scope changes tolerated and have low impact on the plan and project (1 - Low).  ")
+      with st.expander('What constraints impact time, scope, quality or cost?' , expanded=expander):
+        st.write("What constraints impact time, scope, quality or cost. Little to no flexibility in time, cost or scope is normally a risk but can be a constraint when the probability of risks are almost certain.  Environmental issues are risks that are expected to occur in a project such as weather events, or limits of people and resources, when plans are not clear or finalized they become a constraint.")
+        st.write("Describe the approach and authority of the project team to limit impact of issues with Scope, Time, Budget or Resources. Choose a range on the slider related to the impact with 5 highest impact.  Example, if scope changes will have a significant impact on the product or the plan (5 - High) or are scope changes tolerated and have low impact on the plan and project (1 - Low).  ")
       col1, col2 = st.columns([1,5])
       with col1:
-       st.session_state['plnscoperange']  = st.slider ("Scope Risk", value=setvalue('plnscoperange'), format="%i", min_value=0, max_value=5, step=1,disabled=disableplan  )
+       st.session_state['plnscoperange']  = st.slider ("Scope Impact", value=setvalue('plnscoperange'), format="%i", min_value=0, max_value=5, step=1,disabled=disableplan  )
       with col2:
        cb7 = st.checkbox("Askme for scope mitigation strategies.", disabled=disableplan)
        st.session_state['plpscopecontingency']  = st.text_area ("What are three ways to mitigate the impact of scope changes in a project?", value=setvalue('plpscopecontingency'),disabled=disableplan)
@@ -626,7 +640,7 @@ with st.container():
 
       col1, col2 = st.columns([1,5])
       with col1:
-       st.session_state['plnschedulerange']  = st.slider ("Schedule Risk", value=setvalue('plnschedulerange'), format="%i", min_value=0, max_value=5, step=1,disabled=disableplan )
+       st.session_state['plnschedulerange']  = st.slider ("Schedule Impact", value=setvalue('plnschedulerange'), format="%i", min_value=0, max_value=5, step=1,disabled=disableplan )
       with col2:
        cb8 = st.checkbox("Askme for schedule mitigation strategies.", disabled=disableplan)
        st.session_state['plptimecontingency']  = st.text_area ("Schedule Contingency?", value=setvalue('plptimecontingency'), disabled=disableplan)
@@ -638,7 +652,7 @@ with st.container():
          st.code(message)
       col1, col2 = st.columns([1,5])
       with col1:
-       st.session_state['plnbudgetrange']  = st.slider ("Budget Risk", value=setvalue('plnbudgetrange'), format="%i", min_value=0, max_value=5, step=1,disabled=disableplan )
+       st.session_state['plnbudgetrange']  = st.slider ("Budget Impact", value=setvalue('plnbudgetrange'), format="%i", min_value=0, max_value=5, step=1,disabled=disableplan )
       with col2:
        cb9 = st.checkbox("Askme for budget mitigation strategies.", disabled=disableplan)
        st.session_state['plpbudgetcontingency']  = st.text_area ("Budget Contingency", value=setvalue('plpbudgetcontingency'),disabled=disableplan)
@@ -650,7 +664,7 @@ with st.container():
          st.code(message)
       col1, col2 = st.columns([1,5])
       with col1:
-       st.session_state['plnteamrange']  = st.slider ("Team Risk", value=setvalue('plnteamrange'), format="%i", min_value=0, max_value=5, step=1,disabled=disableplan )
+       st.session_state['plnteamrange']  = st.slider ("Team Impact", value=setvalue('plnteamrange'), format="%i", min_value=0, max_value=5, step=1,disabled=disableplan )
       with col2:
        cb10 = st.checkbox("Askme for team mitigation strategies", disabled=disableplan)
        st.session_state['plpteamcontingency']  = st.text_area ("Team Contingency", value=setvalue('plpteamcontingency'),disabled=disableplan)
@@ -662,7 +676,7 @@ with st.container():
          st.code(message)
       col1, col2 = st.columns([1,5])
       with col1:
-       st.session_state['plnresourcerange']  = st.slider ("Resource Risk", value=setvalue('plnresourcerange'), format="%i", min_value=0, max_value=5, step=1,disabled=disableplan )
+       st.session_state['plnresourcerange']  = st.slider ("Resource Impact", value=setvalue('plnresourcerange'), format="%i", min_value=0, max_value=5, step=1,disabled=disableplan )
       with col2:
        cb11 = st.checkbox("Askme for resource or technology mitigation strategies", disabled=disableplan)
        st.session_state['plpresourcecontingency']  = st.text_area ("Resource Contingency", value=setvalue('plpresourcecontingency'),disabled=disableplan)
@@ -677,6 +691,7 @@ with st.container():
 
       st.session_state['thepmteam'] = f'The team is composed of {st.session_state.plnteam:.0f}  members and have collaborated together for {st.session_state.plnteamweeks:.0f} weeks.  \n\n   The solution architect is {st.session_state.plpsolutionname}. The Operations Lead is {st.session_state.plpoperationname}. The inspector is {st.session_state.plpinspectorname}.  There are currently {st.session_state.plnopenroles:.0f} open roles. '
 
+      st.session_state['thepmusers'] = f'The product owner is {st.session_state.plspname}. There are {st.session_state.plnusers:.0f} users and {st.session_state.plnactors:.0f} actors or user roles. The product inspector is {st.session_state.plpinspectorname}.   '
 with st.container():
     placeholder = st.empty()
     #textquestion = st.text_input ("Ask AI for general help, enter a question", key="textquestion", on_change=clearaskme)
@@ -690,12 +705,14 @@ with st.container():
 with st.container():
    with st.expander("Risk Trigger settings" , expanded=expander):
      st.write("Risk trigger default values.  Currently these are for information purposes only and cannot be changed in the application.  ")
-     risktriggers = {'Inflation': 10, 'Changes': 1, 'Earned Value': 0, 'Sentiment': 70, 'Engagement': 80, 
-        'CPI': 0,
-        'SPI': 0, 'Inspection': 3, 'ROI': 120, 'Late Start': 3, 'Climate': 1, 'Unemployment': 8, 'Business Climate': 'B',
-        'Country Risk': 'B' }
-     st.dataframe(risktriggers)
+     risktriggers = ['Inflation', 'Changes', 'Earned Value', 'Sentiment', 'Engagement', 'CPI', 'SPI', 'Inspection', 'ROI', 'Late Start', 'Climate', 'Unemployment', 'Business Climate', 'Country Risk']
+     risktriggersamber = [5,  1,  0,  70,  80,  1, 1,  3,  200, 3,  1,  8,  'B',  'B' ]
+     risktriggersred = [10,  5,  0,  50,  50,  .8, .7,  5,  120, 5,  .8,  8,  'E',  'E' ]
+     riskt = [(risktriggers[i], risktriggersamber[i], risktriggersred[i]) for i in range(0, len(risktriggers))]
+     st.dataframe(riskt)
 
+     st.write("The following risk types will be removed from the stoplight report, enter values like Project,Team,Cost")
+     st.text_input ("Risk Type", help="a list of values separated by , ", key='plpnoriskreport', value=setvalue('plpnoriskreport'), disabled=disableplan, label_visibility=labelvis)
 with st.container():
 
 # 1. Download Settings Button convert dataframe to list there is a pandas problem with data serialization set to legacy

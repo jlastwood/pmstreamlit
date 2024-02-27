@@ -6,6 +6,7 @@ from transformers import AutoModelForQuestionAnswering, AutoTokenizer, pipeline
 from langchain.utilities import WikipediaAPIWrapper
 import wikipedia
 
+# this is a working version of openai interface removed after they started charging
 # https://huggingface.co/deepset/xlm-roberta-large-squad2
 # https://app.metatext.ai/exploreº
 # https://huggingface.co/spaces/flax-community/Gpt2-bengali/commit/2d7816407af411dce0bbf868a07eb5bd6861f041

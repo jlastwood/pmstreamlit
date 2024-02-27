@@ -6,7 +6,9 @@ def get_impact(value):
    impact = '1-High'
    if value == 3:
      impact = '2-Moderate'
-   if value == 3:       
+   if value == 2:       
+     impact = '3-Low'
+   if value == 1:       
      impact = '3-Low'
    return(impact)
 
@@ -17,14 +19,26 @@ def calculate_risks_json(phasenumber, SPI, CPI, engagementscoreteam, sentimentsc
    rows = len(risks)
    risks.loc[0:rows,['riskselect']] = ['Y']
 
-
    currentphase =  str(phasenumber) + '-' + st.session_state.thepmphasename
+   if currentphase == '5-Accept':
+     risks.loc[(risks['risktimeline'] == "2-Design;3-Build;4-Inspect;5-Accept") , 'risktimeline'] = currentphase
+   if currentphase == '4-Inspect':
+     risks.loc[(risks['risktimeline'] == "2-Design;3-Build;4-Inspect") , 'risktimeline'] = currentphase
+     risks.loc[(risks['risktimeline'] == "2-Design;3-Build;4-Inspect;5-Accept") , 'risktimeline'] = currentphase
+   if currentphase == '3-Build':
+     risks.loc[(risks['risktimeline'] == "2-Design;3-Build"), 'risktimeline'] = currentphase
+     risks.loc[(risks['risktimeline'] == "2-Design;3-Build;4-Inspect") , 'risktimeline'] = currentphase
+     risks.loc[(risks['risktimeline'] == "2-Design;3-Build;4-Inspect;5-Accept") , 'risktimeline'] = currentphase
+   if currentphase == '2-Design':
+     risks.loc[(risks['risktimeline'] == "2-Design;3-Build") , 'risktimeline'] = currentphase
+     risks.loc[(risks['risktimeline'] == "2-Design;3-Build;4-Inspect") , 'risktimeline'] = currentphase
+     risks.loc[(risks['risktimeline'] == "2-Design;3-Build;4-Inspect;5-Accept") , 'risktimeline'] = currentphase
 
    # Find issues in current phase based on trigger
    if 1 < earnedvalue < 20:
       risks.loc[(risks['risktrigger'] == "earnedvalue") & (currentphase == risks['risktimeline'] ), 'riskselect'] = "I"
    if inspectfail > 0:
-      risks.loc[(risks['risktrigger'] == "inspectfail") & (currentphase == risks['risktimeline'] ), 'riskselect'] = "I"
+      risks.loc[(risks['risktrigger'] == "inspectionfailure") & (currentphase == risks['risktimeline'] ), 'riskselect'] = "I"
    if latestart > 0:
       risks.loc[(risks['risktrigger'] == "latestart") & (currentphase == risks['risktimeline'] ), 'riskselect'] = "I"
    if 1 < roi < 130:
@@ -46,6 +60,7 @@ def calculate_risks_json(phasenumber, SPI, CPI, engagementscoreteam, sentimentsc
    if retention > 0:
       risks.loc[(risks['risktrigger'] == "retention") & (currentphase == risks['risktimeline'] ), 'riskselect'] = "I"
 
+   risks.loc[(risks['riskselect'] == "I"), 'riskresponse'] = "Mitigate"
    # if past phase then close risks
    if phasenumber > 1:
       risks.loc[risks['risktimeline'] == "1-Plan", 'riskprobability'] = pd.NA 
@@ -83,11 +98,26 @@ def calculate_risks_json(phasenumber, SPI, CPI, engagementscoreteam, sentimentsc
    #  setting impact based on plan
    impact = get_impact(st.session_state.plnscoperange)
    risks.loc[risks['riskclassification'] == "Scope", 'riskimpact'] = impact
+   risks.loc[risks['riskclassification'] == "Change", 'riskimpact'] = impact
+   risks.loc[risks['riskclassification'] == "Stakeholders", 'riskimpact'] = impact
+   risks.loc[risks['riskclassification'] == "Requirements", 'riskimpact'] = impact
+   impact = get_impact(st.session_state.plnbudgetrange)
    risks.loc[risks['riskclassification'] == "Cost", 'riskimpact'] = impact
+   impact = get_impact(st.session_state.plnschedulerange)
+   risks.loc[risks['riskclassification'] == "Project", 'riskimpact'] = impact
+   impact = get_impact(st.session_state.plnteamrange)
+   risks.loc[risks['riskclassification'] == "Team", 'riskimpact'] = impact
+   risks.loc[risks['riskclassification'] == "Communicatino", 'riskimpact'] = impact
+   impact = get_impact(st.session_state.plnresourcerange)
+   risks.loc[risks['riskclassification'] == "Procurement", 'riskimpact'] = impact
+   risks.loc[risks['riskclassification'] == "Technology", 'riskimpact'] = impact
 
    #  recacalculate score 
    #  set the score value and count scores and risktable
-   #for i in range (0, rows):
+   risks.loc[(risks['riskimpact'] == "1-High") | (risks['riskprobability'] == "1-High"), 'riskscore'] = "1-High"
+   risks.loc[(risks['riskimpact'] == "2-Moderate") | (risks['riskprobability'] == "2-Moderate"), 'riskscore'] = "2-Moderate"
+   risks.loc[(risks['riskimpact'] == "3-Low") | (risks['riskprobability'] == "3-Low"), 'riskscore'] = "3-Lowest"
+   # for i in range (0, rows):
    #  risks.at[i, 'riskimpact'] = 'dummy'
    #     risks.at[i, 'riskscore'] = '3-Lowest'
    issuecount = sum(risks['riskselect'] == 'I')
@@ -99,7 +129,7 @@ def calculate_risks_json(phasenumber, SPI, CPI, engagementscoreteam, sentimentsc
    risksummary = f'In Phase {phasenumber}, there are {riskcount} risks identified.  {issuecount} risks have been triggered and are possible issues.  {avoidcount} risks have planned mitigation or avoidance strategies. {closedcount} risks from previous phases have been closed. '
 
    st.write(risksummary)
-   st.write("Stats", risktotal, issuecount, closedcount)
+   #st.write("Stats", risktotal, issuecount, closedcount)
 
    return(risks, issuecount, riskcount, risktotal, risksummary)
 

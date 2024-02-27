@@ -1,8 +1,6 @@
-ac,Type,Start,Finish,Completion Pct,Team,du,name,pr
-initiate,Start,01/01/22,03/01/22,100,ProjectManager,1,Start,initiate
-plan,Milestone,01/01/22,03/01/22,40,ProjectManager,2,Project Planning,initiate
+ac,Type,Start,Finish,Completion Pct,Assign,Duration,Description,pr
+plan,Milestone,01/01/22,03/01/22,40,ProjectManager,2,Project Planning,
 design,Milestone,01/01/22,03/01/22,40,SolutionArchitect,2,Product Design,plan
 build,Milestone,01/01/22,03/01/22,0,AgileTeam,2,Product Build,design
 inspect,Milestone,01/01/22,03/01/22,0,Inspector,2,Inspection Report,build design
 accept,Milestone,01/01/22,03/01/22,0,ProductOwner,2,Product Acceptance,build
-close,End,01/01/22,03/01/22,0,ProjectManager,1,Close,inspect accept

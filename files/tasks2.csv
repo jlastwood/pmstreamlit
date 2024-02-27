@@ -1,11 +1,11 @@
-ac,du,pr,Type,Start,finish,Completion Pct,Team,name
-a,3,a,start,01/01/22,03/01/22,100,PM,Wordpress Setup Checklist
+ac,Duration,pr,Type,Start,Finish,Completion Pct,Assign,Description
+a,3,Start,start,01/01/22,03/01/22,100,PM,Wordpress Setup Checklist
 1,3,a,Story,01/01/22,03/01/22,40,Dev, Purchase a domain name
-2,3,a,Story,01/01/22,03/01/22,100,Dev, Purchase a hosting plan from a reputable hosting company that specializes in WordPress hosting
-3,3,a,Milestone,01/01/22,03/01/22,0,Mgr, Install the latest version of the WordPress core software on your server
+2,,a,Story,01/01/22,03/01/22,100,Dev, Purchase a hosting plan from a reputable hosting company that specializes in WordPress hosting
+3,3,a,Milestone,01/01/22,03/01/22,0,, Install the latest version of the WordPress core software on your server
 b,3,a,Epic,01/01/22,03/01/22,40,Mgr,Basic WordPress Development Checklist
-4,3,b,Story,01/01/22,03/01/22,0,Dev, Set up your domain in cPanel or your host’s web hosting panel
-5,3,b,Story,01/01/22,03/01/22,0,Dev, Set up new database and user in cPanel or your host’s web hosting panel
+4,3,b,Story,01/01/22,03/01/22,,Dev, Set up your domain in cPanel or your host’s web hosting panel
+5,3,,Story,01/01/22,03/01/22,0,Dev, Set up new database and user in cPanel or your host’s web hosting panel
 6,3,b,Story,01/01/22,03/01/22,0,Dev, Record new domain and database information into tracking software
 7,3,b,Story,01/01/22,03/01/22,0,Dev, Change DNS on domain to the correct name servers
 8,3,b,Story,01/01/22,03/01/22,0,Dev, Set up a WordPress staging environment
@@ -30,7 +30,6 @@ b,3,a,Epic,01/01/22,03/01/22,40,Mgr,Basic WordPress Development Checklist
 27,16,b,Story,01/01/22,03/01/22,0,Dev, Test the website on multiple devices and browsers
 28,3,b,Story,01/01/22,03/01/22,0,Dev, Test Everything!
 c,3,b,Story,01/01/22,03/01/22,0,Dev,WordPress Security Checklist
-,3,c,Story,01/01/22,03/01/22,0,Dev,
 29,3,c,Story,01/01/22,03/01/22,0,Dev, Update WordPress core to the latest version
 30,3,c,Story,01/01/22,03/01/22,0,Dev, Install a WordPress security plugin like iThemes Security to help perform important WordPress security tasks
 31,3,c,Story,01/01/22,03/01/22,0,Dev, Activate and set up WordPress two-factor authentication
@@ -49,7 +48,6 @@ c,3,b,Story,01/01/22,03/01/22,0,Dev,WordPress Security Checklist
 44,3,c,Story,01/01/22,03/01/22,0,Dev," Turn on reCAPTCHA for your WordPress user registration, comments, password reset, and login forms"
 45,3,c,Story,01/01/22,03/01/22,0,Dev," Review your WordPress security logs to see a summary of security-related activity on your site, including brute force attacks"
 d,3,c,Story,01/01/22,03/01/22,0,Dev,WordPress Backup Checklist
-99,3,d,Story,01/01/22,03/01/22,0,Dev,
 46,3,d,Story,01/01/22,03/01/22,0,Dev, Install a WordPress backup plugin like BackupBuddy
 47,3,d,Story,01/01/22,03/01/22,0,Dev," Run a manual backup to backup your entire WordPress installation, including the WordPress database, all files, themes, plugins, media library, etc"
 48,3,d,Story,01/01/22,03/01/22,0,Dev, Download the backup zip file of your WordPress website
@@ -109,4 +107,4 @@ h,3,g,Story,01/01/22,03/01/22,0,Dev,WordPress Maintenance Checklist
 98,3,g,Story,01/01/22,03/01/22,0,Dev, Use iThemes Sync to optimize your database
 99,3,g,Story,01/01/22,03/01/22,0,Dev," Check your Google Lighthouse score for ongoing improvements to your site’s SEO, accessibility, and performance metrics"
 100,3,g,Story,01/01/22,03/01/22,0,Dev, Add or update content on a weekly basis
-i,3,i,Story,01/01/22,03/01/22,0,Dev,End
+i,3,100,Story,01/01/22,03/01/22,0,Dev,End

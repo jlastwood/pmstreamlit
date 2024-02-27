@@ -5,6 +5,9 @@ from datetime import date
 import pandas as pd
 from scripts.thepmutilities import reporttitle, gradiant_header
 from streamlit_extras.switch_page_button import switch_page
+import os
+from os import walk
+from pathlib import Path
 
 st.session_state.update(st.session_state)
 pm = Image.open("assets/images/MonitorImage.png")
@@ -12,6 +15,14 @@ pm = Image.open("assets/images/MonitorImage.png")
 #  we have to do this as a separate file to force the refresh page
 #  this saves as json file
 #  https://github.com/Valires/streamlit-survey/blob/main/streamlit_survey/streamlit_survey.py
+
+# todo add windows nt path
+def getfiles(folder_path):
+ selected_filename = "None"
+ files = [f for f in os.listdir(folder_path) if f.endswith('.csv')]
+ if files:
+  selected_filename = st.selectbox('Select a project from local', files)
+ return os.path.join(folder_path, selected_filename)
 
 # 3. Apply Settings
 def upload_saved_settings(saved_settings):
@@ -33,19 +44,19 @@ def upload_saved_settings(saved_settings):
               st.session_state[saved_settings.iloc[i, 1]] = saved_settings.iloc[i, 2]
             if saved_settings.iloc[i, 1].startswith('pln'):
               st.session_state[saved_settings.iloc[i, 1]] = int(saved_settings.iloc[i, 2])
-            if saved_settings.iloc[i, 1].startswith('plrlist'):
+            if saved_settings.iloc[i, 1].startswith('pll'):
               st.session_state[saved_settings.iloc[i, 1]] = int(saved_settings.iloc[i, 2])
-            if saved_settings.iloc[i, 1].startswith('plm'):
-              st.session_state[saved_settings.iloc[i, 1]] = saved_settings.iloc[i, 2]
-              #if  saved_settings.iloc[i, 2] == "Red":
+            #if saved_settings.iloc[i, 1].startswith('plm'):
+            #  st.session_state[saved_settings.iloc[i, 1]] = saved_settings.iloc[i, 2]
               #  st.session_state[saved_settings.iloc[i, 1]] = 1
-            #if saved_settings.iloc[i, 1].startswith('pllist'):
-            #  st.session_state[saved_settings.iloc[i, 1]] = int(saved_settings.iloc[i, 2])
+            #if saved_settings.iloc[i, 1].startswith('plmlist'):
+            #  st.session_state[saved_settings.iloc[i, 1]] = list(saved_settings.iloc[i, 2])
+            if 'status' in saved_settings.iloc[i, 1]:
+              st.session_state[saved_settings.iloc[i, 1]] = saved_settings.iloc[i, 2]
             if saved_settings.iloc[i, 1].startswith('plmlist'):
               string_without_brackets = saved_settings.iloc[i, 2].strip("[]")
               string_without_brackets = string_without_brackets.replace("'", "")
               string_list = string_without_brackets.split(", ")
-              st.write(saved_settings.iloc[i,1], saved_settings.iloc[i,2], string_list)
               for x in string_list:
                st.write(x)
                if x != "":
@@ -116,10 +127,12 @@ button_download = st.download_button(label="Save Plan",
                                            help="Click to Download Current Settings")
 
 st.markdown("""---""")
-
+dir = str(os.path.join(Path.home(), "Downloads"))
+files = getfiles(dir)
+st.write(files)
 
 st.markdown("""---""")
-st.write("Following are some completed templates for sample projects")
+st.write("Template or Sample projects")
 
 wprelaunch = st.button("Wordpress Relaunch Plan")
 if wprelaunch:

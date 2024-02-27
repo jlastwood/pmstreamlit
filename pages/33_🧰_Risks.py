@@ -3,7 +3,7 @@ import streamlit as st
 import pandas as pd
 import altair as alt
 from PIL import Image
-from scripts.risklist import getrisks
+#from scripts.risklist import getrisks
 from scripts.thepmutilities import reporttitle, gradiant_header
 from scripts.riskgenerate import calculate_risks_json
 
@@ -59,7 +59,7 @@ scopechange = len(st.session_state.plscopechange.split("."))
 if len(st.session_state.plscopechange) < 6:
    scopechange = 0
 earnedvalue = st.session_state.plnactiveses
-roi = st.session_state.plnactiveses
+roi = st.session_state.thepmannualroi
 latestart = st.session_state.plnactiveses
 inspectfail = st.session_state.thepminspectflag
 
@@ -70,6 +70,31 @@ with st.container():
      (myrisks, issues, risks, totalrisks, risksummary)  = calculate_risks_json(phasenumber, SPI, CPI, engagementscoreteam, sentimentscoreteam, retention, scopechange, earnedvalue, roi, latestart, inspectfail)
      dataframe = pd.DataFrame.from_dict(myrisks, orient="columns")
      groupscore = dataframe.groupby(['riskimpact', 'risktype']).size().groupby(level=1).max()
+     st.header("Risk Detail")
+     editeddf = st.data_editor(
+        dataframe,
+        column_config={
+        "riskselect": st.column_config.SelectboxColumn(
+            "Select",
+            help="Issues to raise for management action",
+            width="small",
+            options=[
+                "N",
+                "Y",
+                "I",
+            ],
+            required=True,
+        ),
+         "risktype": "Type",
+         "riskowner": "Owner",
+         "riskscore": "Score",
+         "riskdescription": "Description"
+         },
+         disabled=("risktype", "riskowner", "riskscore", "riskdescription"),
+         hide_index=True,
+         use_container_width=True,
+         height=200,
+     )
 
      startresponse = myrisks['riskresponse'].value_counts()
      chartresponse = dataframe['riskresponse'].value_counts()
@@ -124,11 +149,11 @@ with st.container():
      )
      st.altair_chart(d, use_container_width=True)
 
-     st.subheader("Risk by Owner and Trigger")
+     st.subheader("Risk by Response and Trigger")
      st.write("Using triggers risks in the current phase will be flagged as issues ", phasenumber, SPI, CPI, engagementscoreteam, sentimentscoreteam, retention, scopechange, earnedvalue, roi, latestart, inspectfail)
      f = alt.Chart(dataframe.dropna()).mark_bar().encode(
-       x='riskowner',
-       y='count(risktrigger)',
+       x=alt.X('riskresponse', title="Response"),
+       y=alt.Y('count(risktrigger)'),
        color='risktrigger'
      )
      st.altair_chart(f, use_container_width=True)
@@ -169,7 +194,7 @@ with st.container():
      f = heatmap + points
      st.altair_chart(f, use_container_width=True)
 
-     st.header("Risk Detail")
-     st.dataframe(dataframe, hide_index=True)
+     #st.header("Risk Detail")
+     #st.dataframe(dataframe, hide_index=True)
  
 

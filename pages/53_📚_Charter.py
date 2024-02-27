@@ -239,5 +239,5 @@ The PM Monitor charter describes the plan, goals, objectives of the project.
     st.altair_chart(f, use_container_width=True)
 
 st.write("##")
-successmsg = f'The PM Monitor project charter presented by {st.session_state.plpmname} on {st.session_state.pldcharterdate}.  Thank you for using The PM Monitor. thepmmonitor.streamlit.app.  Print and share this report with the project stakeholders. '
+successmsg = f'The PM Monitor project charter presented by {st.session_state.plpmname} on {st.session_state.pldcharterdate}.  Thank you for using The PM Monitor. thepmmonitor.streamlit.app. '
 st.success(successmsg)

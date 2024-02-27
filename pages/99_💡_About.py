@@ -44,35 +44,46 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-gradiant_header ('The PM Monitor Information About this Product')
+gradiant_header ('The PM Monitor Project Management Information')
 
-st.markdown("### About")
+st.markdown("### Project Management Goal")
 
-st.subheader("Services")
-st.write("We provides consulting and business process management services. Visit https://bluezoneit.com for a list of services and contact information ") 
+st.write("The goal and objective of a project manager is to communicate, mitigate risks, control the budget, manage stakeholder expectations, and ensure there is alignment between the business goals and the project goals.  The Project Manager and The PM monitor application collaborate planning, monitoring and control of projects. ")
+
+st.markdown("### About the App and Developer")
+
+st.markdown("#### Git")
+st.write("This project is public and shared, if you have issues, please report on git.  https://github.com/jlastwood/pmstreamlit ") 
+
+st.markdown("#### Services")
+st.write("The developer provides consulting and business process management services. Visit https://bluezoneit.com for a list of services and contact information ") 
+
 st.markdown("#### Buy me a coffee")
 st.write("Are you interested in supporting this project with additional features or ideas, please buy me a coffee. Your investment will go to improvements for the community.  https://buymeacoffee.com/thepmmonitor  ") 
 button(username="thepmmonitor", floating=False)
 
-st.subheader("Git")
-st.write("This project is public and shared, if you have issues, please report on git.  https://github.com/jlastwood/pmstreamlit ") 
+st.markdown("#### Credits")
+st.write(" a lot, get from source, streamlit, the python community")
 
-st.subheader("Project management and reporting using Sheets")
+st.markdown("##### PMBOK Design")
 st.write("This project was born from project management templates and forms using sheets https://docs.google.com/spreadsheets/d/1ubIRBmCT3wflP2_MozgJV-Tny7aZfcWBuo1kLx1vVgI/edit?usp=sharing  and the PMBOK list of forms  https://www.wiley.com/en-ca/A+Project+Manager's+Book+of+Forms:+A+Companion+to+the+PMBOK+Guide,+3rd+Edition-p-9781119393986")
 
 st.subheader("Project Life Cycle and Product Life Cycle")
-st.write("The project is organized into 4 phases Initiation,   Planning,  Execution/Control and Closing.  The product is organized into 6 phases,  Planning, Design, Build, Inspect, Accept and Closure.") 
+st.write("The project is organized into 4 phases Initiation,   Planning,  Execution/Control and Closing.  The product is organized into 6 phases,  Plan, Design, Build, Inspect, Accept and Closure.") 
 
-st.subheader("Earned Value.")
+st.subheader("Cost Management and Cost Control - Earned Value")
 st.write("Monitoring risks are performed using earned value over time and spend and use the cost performance index and schedule performance index to raise issues")
 st.write("https://www.projectengineer.net/the-earned-value-formulas/")
 
-st.subheader("Trust and Virtual Teams")
-st.write("A critical component of project management is establishing trust and communication with the team and stakeholders.  We monitor this using sentiment analysis and engagement scores.  Following is a talk I gave at a customer site. ")
+st.subheader("Engagement and Sentiment - Words")
+st.write("A critical component of project management is establishing trust and communication with the team and stakeholders, listening to their feedback and taking an action when engagement or sentiment is low.   Sentiment analysis and engagement scores are used to monitor team and stakeholder sentiment and engagement.  ")
 st.write("https://www.flashhub.io/virtuelle-organisationen-live/")
 
-st.subheader("Credits")
-st.write(" a lot, get from source, streamlit, the python community")
+st.subheader("Risk Management - Risks")
+st.write("The PM Monitor contains a risk register with 130 possible risks spanning 9 different categories.  Risks are flagged as possible issues using triggers, such as late start of tasks, scope changes, or low engagement scores.  The risks are reported in the management actions of the stoplight report")
+
+st.subheader("Schedule Management - Tasks")
+st.write("The PM Monitor contains a set of reports that provide analysis of the tasks or WBS.  The PM monitor monitors tasks started late, these are important to address early, and monitors tasks on the critical path that are finished late.  Most task assignment tools do not present the critical path or the late start information.  ") 
 
 st.subheader("Theme")
 st.write("Using streamlit theme under settings, you can change the colors of the view and reports")

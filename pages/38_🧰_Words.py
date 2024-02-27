@@ -50,13 +50,13 @@ with col4:
 
 if uploaded_file is not None:
     messages=pd.read_csv(uploaded_file, quotechar='"', delimiter=',', skipinitialspace=True)
-    Tasks['DateTime'] = Tasks['Start'].astype('datetime64')
+    #Tasks['DateTime'] = Tasks['Start'].astype('datetime64')
     #Tasks['Finish'] = Tasks['Finish'].astype('datetime64')
     #Tasks['duration'] = Tasks['duration'].astype('int')
     #Tasks['duration'] = Tasks['duration'].fillna(0)
     #st.write(messages)
     st.success("success")
-    allmessages = ". ".join(map(str, messages['Message']))
+    allmessages = ". ".join(map(str, messages['text']))
     #st.write(allmessages)
     sents = sent_tokenize(allmessages) #tokenizing the text data into a list of sentences
     entireText = TextBlob(allmessages) #storing the entire text in one string
@@ -73,6 +73,9 @@ if uploaded_file is not None:
     sentimentTotal = entireText.sentiment
     st.write("The sentiment of the overall text below.")
     st.write(sentimentTotal)
+
+    wordtoken = word_tokenize(entiretext)
+    wordcloud.generate(entireText)
 
 #  processing of the video
 
@@ -93,6 +96,9 @@ if len(videoidreport) > 10:
  # st.write(str(dict(Counter(nouns).most_common(5))))
  sentence_list = nltk.sent_tokenize(textresult)
  stopwords = nltk.corpus.stopwords.words('english')
+ newStopWords = ['um','ok']
+ for i in newStopWords:
+    stopwords.append(i)
  # st.write(sentence_list)
  word_frequencies = {}
  for word in nltk.word_tokenize(textresult):
@@ -119,6 +125,7 @@ if len(videoidreport) > 10:
 
  summary_sentences = heapq.nlargest(5, sentence_scores, key=sentence_scores.get)
  summary = ' '.join(summary_sentences)
+ summary = summary.replace('um', '')
 
  # https://stackoverflow.com/questions/49566756/creating-wordclouds-with-altair
  # create the WordCloud object
@@ -129,7 +136,10 @@ if len(videoidreport) > 10:
  stopwords = set(STOPWORDS)
  # wordcloud.generate_from_frequencies(word_frequencies)
  wordcloud.generate(text_formatted)
-
- st.write(summary)
- st.session_state['pmpvidsummary'] = summary
+ st.text_area("Write a report", key='pmvidmysummary')
+ st.code(summary)
+ if len(st.session_state.pmvidmysummary) > 20:
+   st.session_state['pmpvidsummary'] = st.session_state.pmvidmysummary
+ else:
+   st.session_state['pmpvidsummary'] = summary
  st.session_state['pmpvidwordcloud'] = wordcloud
