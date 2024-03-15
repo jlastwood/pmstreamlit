@@ -280,7 +280,6 @@ vaderSentiment==3.2.1
 validators==0.18.2
 wandb==0.15.2
 wasabi==0.8.2
-watchdog==
 wcwidth==0.2.5
 webdriver-manager==3.8.6
 webencodings==0.5.1
