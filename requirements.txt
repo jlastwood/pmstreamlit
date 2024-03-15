@@ -40,7 +40,6 @@ thread==1.0.1
 tornado==6.1
 transformers==4.26.0
 trove_classifiers==2024.3.3
-truststore==0.8.0
 urllib3_secure_extra==0.1.0
 wikipedia==1.4.0
 wordcloud==1.8.2.2
