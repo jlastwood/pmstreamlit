@@ -17,11 +17,10 @@ from youtube_transcript_api.formatters import TextFormatter
 from wordcloud import WordCloud, STOPWORDS
 from deepmultilingualpunctuation import PunctuationModel
 import matplotlib.pyplot as plt
-
+#  run this "/Applications/Python 3.8/Install Certificates.command"
 st.session_state.update(st.session_state)
 
 # https://ruarfff.com/slack-sentiment/
-
 
 im = Image.open("assets/images/BlueZoneIT.ico")
 st.set_page_config(
@@ -51,12 +50,9 @@ with col4:
 
 if uploaded_file is not None:
     messages=pd.read_csv(uploaded_file, quotechar='"',  delimiter=',', skipinitialspace=True)
-    messages['Date'] = pd.to_datetime(messages.DateTime, format='%Y-%m-%d')
+    #messages['Date'] = pd.to_datetime(messages.DateTime, format='%Y-%m-%d')
+    messages['Date'] = pd.to_datetime(messages.DateTime, format='mixed')
     messages['Week'] = messages['Date'].dt.strftime('%y%U')
-    #Tasks['DateTime'] = Tasks['Start'].astype('datetime64')
-    #Tasks['Finish'] = Tasks['Finish'].astype('datetime64')
-    #Tasks['duration'] = Tasks['duration'].astype('int')
-    #Tasks['duration'] = Tasks['duration'].fillna(0)
     st.dataframe(messages)
     st.success("success")
     allmessages = ". ".join(map(str, messages['text']))

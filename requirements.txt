@@ -1,6 +1,7 @@
 altair==4.1.0
 attrs==21.2.0
 cheche_pm==0.1.13
+certifi==2024.2.2
 ConfigParser==6.0.1
 contextlib2==21.6.0
 cryptography==42.0.5
@@ -26,6 +27,7 @@ pandas==2.0.3
 Pillow==10.2.0
 plotly==5.14.1
 protobuf==3.20.1
+punkt==23.3.1
 pydeck==0.8.1b0
 pyOpenSSL==24.1.0
 railroad==0.5.0
