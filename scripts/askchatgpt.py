@@ -4,7 +4,7 @@ import requests
 #import openai
 from transformers import AutoModelForQuestionAnswering, AutoTokenizer, pipeline
 from langchain.utilities import WikipediaAPIWrapper
-import wikipedia
+#import wikipedia
 
 # this is a working version of openai interface removed after they started charging
 # https://huggingface.co/deepset/xlm-roberta-large-squad2
@@ -14,7 +14,7 @@ import wikipedia
 # sentence transformer
 # https://huggingface.co/sentence-transformers/multi-qa-distilbert-cos-v1
 
-wikipedia = WikipediaAPIWrapper()
+#wikipedia = WikipediaAPIWrapper()
 # Load the question answering model and tokenizer
 #model_name = "deepset/roberta-base-squad2"
 model_name = "deepset/gbert-large"
@@ -77,8 +77,8 @@ def askme(question_input):
     keywords = contextlist.split()
 
     # Fetch context information using the Wikipedia toolkit based on keywords
-    wikipedia = WikipediaAPIWrapper()
-    context_input = wikipedia.run(' '.join(keywords))
+    #wikipedia = WikipediaAPIWrapper()
+    #context_input = wikipedia.run(' '.join(keywords))
 
     # Prepare the question and context for question answering
     QA_input = {

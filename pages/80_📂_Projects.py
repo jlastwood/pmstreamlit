@@ -19,10 +19,10 @@ pm = Image.open("assets/images/MonitorImage.png")
 # todo add windows nt path
 def getfiles(folder_path):
  selected_filename = "None"
- files = [f for f in os.listdir(folder_path) if f.endswith('.csv')]
- if files:
-  selected_filename = st.selectbox('Select a project from local', files)
- return os.path.join(folder_path, selected_filename)
+ #files = [f for f in os.listdir(folder_path) if f.endswith('.csv')]
+ #if files:
+ # selected_filename = st.selectbox('Select a project from local', files)
+ #return os.path.join(folder_path, selected_filename)
 
 # 3. Apply Settings
 def upload_saved_settings(saved_settings):
@@ -126,10 +126,10 @@ button_download = st.download_button(label="Save Plan",
                                            file_name=pmfile_name,
                                            help="Click to Download Current Settings")
 
-st.markdown("""---""")
-dir = str(os.path.join(Path.home(), "Downloads"))
-files = getfiles(dir)
-st.write(files)
+#st.markdown("""---""")
+#dir = str(os.path.join(Path.home(), "Downloads"))
+#files = getfiles(dir)
+#st.write(files)
 
 st.markdown("""---""")
 st.write("Template or Sample projects")
