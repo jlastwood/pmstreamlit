@@ -43,6 +43,5 @@ trove_classifiers==2024.3.3
 urllib3_secure_extra==0.1.0
 wikipedia==1.4.0
 wordcloud==1.8.2.2
-xmlrpclib==1.0.1
 yahooquery==1.0.11
 youtube_transcript_api==0.4.4
