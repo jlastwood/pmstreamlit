@@ -16,6 +16,7 @@ from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api.formatters import TextFormatter
 from wordcloud import WordCloud, STOPWORDS
 from deepmultilingualpunctuation import PunctuationModel
+import matplotlib.pyplot as plt
 
 st.session_state.update(st.session_state)
 
@@ -49,15 +50,23 @@ with col4:
        videoidreport = st.text_input ("PM report ID",  key='plpmid')
 
 if uploaded_file is not None:
-    messages=pd.read_csv(uploaded_file, quotechar='"', delimiter=',', skipinitialspace=True)
+    messages=pd.read_csv(uploaded_file, quotechar='"',  delimiter=',', skipinitialspace=True)
+    messages['Date'] = pd.to_datetime(messages.DateTime, format='%Y-%m-%d')
+    messages['Week'] = messages['Date'].dt.strftime('%y%U')
     #Tasks['DateTime'] = Tasks['Start'].astype('datetime64')
     #Tasks['Finish'] = Tasks['Finish'].astype('datetime64')
     #Tasks['duration'] = Tasks['duration'].astype('int')
     #Tasks['duration'] = Tasks['duration'].fillna(0)
-    #st.write(messages)
+    st.dataframe(messages)
     st.success("success")
     allmessages = ". ".join(map(str, messages['text']))
     #st.write(allmessages)
+
+    output = messages.groupby('User')['DateTime'].describe()
+    st.write(output)
+    output2 = messages.groupby('Week')['User'].describe()
+    st.write(output2)
+
     sents = sent_tokenize(allmessages) #tokenizing the text data into a list of sentences
     entireText = TextBlob(allmessages) #storing the entire text in one string
     sentScores = [] #storing sentences in a list to plot
@@ -65,7 +74,7 @@ if uploaded_file is not None:
          text = TextBlob(sent) #sentiment for each sentence
          score = text.sentiment[0] #extracting polarity of each sentence
          sentScores.append(score) 
-
+    st.write(allmessages)
     #Plotting sentiment scores per sentencein line graph
     st.write("output engagement score, sentiment, top 5 words, top 3 people")
     st.line_chart(sentScores) #using line_chart st call to plot polarity for each 
@@ -73,9 +82,19 @@ if uploaded_file is not None:
     sentimentTotal = entireText.sentiment
     st.write("The sentiment of the overall text below.")
     st.write(sentimentTotal)
+    #wordtoken = word_tokenize(sents)
+    stopwords = nltk.corpus.stopwords.words('english')
+    wordcloud = WordCloud().generate(allmessages)
+    wordcloud = WordCloud(min_word_length = 5,
+                      background_color='white', stopwords=stopwords, max_words=10)
 
-    wordtoken = word_tokenize(entiretext)
-    wordcloud.generate(entireText)
+    # generate the word cloud
+ # wordcloud.generate_from_frequencies(word_frequencies)
+    plotwc = wordcloud.generate(allmessages)
+    fig, ax = plt.subplots()
+    ax.imshow(wordcloud, interpolation='bilinear')
+    ax.axis("off")
+    st.pyplot(fig)
 
 #  processing of the video
 

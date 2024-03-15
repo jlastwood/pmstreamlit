@@ -145,7 +145,8 @@ The PM Monitor charter describes the plan, goals, objectives of the project.
     st.write(', '.join(st.session_state.plmlistqualitytypes))
     st.write(st.session_state.plsqualityreport)
 
-    st.header(":classical_building: Stakeholders and Approvers", anchor=False, help="overview", divider="rainbow")
+    st.header(":classical_building: Stakeholders", anchor=False, help="overview", divider="rainbow")
+    st.write("The following people are contributors, interested parties and collaborators.")
     col1, col2 = st.columns(2)
     with col1:
      v=f"**Sponsor:** {st.session_state.plspname}"
@@ -166,7 +167,7 @@ The PM Monitor charter describes the plan, goals, objectives of the project.
      v=f"**Controller Finance:** {st.session_state.plpfinancename}"
      st.markdown(v)
 
-    st.header(":classical_building: Project and Product Life Cycle", anchor=False, help="overview", divider="rainbow")
+    st.header(":classical_building: Product Life Cycle", anchor=False, help="overview", divider="rainbow")
     st.write("The following chart shows the project status reports and the product milestones")
     chart = alt.Chart(st.session_state.thepmmilestones).mark_line(point = True).encode(
           alt.X('yearmonthdate(reportdate):O', title='Report Date'),

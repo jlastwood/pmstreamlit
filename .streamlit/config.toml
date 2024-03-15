@@ -7,4 +7,9 @@ font="sans serif"
 
 [global]
 # disableWidgetStateDuplicationWarning = true
+dataFrameSerialization = "legacy"
+
+[server]
+enableXsrfProtection = false
+enableCORS = false
 

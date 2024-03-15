@@ -1,6 +1,6 @@
 ac,Type,Start,Finish,Completion Pct,Assign,Duration,Description,pr
-plan,Milestone,01/01/22,03/01/22,40,ProjectManager,2,Project Planning,
-design,Milestone,01/01/22,03/01/22,40,SolutionArchitect,2,Product Design,plan
-build,Milestone,01/01/22,03/01/22,0,AgileTeam,2,Product Build,design
-inspect,Milestone,01/01/22,03/01/22,0,Inspector,2,Inspection Report,build design
-accept,Milestone,01/01/22,03/01/22,0,ProductOwner,2,Product Acceptance,build
+plan,Milestone,01/01/22,03/01/22,40,ProjectManager,5,Project Planning,
+design,Milestone,01/01/22,03/01/22,40,SolutionArchitect,10,Product Design,plan
+build,Milestone,01/01/22,03/01/22,0,AgileTeam,60,Product Build,design
+inspect,Milestone,01/01/22,03/01/22,0,Inspector,10,Inspection Report,build design
+accept,Milestone,01/01/22,03/01/22,0,ProductOwner,20,Product Acceptance,build

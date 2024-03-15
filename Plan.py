@@ -709,7 +709,7 @@ with st.container():
      risktriggersamber = [5,  1,  0,  70,  80,  1, 1,  3,  200, 3,  1,  8,  'B',  'B' ]
      risktriggersred = [10,  5,  0,  50,  50,  .8, .7,  5,  120, 5,  .8,  8,  'E',  'E' ]
      riskt = [(risktriggers[i], risktriggersamber[i], risktriggersred[i]) for i in range(0, len(risktriggers))]
-     st.dataframe(riskt)
+     #st.dataframe(riskt)
 
      st.write("The following risk types will be removed from the stoplight report, enter values like Project,Team,Cost")
      st.text_input ("Risk Type", help="a list of values separated by , ", key='plpnoriskreport', value=setvalue('plpnoriskreport'), disabled=disableplan, label_visibility=labelvis)

@@ -81,7 +81,6 @@ def make_gantt_chart(graph, startTimes, completionTimes, durations, slackTimes):
     left='off',         # ticks along the top edge are off
     labelleft='off') # labels along the bottom edge are off
     plt.savefig('gantt.png', bbox_inches = 'tight')
-    #  plt.show()
     st.pyplot(fig)
 
 def find_paths(graph, node, slackTimes, paths):
@@ -98,6 +97,7 @@ def find_paths(graph, node, slackTimes, paths):
 
 # https://github.com/sanatsingh/Critical-Path-Method-SE/blob/master/ca_2.py
 # https://levelup.gitconnected.com/how-to-create-a-multi-layer-gantt-chart-using-plotly-e7d7f158938c
+
 im = Image.open("assets/images/BlueZoneIT.ico")
 st.set_page_config(
       page_title="The PM Monitor Work Breakdown Activities",
@@ -113,7 +113,7 @@ if 'thepmheader' not in st.session_state:
 
 reporttitle("Task Analysis", st.session_state['thepmheader'])
 
-st.write("The PM monitor activity analysis is not intended as a replacement to your task management system.  Instead it is used to analyse the information to provide insight into potential issues with tasks started late, or tasks on the critical path not completed")
+st.write("The PM monitor activity analysis is not intended as a replacement to your task management system.  Instead it is used to analyse the information to provide insight into potential issues with top down planning. In top down planning, management or sales create a detailed list of activities and decisions about timeline, features and cost/effort.  In bottom up planning, there is a goal however activity definintion and decisions are left to the team.   However you plan, remember to not try to be too detailed, and remember to plan for change.  ")
 
 
 st.subheader('Gantt and WBS (Work Breakdown Structure)')
@@ -123,9 +123,9 @@ st.write("Analyse the results and update the plan and status.  Monitor activitie
 
 if uploaded_file is not None:
     Tasks=pd.read_csv(uploaded_file, quotechar='"', delimiter=',', skipinitialspace=True, keep_default_na=False)
-    st.warning('WBS not found, using phase tasks')
+    st.warning('WBS loading from file')
 else:
-    Tasks = pd.read_csv('files/tasks2.csv', sep=',')
+    Tasks = pd.read_csv('files/tasks.csv', sep=',')
 
 # fix missing values
 values = {'pr': 'Start', 'Duration': int(1), 'Assign': 'Team', 'Completion Pct': 0}
@@ -133,376 +133,200 @@ Tasks.fillna(value=values, inplace=True)
 #new_df = df.drop_duplicates(subset='ORDER ID')
 Tasks = Tasks.astype({'Duration':'int'})
 
+# map the people to columns
 assigned = Tasks.Assign.unique().tolist()
 max_resources = len(assigned)
 max_array = [1]*len(assigned)
-
 for x in assigned:
     Tasks[x] = 0
     Tasks.loc[Tasks["Assign"] == x, x] = 1
 
 p = Project()
+oppdict = {"Start": 0, "End": 0}
+pesdict = {"Start": 0, "End": 0}
 #p.add_activity(activity_name='A',activity_duration=2,activity_precedence = [None], activity_resources= [2,4,5])
 for index, row in Tasks.iterrows():
    # handle more than one
    var = str(row['pr'])
    prec = list(var.split(" "))
+   if var == "":
+     prec = ["Start"] 
    index = assigned.index(row['Assign'])
    rlist = [0]*len(assigned)
    rlist[index] = 1
    cost = int(row['Duration']*st.session_state.plnavgrate*5)
    p.add_activity(a_desc=row['Description'],activity_name=row['ac'],activity_duration=row['Duration'],activity_precedence = prec, activity_resources= rlist, activity_cost=cost)
-#st.table(Tasks)
+   #  apply estimate confidence
+   oppdict[row['ac']] = int(row['Duration'] * .75)
+   pesdict[row['ac']] = int(row['Duration'] * 1.5)
+#st.write(oppdict)
 
-p.create_project_dict()
-PROJECT = pd.DataFrame(p.PROJECT).T
-st.write(PROJECT)
+PROJECT = p.create_project_dict()
 
-Tasks_cpm = p.CPM(verbose=True)
-#st.write("CPM report")
-#st.table(Tasks_cpm)
+Tasks_cpm = p.CPM(verbose=False)
 Tasks_cp = p.get_critical_path()
-st.write("Critical Path")
-st.write(str(Tasks_cp))
 Tasks_sched = pd.DataFrame(p.cpm_schedule).T
-#st.write("Schedule")
-#st.table(Tasks_sched)
 
-PL = p.get_priority_list(priority_rule= 'LRD',verbose=True,save=True)
-#st.table(PL)
+#st.write("Priority list")
+PL = p.get_priority_list(priority_rule= 'MAXF',save=True)
 
-psg = p.PSG(PL,max_resources=max_array,verbose=False)
+#st.write("SSG")
+psg = p.SSG(PL,max_resources=max_array,verbose=False)
+#psg = p.PSG(PL,max_resources=max_array,verbose=False)
 #st.table(psg)
 
-plt1 = p.plot_network_diagram(plot_type = 'nx')
-st.pyplot(plt1, use_container_width=True)
+opt=.5
+pess = 1.25
+#st.write("Monte Carlo Simulation")
+#mc = p.monte_carlo_cpm_detailed(optimistic=oppdict,pessimistic=pesdict, NumberIterations=10)
+#st.write(mc)
 
+#plt1 = p.plot_network_diagram(plot_type = 'nx')
+#st.pyplot(plt1, use_container_width=True)
+
+#st.write("Resources")
 res = p.get_resources()
-st.write(res)
+#st.write(res)
 
+#  start WBS at end of design
 startdate = st.session_state.pldstartdate.strftime("%Y-%m-%d")
 firstdate = st.session_state.pldstartdate 
 todaydate = datetime.now()
 
 #best_heuristic = PROJECT.run_all_pl_heuristics()[psg]
-
-#  start tasks at end of design
 Tasks_dates = p.generate_datetime_schedule(solution = psg,start_date=startdate,weekends_work=False,max_resources=max_array,verbose=False)
+Project_dates = pd.merge(Tasks_dates, Tasks, left_index=True, right_on='ac')
 
-Project_dates = pd.merge(Tasks_dates, PROJECT, left_index=True, right_index=True)
-st.dataframe(Project_dates)
+#st.dataframe(Project_dates)
 #plt2= p.plot_date_gantt(Tasks_dates, plot_type = 'matplotlib')
 #st.pyplot(plt2, use_container_width=True)
-
-
 #plt3 = p.plot_resource_levels(psg)
 #st.pyplot(plt3)
-
 #plt4 = p.RCPSP_plot(psg,resource_id=0)
 #st.pyplot(plt4)
 
-# resource consumption
+# do not need this any longer
+graph = defaultdict(list)
+duration = {}
 
-# max resource capacity
-
-if True:
-    # do not need this any longer
-    graph = defaultdict(list)
-    duration = {}
-
+# fix missing data
+Project_dates.loc[Project_dates['Completion Pct'] == "", 'Completion Pct'] = "0"
+Project_dates['Completion Pct'] = Project_dates['Completion Pct'].astype('int')
     # input start, duration, type, name
-    Tasks['Start'] = Tasks['Start'].astype('datetime64[ns]')
+    #Tasks['Start'] = Tasks['Start'].astype('datetime64[ns]')
     #Tasks['Finish'] = Tasks['Finish'].astype('datetime64[ns]')
-    Tasks['Duration'] = Tasks['Duration'].astype('int')
-    Tasks['Duration'] = Tasks['Duration'].fillna(0)
+    #Tasks['Duration'] = Tasks['Duration'].astype('int')
+    #Tasks['Duration'] = Tasks['Duration'].fillna(0)
     # force type to int
-    firstdate = Tasks['Start'].iloc[0].date()
+    #firstdate = Tasks['Start'].iloc[0].date()
     # firstdate = (st.session_state.ldstartdate)
-    daysoffset = (st.session_state['pldstartdate']-firstdate).days
+    #daysoffset = (st.session_state['pldstartdate']-firstdate).days
     # get diff startdate and firstdate
     # Tasks['Start'] = firstdate
-    Tasks['Start'] = Tasks['Start'] + pd.Timedelta(days=daysoffset)
-    Tasks['Finish'] = Tasks['Start'] + pd.to_timedelta(Tasks['Duration'], unit='D') 
+    #Tasks['Start'] = Tasks['Start'] + pd.Timedelta(days=daysoffset)
+    #Tasks['Finish'] = Tasks['Start'] + pd.to_timedelta(Tasks['Duration'], unit='D') 
     #Tasks = st.dataframe( Tasks[Tasks['Type'] == 'Milestone'] )
-    Tasks.loc[Tasks['pr'] == "Start", 'pr'] = "plan"
+    #Tasks.loc[Tasks['pr'] == "Start", 'pr'] = "plan"
 
-    tottasks = len(Tasks) 
-    latetasks = closedtasks = cpmlate = 0
-    col3, col4, col5, col6 = st.columns(4)
-    col3.metric("Total Tasks", tottasks)
-    col4.metric("Late Start", latetasks)
-    col5.metric("Critical Path Late", cpmlate)
-    col6.metric("Completed Tasks", closedtasks)
+tottasks = len(Tasks) 
+latetasks = closedtasks = cpmlate = 0
+    #myissues = (Project_dates[Project_dates['riskselect'] == 'I'])
+    #latetasks = ((Project_dates['EF_date'].value_counts()[True]))
+closedtasks = [(Project_dates['Completion Pct'] == 100)]
+latetasks = (Project_dates["ES_date"] < pd.to_datetime(todaydate)) & ((Project_dates['Completion Pct'] == 0))
+cpmlate = (Project_dates["EF_date"] < pd.to_datetime(todaydate)) & ((Project_dates['Completion Pct'] == 0))
+tasksnow = Project_dates[(Project_dates["EF_date"] > pd.to_datetime(todaydate))  & (Project_dates["ES_date"] < pd.to_datetime(todaydate)) ]
 
-    #for index, row in Tasks.iterrows():
-    #     nodes = row['pr'].split(' ')
-    #     for node in nodes:
-    #           graph[node].append(row['ac'])
-    #     duration[row['ac']] = int(row['Duration'])
+# show the counters
+col3, col4, col5, col6 = st.columns(4)
+col3.metric("Total Tasks", tottasks)
+col4.metric("Late Start", len(latetasks))
+col5.metric("Critical Path Late", len(cpmlate))
+col6.metric("Completed Tasks", len(closedtasks))
 
-    #no_axis_title = axis = alt.Axis(title="")
-    #x_scale = alt.Scale(domain=(st.session_state.pldstartdate.isoformat(), st.session_state.pldenddate.isoformat()), nice=10) 
 
-    conditions = [
-    (Tasks['Completion Pct'] == 0),
-    (Tasks['Completion Pct'] >= 1) & (Tasks['Completion Pct'] < 100),
-    (Tasks['Completion Pct'] == 100)
+conditions = [
+    (Project_dates['Completion Pct'] == 0),
+    (Project_dates['Completion Pct'] >= 1) & (Project_dates['Completion Pct'] < 100),
+    (Project_dates['Completion Pct'] == 100)
     ]
 
     # create a list of the values we want to assign for each condition
-    values = ['NotStarted', 'InProgress', 'Completed']
-    Tasks['Status'] = np.select(conditions, values)
-    #st.write(Tasks[(Tasks["Start"] < pd.to_datetime(todaydate)) & (Tasks["Status"] == 'NotStarted')])
+values = ['NotStarted', 'InProgress', 'Completed']
+Project_dates['Status'] = np.select(conditions, values)
 
-    #st.write("Filter or view activities") 
+st.subheader("Mindmap Critical path")
 
-    #grid_response = AgGrid(
-    #    Tasks,
-    #    editable=False, 
-    #    height=300, 
-    #    filter=True,
-    #    )
-
-    st.subheader("Mindmap Critical path")
-
-    st.write("The critical path can change in a project, monitoring the critical path is essential to verify that the end date is feasible.  Using the critical path and the estimate to complete, verify that the end date has not changed" )
+st.write("The critical path can change in a project, monitoring the critical path is essential to verify that the end date is feasible.  Using the critical path and the estimate to complete, verify that the end date has not changed" )
     # Create a graphlib graph object
-    graph = graphviz.Graph()
-    graph.attr('edge', shape='box', style='filled', color='lightgrey')
-    for index, row in Tasks.iterrows():
-      dep = str(row['pr']).split()
-      for xdep in dep:
-        graph.node(str(row['ac']), shape = "box", fillcolor = "lightgrey", style = "filled")
-        graph.edge(xdep, str(row['ac']), label=str(row['Duration']))
-    st.graphviz_chart(graph)
+graph = graphviz.Graph()
+graph.attr('edge', shape='box', style='filled', color='lightgrey')
+for index, row in Tasks.iterrows():
+  dep = str(row['pr']).split()
+  for xdep in dep:
+    graph.node(str(row['ac']), shape = "box", fillcolor = "lightgrey", style = "filled")
+    graph.edge(xdep, str(row['ac']), label=str(row['Duration']))
+st.graphviz_chart(graph)
 
-    st.subheader("Late start tasks")
-    st.write("Show 5 tasks that are late, percentage complete is 0 and start date is less than the report date")
-    st.dataframe(Tasks[(Tasks["Start"] < pd.to_datetime(todaydate)) & (Tasks["Status"] == 'NotStarted')][['ac', 'Duration', 'Assign', 'Start']])
+st.subheader("Late start tasks")
+st.write("Show 5 tasks that are late, percentage complete is 0 and start date is less than the report date")
+    #st.dataframe(Tasks[(Tasks["Start"] < pd.to_datetime(todaydate)) & (Tasks["Status"] == 'NotStarted')][['ac', 'Duration', 'Assign', 'Start']])
     #display(dataFrame[(dataFrame['Salary']>=100000) & (dataFrame['Age']<40) & dataFrame['JOB'].str.startswith('P')][['Name','Age','Salary']])
-    st.subheader("What is the team working on now")
-    columns = ['Duration','ac', 'Start']
-    st.dataframe( Tasks[Tasks['Status'] == "InProgress"][columns])
-    st.subheader("Size of Product Build in days")
-    totalbuild = Tasks['Duration'].sum()
-    totalcomplete = Tasks.loc[Tasks['Status'] == 'Completed', 'Duration'].sum()
-    st.write(totalbuild)
-    st.write(totalcomplete)
+st.subheader("What is the team working on now")
+columns = ['ac', 'Duration','Assign', 'Description']
+st.write(tasksnow[columns])
+st.subheader("Size of Product Build in days")
+totalbuild = Project_dates['Duration'].sum()
+totalcomplete = Project_dates.loc[Project_dates['Status'] == 'Completed', 'Duration'].sum()
+st.write(totalbuild)
+st.write(totalcomplete)
     #st.metric("Total build", totalbuild, totalcomplete)
-    st.dataframe( Tasks[Tasks['Completion Pct'] == 100][columns])
+st.dataframe( Project_dates[Project_dates['Completion Pct'] == 100][columns])
 
-    st.subheader("Resource Load")
-    st.write("Show the total resource committment, start and end date of the resource, total hours, complete")
-    
+st.subheader("Resource Load")
+e = alt.Chart(Project_dates.dropna()).mark_bar().encode(
+       x='Assign',
+       y='sum(D)',
+       color='D'
+    )
+st.altair_chart(e, use_container_width=True)
+st.write(" ")
+
     #Main interface - section 3
-    st.subheader('Step 3: Generate the Gantt chart')
-    Tasks_dates['Task'] = Tasks_dates.index
+    #st.subheader('Step 3: Generate the Gantt chart')
+Project_dates['Task'] = Project_dates.index
  
     #Options = st.selectbox("View Gantt Chart by:", ['Assign','Completion Pct'],index=0)
     #if st.button('Generate Gantt Chart'): 
-    fig = px.timeline(
-                        Tasks_dates, 
-                        x_start="ES_date", 
-                        x_end="EF_date", 
-                        y="Task",
-                        color="D",
-                        hover_name="Task"
-                        )
+    #st.plotly_chart(fig, use_container_width=True)  #Display the plotly chart in Streamlit
 
-    fig.update_yaxes(autorange="reversed")          #if not specified as 'reversed', the tasks will be listed from bottom up       
-    fig.update_layout(
-                        title='Project Plan Gantt Chart',
-                        hoverlabel_bgcolor='#DAEEED',   #Change the hover tooltip background color to a universal light blue color. If not specified, the background color will vary by team or completion pct, depending on what view the user chooses
-                        bargap=0.2,
-                        height=600,              
-                        xaxis_title="", 
-                        yaxis_title="",                   
-                        title_x=0.5,                    #Make title centered                     
-                        xaxis=dict(
-                                tickfont_size=15,
-                                tickangle = 270,
-                                rangeslider_visible=True,
-                                side ="top",            #Place the tick labels on the top of the chart
-                                showgrid = True,
-                                zeroline = True,
-                                showline = True,
-                                showticklabels = True,
-                                tickformat="%x\n",      #Display the tick labels in certain format. To learn more about different formats, visit: https://github.com/d3/d3-format/blob/main/README.md#locale_format
-                                )
-                    )
-        
-    fig.update_xaxes(tickangle=0, tickfont=dict(family='Rockwell', color='blue', size=15))
+st.subheader("Visualation of WBS")
+gantt1 = alt.Chart(Project_dates).mark_bar().encode(
+      x=alt.X('ES'),
+      x2=alt.X2('EF'),
+      y=alt.Y('ac', sort=None, title="Activity"),
+      color=alt.Color('critical', scale=alt.Scale(scheme='redyellowblue'))
+    )
+st.altair_chart(gantt1, use_container_width=True)
 
-    st.plotly_chart(fig, use_container_width=True)  #Display the plotly chart in Streamlit
-
-        #st.subheader('Export the interactive Gantt chart to HTML and share with others!') #Allow users to export the Plotly chart to HTML
-        #buffer = io.StringIO()
-        #fig.write_html(buffer, include_plotlyjs='cdn')
-        #html_bytes = buffer.getvalue().encode()
-        #st.download_button(
-        #    label='Export to HTML',
-        #    data=html_bytes,
-        #    file_name='Gantt.html',
-        #    mime='text/html'
-        #) 
-    #else:
-    #    st.write('---') 
-
-    st.subheader("Heatmap Assign by Month")
-    heatmap = alt.Chart(Tasks).mark_rect().encode(
-       alt.Y('Assign'),
-       alt.X('monthdate(Finish):O'),
-       alt.Color('sum(Duration)', scale=alt.Scale(scheme='redyellowblue'))
+st.subheader("Visualation of WBS")
+gantt = alt.Chart(Project_dates.dropna()).mark_rect().encode(
+       y=alt.Y('ac', sort=None, title="Activity"),
+       x=alt.X('monthdate(ES_date):O'),
+       x2=alt.X2('monthdate(EF_date):O'),
+       color=alt.Color('sum(D)', scale=alt.Scale(scheme='redyellowblue'))
     ) 
-    st.altair_chart(heatmap, use_container_width=True)
+st.altair_chart(gantt, use_container_width=True)
 
-    alt_work = alt.Chart(Tasks).mark_point().encode(
-     x=alt.Y('Duration', axis=alt.Axis(title="Duration task")),
-     y=alt.X('Type', axis=alt.Axis(title="Phase Name")),
-     tooltip='Type',
-     color=alt.Color('sum(Duration)', scale=alt.Scale(scheme='redyellowblue'))
-     )
-   
-    st.altair_chart(alt_work, use_container_width=True)
+st.subheader("Resource Committment Matrix")
+heatmap = alt.Chart(Project_dates.dropna()).mark_rect().encode(
+       y=alt.Y('Assign').title("Resource"),
+       x=alt.X('monthdate(ES_date):O', axis=alt.Axis(tickCount=4)),
+       x2=alt.X2('monthdate(EF_date):O'),
+       color=alt.Color('sum(D)', scale=alt.Scale(scheme='redyellowblue'))
+    ) 
+st.altair_chart(heatmap, use_container_width=True)
+st.write("The total hours committed and when are displayed")
 
-    alt_util = alt.Chart(Tasks).mark_area(interpolate="monotone").encode(
-     x=alt.X('monthdate(Start):O'),
-     y=alt.Y('sum(Duration)', axis=alt.Axis(title="Sum hours required")),
-     color='Assign'
-    )
-    st.altair_chart(alt_util, use_container_width=True)
-
-    alt_cat = alt_util.mark_line().encode(
-     x=alt.X('monthdate(Start):O'),
-     y=alt.Y('sum(Duration)', axis=alt.Axis(title="FTE required")),
-     color='Assign'
-    )
-    st.altair_chart(alt_cat, use_container_width=True)
-
-    #  make_gantt_chart(graph, startTimes, completionTimes, duration, slackTimes)
-    #  make_pert_chart(graph, startTimes, completionTimes, slackTimes, criticalPaths)
-#import pandas as pd
-#import plotly.express as px
-#import plotly.figure_factory as ff
-#import plotly.graph_objs as go
-#import chart_studio
-#import chart_studio.plotly as py 
-#import chart_studio.tools as tls
-# print(df.dtypes)
-# print(df.head())
-    colors = {'Story' : 'rgb(30,144,255)'
-          , 'Feature' : 'rgb(211,211,211)'
-          , 'start' : 'rgb(95,158,160)'
-          , 'Process' : 'rgb(0,0,128)'
-          , 'Process - Date TBD' : 'rgb(211,211,210)'}
-    
-    orders = list(Tasks['ac'])
-    fig = px.timeline(Tasks
-                  , x_start="Start"
-                  , x_end="Finish"
-                  , y="Assign"
-                  , hover_name="ac"
-#                   , facet_col="Dimension"
-#                   , facet_col_wrap=40
-#                   , facet_col_spacing=.99
-#                   , color_discrete_sequence=['green']*len(df)
-                  , color_discrete_sequence=px.colors.qualitative.Prism
-                  , opacity=.7
-#                   , text="ac"
-                  , range_x=None
-                  , range_y=None
-                  , template='plotly_white'
-                  , height=1200
-#                   , width=1500
-                  , color='Type'
-                  , title ="<b>IE 3.0 Gantt Chart 2021</b>"
-#                   , color=colors
-                 )
-    fig.update_layout(
-    bargap=0.5
-    ,bargroupgap=0.1
-    ,xaxis_range=[Tasks.Start.min(), Tasks.Finish.max()]
-    ,xaxis = dict(
-        showgrid=True
-        ,rangeslider_visible=True
-        ,side ="top"
-        ,tickmode = 'array'
-        ,dtick="M1"
-        ,tickformat="Q%q %Y \n"
-        ,ticklabelmode="period"        
-        ,ticks="outside"
-        ,tickson="boundaries"
-        ,tickwidth=.1
-        ,layer='below traces'
-        ,ticklen=20
-        ,tickfont=dict(
-            family='Old Standard TT, serif',size=24,color='gray')
-        ,rangeselector=dict(
-            buttons=list([
-                dict(count=1, label="1m", step="month", stepmode="backward"),
-                dict(count=6, label="6m", step="month", stepmode="backward"),
-                dict(count=1, label="YTD", step="year", stepmode="todate"),
-                dict(count=1, label="1y", step="year", stepmode="backward"),
-                dict(step="all")
-            ])
-            ,x=.37
-            ,y=-.05
-            ,font=dict(
-                family="Arial",
-                size=14,
-                color="darkgray"
-    )))
-    
-    ,yaxis = dict(
-        title= ""
-        ,autorange="reversed"
-        ,automargin=True
-#         ,anchor="free"
-        ,ticklen=10
-        ,showgrid=True
-        ,showticklabels=True
-        ,tickfont=dict(
-            family='Old Standard TT, serif', size=16, color='gray'))
-    
-    ,legend=dict(
-        orientation="h"
-        ,yanchor="bottom"
-        ,y=1.1
-        ,title=""
-        ,xanchor="right"
-        ,x=1
-        ,font=dict(
-            family="Arial"
-            ,size=14
-            ,color="darkgray"))
- )
-    fig.update_traces( #marker_color='rgb(158,202,225)'
-                   marker_line_color='rgb(8,48,107)'
-                  , marker_line_width=1.5, opacity=0.95)
-    fig.update_layout(
-    title="<b>IE 3.0 Gantt Chart 2021</b>",
-    xaxis_title="",
-#     margin_l=400,
-    yaxis_title="Initiatives",
-#     legend_title="Dimension: ",
-    font=dict(
-        family="Arial",
-        size=24,
-        color="darkgray"
-    )
-    )
-#    st.write(fig.show())
-
-# fig.write_html("C:/Users/maxwell.bade/Downloads/ie_3_gantt.html")
-else:
-    st.warning('Upload a csv file.')
-    with open("files/tasks.csv", "rb") as file:
-      btn = st.download_button(
-         label="Download data as CSV",
-         data=file,
-         file_name='tasks.csv',
-         mime='text/csv',
-      )
-    df = pd.read_csv('files/tasks.csv', sep=',')
-    st.dataframe(df)
+st.write(Project_dates)
 

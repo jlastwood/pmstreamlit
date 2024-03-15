@@ -238,7 +238,7 @@ timeintro = "<br>When does the project actually start? What is needed? (e.g. pre
 timesummary = "<sup>" + timeintro + "</sup><br><br>" + 'Project start is ' + st.session_state['pldstartdate'].isoformat() + '  End is ' + st.session_state['pldenddate'].isoformat() + ' Inspection date is ' + st.session_state['pldinspectdate'].isoformat() + ' Deliverables ' + ', '.join(st.session_state.plmlistscopelist)  
 fancy_box ("120,173,214,.25", "0,0,0,.75", "fas fa-calendar", timesummary, "Schedule")
 risklist = ["High", "Low", "Low", "Moderate", "High", "High"]
-costintro = "<br>iHow much money is needed or available...  ... for the implementation?  ... for possibly necessary resources (e.g. server, people)?"
+costintro = "<br>How much money is needed or available...  ... for the implementation?  ... for possibly necessary resources (e.g. server, people)?"
 costsummary = "<sup>" + costintro + "</sup><br><br>  The planned investment in Product Design and Delivery is " + str(st.session_state.plnbudget) + ' The project controller is ' + st.session_state.plpfinancename
 fancy_box ("120,173,214,.25", "0,0,0,.75", "fas fa-bolt", costsummary, "Budget")
 custintro = "<br>Who is a customer? People who...  ... finance the project (sponsor) ... start & finish the project (owner) ... receive the project results (recipient, user) Are there foreseeable conflicts?  "

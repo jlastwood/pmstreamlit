@@ -70,31 +70,31 @@ with st.container():
      (myrisks, issues, risks, totalrisks, risksummary)  = calculate_risks_json(phasenumber, SPI, CPI, engagementscoreteam, sentimentscoreteam, retention, scopechange, earnedvalue, roi, latestart, inspectfail)
      dataframe = pd.DataFrame.from_dict(myrisks, orient="columns")
      groupscore = dataframe.groupby(['riskimpact', 'risktype']).size().groupby(level=1).max()
-     st.header("Risk Detail")
-     editeddf = st.data_editor(
-        dataframe,
-        column_config={
-        "riskselect": st.column_config.SelectboxColumn(
-            "Select",
-            help="Issues to raise for management action",
-            width="small",
-            options=[
-                "N",
-                "Y",
-                "I",
-            ],
-            required=True,
-        ),
-         "risktype": "Type",
-         "riskowner": "Owner",
-         "riskscore": "Score",
-         "riskdescription": "Description"
-         },
-         disabled=("risktype", "riskowner", "riskscore", "riskdescription"),
-         hide_index=True,
-         use_container_width=True,
-         height=200,
-     )
+     #st.header("Risk Detail")
+     #editeddf = st.data_editor(
+     #   dataframe,
+     #   column_config={
+     #   "riskselect": st.column_config.SelectboxColumn(
+     #       "Select",
+     #       help="Issues to raise for management action",
+     #       width="small",
+     #       options=[
+     #           "N",
+     #           "Y",
+     #           "I",
+     #       ],
+     #       required=True,
+     #   ),
+     #    "risktype": "Type",
+     #    "riskowner": "Owner",
+     #    "riskscore": "Score",
+     #    "riskdescription": "Description"
+     #    },
+     #    disabled=("risktype", "riskowner", "riskscore", "riskdescription"),
+     #    hide_index=True,
+     #    use_container_width=True,
+     #    height=200,
+     #)
 
      startresponse = myrisks['riskresponse'].value_counts()
      chartresponse = dataframe['riskresponse'].value_counts()
@@ -125,17 +125,17 @@ with st.container():
 
      st.subheader("Risk by Type and Impact")
      c = alt.Chart(dataframe.dropna()).mark_bar().encode(
-       x='risktype',
+       x=alt.X('risktype', title="Type"),
        y='count(riskimpact)',
-       color='riskimpact'
+       color=alt.Color('riskimpact', title="Impact")
      )
      st.altair_chart(c, use_container_width=True)
 
      st.subheader("Risk by Owner and Score")
      d = alt.Chart(dataframe.dropna()).mark_bar().encode(
-       x='riskowner',
+       x=alt.X('riskowner', title="Owner"),
        y='count(riskscore)',
-       color='riskscore'
+       color=alt.Color('riskscore', title="Score")
      )
      st.altair_chart(d, use_container_width=True)
      st.write("The project manager owns and monitors most risks, but some are owned by other in the team such as the product owner, team or sponsor to monitor and inform the project manager when the risk becomes an issue.  ")
@@ -143,9 +143,9 @@ with st.container():
      st.subheader("Risk by Class and Timeline")
      st.write("Risks are closed when the project advances to later phases as they no longer are applicable")
      d = alt.Chart(dataframe.dropna()).mark_bar().encode(
-       x='riskclassification',
+       x=alt.X('riskclassification', title="Classification"),
        y='count(risktimeline)',
-       color='risktimeline'
+       color=alt.Color('risktimeline', title="Timeline")
      )
      st.altair_chart(d, use_container_width=True)
 
