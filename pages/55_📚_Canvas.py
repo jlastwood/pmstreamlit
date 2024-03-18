@@ -6,6 +6,7 @@ from PIL import Image
 from streamlit_elements import elements, dashboard
 from scripts.thepmutilities import reporttitle, gradiant_header, reporttitleonly
 from streamlit_extras.grid import grid
+import colorsys
 
 def get_first(s):
   # get first sentence in string
@@ -33,7 +34,7 @@ def split(s):
         start = fins + 3
     return thislist
 
-# Changes:
+# Todo:
 #   Having a nice print and share image or pdf 
 #   streamlit elements better boxes and moving elements
 #   button with three canvas options
@@ -57,6 +58,7 @@ st.set_page_config(
 #'''
 #st.markdown(hide_decoration_bar_style, unsafe_allow_html=True)
 
+#  media print - todo - fix some viewport width
 st.markdown("""
     <style>
         @media print {
@@ -94,25 +96,36 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+# how to display svg in streamlit
 # https://gist.github.com/treuille/8b9cbfec270f7cda44c5fc398361b3b1
 
 @st.cache(allow_output_mutation=True)
+
 def get_base64_of_bin_file(bin_file):
     url = pathlib.Path(__file__).parent.parent.parent / bin_file 
     with open(url, 'rb') as f:
         data = f.read()
     return base64.b64encode(data).decode()
 
+def hex_to_rgb(c2):
+  ca = c2.replace('#', '')
+  colorx = tuple(int(ca[i:i+2], 16) for i in (0, 2, 4))
+  colory = ','.join(str(i) for i in colorx) + ",.25"
+  return(colory)
+
 def wrapbox(color1, color2, align, text, title, icon):
    text = "<p style='text-align: " + align + "; border-radius: 10px; color: " + color1 + "; background: " + color2 + ";opacity:0.6;'>header</p><p style='text-align: " + align + "; border-radius: 10px; color: " + color1 + "; background: " + color2 + ";'>" + title + "<br/>" + text + "</p>"
    return text
 
 # https://css-tricks.com/aspect-ratio-boxes/
+# todo - add some logic to make boxes the same height
 def fancy_box(wch_colour_box, wch_colour_font, iconname, sline, i):
   fontsize = 18
   valign = "left"
   lnk = '<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css" crossorigin="anonymous">'
-  
+ 
+  # convert colors to HSV
+ 
   aspect = "4 / 3"
   #if len(sline) > 300:
   #  aspect = "1 / 1"
@@ -195,63 +208,78 @@ mySep = ","
 
 gradiant_header ('The PM Monitor Project Canvas')
 
+with st.sidebar:
+   layoutposter = st.radio("Layout", ["Business", "Team Poster"])
+   colorg = st.color_picker("Color G", '#00cc66')
+   colorgh = hex_to_rgb(colorg)
+   colorr = st.color_picker("Color R", '#F48C94')
+   colorrh = hex_to_rgb(colorr)
+   colorb = st.color_picker("Color B", '#78ADD6')
+   colorbh = hex_to_rgb(colorb)
+   colory = st.color_picker("Color Y", '#EFD164')
+   coloryh = hex_to_rgb(colory)
+
 # 15 elements layout on page
-#my_grid = grid(4, [2, 2, 1], 2, 3, 3, 1,  vertical_align="top")
+# todo - offer 2 more options for theme layout
 my_grid = grid(4, 3, 2, 2, 3, 1,  vertical_align="top")
-#my_grid = grid(2, 2, 2, 2, 2, 2, 2, 1,  vertical_align="bottom")
+#my_grid = grid(4, [2, 2, 1], 2, 3, 3, 1,  vertical_align="top")
+if layoutposter == "Team Poster":
+  my_grid = grid(2, 2, 2, 2, 2, 2, 2, 1,  vertical_align="bottom")
+
 
 p1intro = "<br>Project Introduction"
 p1summary = "<sup>" + p1intro + "</sup><br><br>" + st.session_state['thepmplannote'].replace('\n', '<br />')   
-fancy_box ("0,204,102,.15", "0,0,0,.75", "fas fa-book", p1summary, "Introduction")
+
+fancy_box (colorbh, "0,0,0,.75", "fas fa-book", p1summary, "Introduction")
 scopeintro = "<br>What exactly should the project deliver for CUSTOMERS?  What is it most likely to deliver?  a new product/a new service new findings/knowledge When is the project successful?  "
 scopelist = '.  \n'.join(split(st.session_state.plscopemusthave)) 
 scopesummary = "<sup>" + scopeintro + "</sup><br><br>" + scopelist + '.<br />'  
-fancy_box ("0,204,102,.15", "0,0,0,.75", "fas fa-shopping-cart", scopesummary.replace('\n', '<br />'), "Outcome")
+fancy_box (colorbh, "0,0,0,.75", "fas fa-shopping-cart", scopesummary.replace('\n', '<br />'), "Outcome")
 p3intro = "<br>What is the intention behind the project?(Also challenge, cause) Why is the project important - and for whom?  What will be different a year after the project?  What would be missing if we did not do the project?"
 p3summary = "<sup>" + p3intro + "</sup><br><br>" + st.session_state['plspurpose'].replace('\n', '<br />') + ". " + st.session_state['plsbenchmarks'].replace('\n', '<br />')
-fancy_box ("0,204,102,.15", "0,0,0,.75", "fas fa-file-code", get_first(p3summary), "Purpose")
+fancy_box (colorbh, "0,0,0,.75", "fas fa-file-code", get_first(p3summary), "Purpose")
 p4intro = "<br>Are there comparable or similar products or services (benchmarks)?  Which are they?  What do you like about these benchmarks?  What distinguishes this project from them?> "
 p4summary = "<sup>" + p4intro + "</sup><br><br>" + st.session_state['plsbenchmarks'].replace('\n', '<br />') 
-fancy_box ("0,204,102,.15", "0,0,0,.75", "fas fa-gavel", get_first(p4summary), "Benchmarks")
+fancy_box (colorbh, "0,0,0,.75", "fas fa-gavel", get_first(p4summary), "Benchmarks")
 riskintro = "<br>Which uncertain events, if they were to occur, would jeopardize or inspire the success of the project? Events that can be influenced are to be considered as ENVIRONMENTAL conditions.  In your risk plan these would be classified as Avoid assuming you have plans in place."
 risklist = '.  \n'.join(split(st.session_state.plpresourcecontingency)) 
 risksummary = "<sup>" + riskintro + "</sup><br><br>" + risklist.replace('\n', '<br />')  
-fancy_box ("244,140,148,.25", "0,0,0,.75", "fas fa-crosshairs", risksummary, "Risks and Opportunities")
+fancy_box (colorrh, "0,0,0,.75", "fas fa-crosshairs", risksummary, "Risks and Opportunities")
 flexintro = "<br>Which characteristics of the project do you consider to be the most flexible?  Projects that have flexibilty to adjust to constraints or unexpected issues are more successful.  When risks are high it is important to have contingency plans. "
 impactlist = ['High','Very Low', 'Low', 'Moderate', 'High', 'Very High']
 flexsummary = "<sup>" + flexintro + "</sup><br><br>" + "<br>Scope Impact " + impactlist[st.session_state.plnscoperange] + "<br>Schedule Impact " + impactlist[st.session_state.plnschedulerange] + "<br>Cost Impact " + impactlist[st.session_state.plnbudgetrange] + "<br>Team Impact " + impactlist[st.session_state.plnteamrange] + "<br>Resource Impact " + impactlist[st.session_state.plnresourcerange]
-fancy_box ("244,140,148,.25", "0,0,0,.75", "fas fa-check", flexsummary, "Flexibility of Project Constraints")
+fancy_box (colorrh, "0,0,0,.75", "fas fa-check", flexsummary, "Flexibility of Project Constraints")
 envintro = "<br>Known forces, conditions, events and people influencing the project.  Who/what supports the project?  Who/what obstructs the project?"
 envsummary = "<sup>" + envintro + "</sup><br><br>" + "Technology deliverables provided by services - " + ', '.join(st.session_state.plmlistscopeoption) + "  The quality inspector supports the customer and team - " + ', '.join(st.session_state.plmlistqualitytypes)
-fancy_box ("244,140,148,.25", "0,0,0,.75", "fas fa-thermometer", envsummary, "Environment")
+fancy_box (colorrh, "0,0,0,.75", "fas fa-thermometer", envsummary, "Environment")
 milestones = st.session_state['thepmmilestones'] 
    #mssummary = "<sup>" + msintro + "</sup><br><br>" + " ".join(milestones.values.tolist())
 msintro = "<br>Which milestones are important? What are the deadlines for ...  ... intermediate results ... important decisions ... visible and measurable successes "
 mssummary = "<sup>" + msintro + "</sup><br><br>" + "Design " + st.session_state.plddesigndate.isoformat() + "<br/> Build " + st.session_state.pldbuilddate.isoformat() + "<br/> Inspect " + st.session_state.pldinspectdate.isoformat() + "<br/> Accept " + st.session_state.pldacceptdate.isoformat() + "</sup><br><br>" 
-fancy_box ("120,173,214,.25", "0,0,0,.75", "fas fa-tasks", mssummary, "Milestones")
+fancy_box (colorgh, "0,0,0,.75", "fas fa-tasks", mssummary, "Milestones")
 quintro = "<br>What makes the CUSTOMERS really happy in terms of the OUTCOME of the product (besides the project is delivered on time and on budget)? The MILESTONES on the way there?  The kind of information/cooperation in the project?  "
 qusummary = "<sup>" + quintro + "</sup><br><br>" + st.session_state['plsqualitygoal'].replace('\n', '<br>') + "<br><br>" 
    #qusummary = "<sup>" + quintro + "</sup><br><br>" + st.session_state['plsqualitygoal'].replace('\n', '<br>') + "<br><br>"+  st.session_state['thepmquality'] 
-fancy_box ("120,173,214,.2", "0,0,0,.75", "fas fa-signal", get_first(qusummary), "Quality")
+fancy_box (colorgh, "0,0,0,.75", "fas fa-signal", get_first(qusummary), "Quality")
 
 timeintro = "<br>When does the project actually start? What is needed? (e.g. preparations, documents, approvals) When is the project really completed? What is needed? (e.g. documents, releases) How flexible are the start and end dates?  "
 timesummary = "<sup>" + timeintro + "</sup><br><br>" + 'Project start is ' + st.session_state['pldstartdate'].isoformat() + '  End is ' + st.session_state['pldenddate'].isoformat() + ' Inspection date is ' + st.session_state['pldinspectdate'].isoformat() + ' Deliverables ' + ', '.join(st.session_state.plmlistscopelist)  
-fancy_box ("120,173,214,.25", "0,0,0,.75", "fas fa-calendar", timesummary, "Schedule")
+fancy_box (colorgh, "0,0,0,.75", "fas fa-calendar", timesummary, "Schedule")
 risklist = ["High", "Low", "Low", "Moderate", "High", "High"]
 costintro = "<br>How much money is needed or available...  ... for the implementation?  ... for possibly necessary resources (e.g. server, people)?"
 costsummary = "<sup>" + costintro + "</sup><br><br>  The planned investment in Product Design and Delivery is " + str(st.session_state.plnbudget) + ' The project controller is ' + st.session_state.plpfinancename
-fancy_box ("120,173,214,.25", "0,0,0,.75", "fas fa-bolt", costsummary, "Budget")
+fancy_box (colorgh, "0,0,0,.75", "fas fa-bolt", costsummary, "Budget")
 custintro = "<br>Who is a customer? People who...  ... finance the project (sponsor) ... start & finish the project (owner) ... receive the project results (recipient, user) Are there foreseeable conflicts?  "
 custsummary = "<sup>" + custintro + "</sup><br><br>"  + st.session_state['thepmusers'].replace('\n', '<br />')  
-fancy_box ("239,209,100,.25", "0,0,0,.75", "fas fa-paper-plane", custsummary, "Users")
+fancy_box (coloryh, "0,0,0,.75", "fas fa-paper-plane", custsummary, "Users")
 teamintro = "<br>Who is in it/should be there?  ... in the Core-Team ... in the extended team ... as external partner ... as contact person & decision maker"
 teamsummary = "<sup>" + teamintro + "</sup><br><br>" + st.session_state.thepmteam.replace('\n', '<br />')   
-fancy_box ("239,209,100,.25", "0,0,0,.75", "fas fa-handshake", teamsummary, "Team")
+fancy_box (coloryh, "0,0,0,.75", "fas fa-handshake", teamsummary, "Team")
 resintro = "<br>What resources does the project need to be implemented? (excl. time and knowledge)"
 ressummary = "<sup>" + resintro + "</sup><br><br>" + mySep.join(st.session_state.plmlistscopeoption) 
-fancy_box ("239,209,100,.25", "0,0,0,.75", "fas fa-space-shuttle", ressummary.replace(',', '<br />'), "Resources")
+fancy_box (coloryh, "0,0,0,.75", "fas fa-space-shuttle", ressummary.replace(',', '<br />'), "Resources")
 
-successmsg = f'The PM Monitor project canvas poster presented by {st.session_state.plpmname} on {st.session_state.pldcharterdate}.  Thank you for using The PM Monitor. thepmmonitor.streamlit.app.  '
+successmsg = f'The PM Monitor project canvas poster presented by {st.session_state.plpmname} on {st.session_state.pldcharterdate}.  Thank you for using The PM Monitor https://thepmmonitor.streamlit.app  '
 my_grid.success(successmsg)
 
 # To capture the screen

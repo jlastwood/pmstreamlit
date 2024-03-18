@@ -36,13 +36,14 @@ st.set_page_config(
 #  get the theme colors
 #  https://blog.streamlit.io/accessible-color-themes-for-streamlit-apps/
 
-#hide_decoration_bar_style = '''
+#  hide_decoration_bar_style = '''
 #    <style>
 #        header {visibility: hidden;}
 #    </style>
 #'''
 #st.markdown(hide_decoration_bar_style, unsafe_allow_html=True)
 
+#  create media print
 st.markdown("""
     <style>
         @media print {
@@ -82,11 +83,10 @@ if 'thepmheader' not in st.session_state:
  st.warning("Plan is missing.  Please enter or import a plan")
  st.stop()
 
-#reporttitle("Final Report", st.session_state['thepmheader'])
-
-with st.spinner("Loading Home ..."):
+with st.spinner("Preparing Charter Report ..."):
 
     gradiant_header ('The PM Monitor Project Charter')
+
     st.markdown("<br><br><p style='text-align: center; vertical-align: bottom; font-size: 200%;'>" + st.session_state.plpname + "</p><br><br>",  unsafe_allow_html=True)
     st.markdown("<br><br><p style='text-align: center; vertical-align: bottom; font-size: 200%;'>Project Manager: " + st.session_state.plpmname + "</p><br><br>",  unsafe_allow_html=True)
     st.markdown("<br><br><p style='text-align: center; vertical-align: bottom; font-size: 200%;'>Sponsor: " + st.session_state.plspname + "</p><br><br>",  unsafe_allow_html=True)
@@ -157,6 +157,8 @@ The PM Monitor charter describes the plan, goals, objectives of the project.
      st.markdown(v)
      v=f"**Product Owner:** {st.session_state.plpmcustname}"
      st.markdown(v)
+     v=f"**Staffing Manager::** {st.session_state.plpmhrname}"
+     st.markdown(v)
     with col2:
      v=f"**Project Manager:** {st.session_state.plpmname}"
      st.markdown(v)
@@ -166,6 +168,8 @@ The PM Monitor charter describes the plan, goals, objectives of the project.
      st.markdown(v)
      v=f"**Controller Finance:** {st.session_state.plpfinancename}"
      st.markdown(v)
+     v=f"**Purchasing Manager::** {st.session_state.plppurchasingname}"
+     st.markdown(v)
 
     st.header(":classical_building: Product Life Cycle", anchor=False, help="overview", divider="rainbow")
     st.write("The following chart shows the project status reports and the product milestones")
@@ -174,18 +178,45 @@ The PM Monitor charter describes the plan, goals, objectives of the project.
           alt.Y('yearmonthdate(plandate):O', title='Plan Date', scale=alt.Scale(reverse=True)),
           color="Milestone", text="Milestone")
     st.altair_chart(chart, use_container_width=True)
-    # st.table(st.session_state.thepmmilestones)
+    st.header(":classical_building: Project Tools", anchor=False, help="overview", divider="rainbow")
+    col1, col2 = st.columns(2)
+    with col1:
+     v=f"**Live Site:** {st.session_state.plplivesitelink}"
+     st.markdown(v)
+     v=f"**Design Board:** {st.session_state.plpproductownerdesignlink}"
+     st.markdown(v)
+     v=f"**Documents:** {st.session_state.plpdocumentslink}"
+     st.markdown(v)
+     v=f"**Chat/message Users:** {st.session_state.plpstanduplinkusers}"
+     st.markdown(v)
+    with col2:
+     v=f"**Stage Site:** {st.session_state.plpstagesitelink}"
+     st.markdown(v)
+     v=f"**Team Task Board:** {st.session_state.plpactivitylink}"
+     st.markdown(v)
+     v=f"**Source Code:** {st.session_state.plpgithublink}"
+     st.markdown(v)
+     v=f"**Chat/message team:** {st.session_state.plpstanduplink}"
+     st.markdown(v)
 
     st.header(":classical_building: Financials", anchor=False, help="overview", divider="rainbow")
     st.write("The planned investment in Product Design and Delivery is ", st.session_state.plnbudget)
+    st.write("Cost Summary: ", st.session_state.plscostgoal)
+
     st.write("**Earned Value**")
     st.write(st.session_state.thepmevsummary)
     st.table(st.session_state.thepmevm)
     #st.dataframe(st.session_state.thepmevm, hide_index=True, use_container_width=True)
-    st.header(":classical_building: Resources and Risks", anchor=False, help="overview", divider="rainbow")
+    st.header(":classical_building: Team", anchor=False, help="overview", divider="rainbow")
     st.write("***Team Information***")
-    st.write(st.session_state.thepmteam)
+    st.write(st.session_state.thepmteam, " The team consists of the following roles: ", ' '.join(st.session_state.plmlistroles))
+    st.write("***Tasks***")
+    st.write(st.session_state.plswbs)
+    st.write("***Team Contingency Plans***")
+    st.write(st.session_state.plsteamcontingency)
+
     impactlist = ['High','Very Low', 'Low', 'Moderate', 'High', 'Very High']
+    st.header(":classical_building: Risks and Contingency Plans", anchor=False, help="overview", divider="rainbow")
     v=f"**Scope Impact** {st.session_state.plnscoperange}-{impactlist[st.session_state.plnscoperange]}"
     st.write(v)
     st.write(st.session_state.plpscopecontingency)
@@ -203,23 +234,22 @@ The PM Monitor charter describes the plan, goals, objectives of the project.
     st.write(st.session_state.plpresourcecontingency)
     st.markdown('##')
 
-    phasenumber = st.session_state.thepmphase
-    CPI = st.session_state.thepmcpi
-    SPI = st.session_state.thepmspi
-    engagementscoreteam = st.session_state.plnactivesam
-    sentimentscoreteam = st.session_state.plnactiveses
-    retention = st.session_state.plnopenroles
-    scopechange = len(st.session_state.plscopechange.split(".")) 
-    if len(st.session_state.plscopechange) < 6:
-       scopechange = 0
-    earnedvalue = st.session_state.plnactiveses
-    roi = st.session_state.plnactiveses
-    latestart = st.session_state.plnactiveses
-    inspectfail = st.session_state.plnactiveses
- 
-    st.write("Risks are identified as issues when the risk is trigged during project monitoring.  Issues are reported on the stoplight report with owner and recommended action.") 
-    (myrisks, issues, risks, totalrisks, risksummary)  = calculate_risks_json(phasenumber, SPI, CPI, engagementscoreteam, sentimentscoreteam, retention, scopechange, earnedvalue, roi, latestart, inspectfail) 
-    #st.bar_chart(myrisks, x='risktype', y='riskprobability')
+    #phasenumber = st.session_state.thepmphase
+    #CPI = st.session_state.thepmcpi
+    #SPI = st.session_state.thepmspi
+    #engagementscoreteam = st.session_state.plnactivesam
+    #sentimentscoreteam = st.session_state.plnactiveses
+    #retention = st.session_state.plnopenroles
+    #scopechange = len(st.session_state.plscopechange.split(".")) 
+    #if len(st.session_state.plscopechange) < 6:
+    #   scopechange = 0
+    #earnedvalue = st.session_state.plnactiveses
+    #roi = st.session_state.thepmannualroi
+    #latestart = st.session_state.plnactiveses
+    #inspectfail = st.session_state.plntestsfailed
+
+    st.write("Risks are identified as issues when the risk is trigged during project monitoring.  Risks triggered are reported on the stoplight report with owner and recommended action.") 
+    (myrisks, issues, risks, totalrisks, risksummary)  = calculate_risks_json() 
 
     st.subheader("Risks by Owner and Classification")
     heatmap = alt.Chart(myrisks.dropna()).mark_rect().encode(
@@ -240,5 +270,5 @@ The PM Monitor charter describes the plan, goals, objectives of the project.
     st.altair_chart(f, use_container_width=True)
 
 st.write("##")
-successmsg = f'The PM Monitor project charter presented by {st.session_state.plpmname} on {st.session_state.pldcharterdate}.  Thank you for using The PM Monitor. thepmmonitor.streamlit.app. '
+successmsg = f'The PM Monitor project charter presented by {st.session_state.plpmname} on {st.session_state.pldcharterdate}.  Thank you for using The PM Monitor https://thepmmonitor.streamlit.app '
 st.success(successmsg)

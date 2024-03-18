@@ -2,6 +2,17 @@ import json
 import pandas as pd
 import streamlit as st
 
+def get_risk_triggers():
+     risktriggers = ['Inflation', 'Changes', 'Earned Value', 'Sentiment', 'Engagement', 'CPI', 'SPI', 'Inspection', 'ROI', 'Late Start', 'Climate', 'Unemployment', 'Business Climate', 'Country Risk']
+     risktriggersamber = [5,  1,  0,  70,  80,  1, 1,  3,  30, 3,  1,  8,  'B',  'B' ]
+     risktriggersred = [10,  5,  0,  50,  50,  .8, .7,  5,  10, 5,  .8,  8,  'E',  'E' ]
+     #riskt = {'Trigger': (risktriggers[i], 'Amber': risktriggersamber[i], 'Red': risktriggersred[i]) for i in range(0, len(risktriggers))]
+     riskd = {'Trigger': risktriggers, 'Amber': risktriggersamber, 'Red': risktriggersred} 
+     riskt = pd.DataFrame(riskd)
+     #riskt.set_index('Trigger', inplace=True)
+     return(riskt)
+
+
 def get_impact(value):
    impact = '1-High'
    if value == 3:
@@ -12,8 +23,27 @@ def get_impact(value):
      impact = '3-Low'
    return(impact)
 
-def calculate_risks_json(phasenumber, SPI, CPI, engagementscoreteam, sentimentscoreteam, retention, scopechange, earnedvalue, roi, latestart, inspectfail):
+def calculate_risks_json():
 
+   # get the trigger values from the controls
+   triggers = get_risk_triggers()
+
+   # get the values from the plan
+   phasenumber = st.session_state.thepmphase
+   CPI = st.session_state.thepmcpi
+   SPI = st.session_state.thepmspi
+   engagementscoreteam = st.session_state.plnactivesam
+   sentimentscoreteam = st.session_state.plnactiveses
+   retention = st.session_state.plnopenroles
+   scopechange = len(st.session_state.plscopechange.split("."))
+   if len(st.session_state.plscopechange) < 6:
+      scopechange = 0
+   earnedvalue = st.session_state.plnactiveses
+   roi = st.session_state.thepmannualroi
+   latestart = st.session_state.plnactiveses
+   inspectfail = st.session_state.plntestsfailed
+
+   # currently this is an input file
    risks = pd.read_csv('files/risksver4.csv')
 
    rows = len(risks)
@@ -37,21 +67,26 @@ def calculate_risks_json(phasenumber, SPI, CPI, engagementscoreteam, sentimentsc
    # Find issues in current phase based on trigger
    if 1 < earnedvalue < 20:
       risks.loc[(risks['risktrigger'] == "earnedvalue") & (currentphase == risks['risktimeline'] ), 'riskselect'] = "I"
-   if inspectfail > 0:
+   inspectvalue = triggers.loc[triggers['Trigger'] == 'Inspection', 'Amber'].values[0]
+   if inspectfail > inspectvalue:
       risks.loc[(risks['risktrigger'] == "inspectionfailure") & (currentphase == risks['risktimeline'] ), 'riskselect'] = "I"
    if latestart > 0:
       risks.loc[(risks['risktrigger'] == "latestart") & (currentphase == risks['risktimeline'] ), 'riskselect'] = "I"
-   if 1 < roi < 130:
+   roivalue = triggers.loc[triggers['Trigger'] == 'ROI', 'Amber'].values[0]
+   if  roi < roivalue:
       risks.loc[(risks['risktrigger'] == "roi") & (currentphase == risks['risktimeline'] ), 'riskselect'] = "I"
    if 1 < engagementscoreteam < 80:
       risks.loc[(risks['risktrigger'] == "engagement") & (currentphase == risks['risktimeline'] ), 'riskselect'] = "I"
-   if 1 < sentimentscoreteam < 80:
+   sentimentvalue = triggers.loc[triggers['Trigger'] == 'Sentiment', 'Amber'].values[0]
+   if 1 < sentimentscoreteam < sentimentvalue:
       risks.loc[(risks['risktrigger'] == "sentiment") & (currentphase == risks['risktimeline'] ), 'riskselect'] = "I"
    #if CPI > 1:
    #   risks.loc[(risks['risktrigger'] == "cpipositive") & (currentphase == risks['risktimeline'] ), 'riskselect'] = "I"
-   if CPI < 1:
+   cpivalue = triggers.loc[triggers['Trigger'] == 'CPI', 'Amber'].values[0]
+   if CPI < cpivalue:
       risks.loc[(risks['risktrigger'] == "cpi") & (currentphase == risks['risktimeline']), 'riskselect'] = "I"
-   if SPI < 1:
+   spivalue = triggers.loc[triggers['Trigger'] == 'SPI', 'Amber'].values[0]
+   if SPI < spivalue:
       risks.loc[(risks['risktrigger'] == "spi") & (currentphase == risks['risktimeline']), 'riskselect'] = "I"
    if scopechange > 0:
       risks.loc[(risks['risktrigger'] == "scopechange") & (currentphase == risks['risktimeline'] ), 'riskselect'] = "I"

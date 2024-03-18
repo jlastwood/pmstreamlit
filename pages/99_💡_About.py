@@ -19,6 +19,9 @@ st.set_page_config(
       layout="wide",
       initial_sidebar_state="collapsed",
 )
+
+st.session_state.update(st.session_state)
+
 st.markdown("""
     <style>
         @media print {
@@ -97,3 +100,7 @@ st.write("To use AI to complete narriation, ensure the response field is empty a
 #st.write("On git you can find samples of plans and reports")
 #filelist = file_list_in_directory()
 #st.write(filelist)
+
+st.write("##")
+successmsg = f'Thank you for using The PM Monitor. https://thepmmonitor.streamlit.app '
+st.success(successmsg)

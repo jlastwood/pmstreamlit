@@ -90,7 +90,7 @@ gradiant_header ('The PM Monitor Projects')
 #   st.info("The information was updated, thank you for using the PM Monitor.  Use Save Plan to save a copy of your plan offline.  Go to Canvas or Stoplight reports")
 
 # 2. Select Settings to be uploaded
-uploaded_file = st.file_uploader(label="Select a Plan to be uploaded",
+uploaded_file = st.file_uploader(label="Select a Plan to be uploaded.  This is a csv file from the Save Plan button",
                                      help="Select the Plan File (Downloaded in a previous run) that you want"
                                           " to be uploaded and then applied (by clicking 'Apply Plan' above)")
 if uploaded_file is not None:
@@ -102,10 +102,11 @@ if uploaded_file is not None:
 
 st.markdown("""---""")
 st.write("Click clear to reset all plan information to None")
-clear = st.button("Clear Plan")
-if clear:
+clear_button = st.button("Clear Plan")
+if clear_button:
    st.info("The information was cleared, thank you for using the PM Monitor.  Go to Plan to initiate a new project plan.")
    clear_form()
+   st.switch_page("Plan.py")
 
 # 1. Download Settings Button convert dataframe to list there is a pandas problem with data serialization set to legacy
 dataitems = st.session_state.items()
@@ -132,14 +133,30 @@ button_download = st.download_button(label="Save Plan",
 #st.write(files)
 
 st.markdown("""---""")
-st.write("Template or Sample projects")
+st.write("***Project Gallery***  Set of sample project plans, reports and activity lists")
 
-wprelaunch = st.button("Wordpress Relaunch Plan")
+col1, col2 = st.columns([3,1])
+
+col1.write("Wordpress CMS Implementation")
+wprelaunch = col2.button("Wordpress Relaunch Plan")
+col1.write("Recruiting Staffing Plan")
+col1.write("Migrate App On-Prem to Cloud")
+col1.write("Major release CMS")
+col1.write("Process Review and Improvement Audit")
+col1.write("Process Implementation using Process Street")
+col1.write("Process Implementation using Kissflow")
+col1.write("Process Automation using Power Automate")
+col1.write("Event Planning 2 day offsite team conference")
+col1.write("Home Energy Audit and Energy Improvements")
+col1.write("New Kitchen")
+col1.write("Develop LMS course or learning module")
+col1.write("Start a small business")
+col1.write("Incorporate a business")
+
 if wprelaunch:
    uploaded_settings = pd.read_csv('files/wprelaunch.csv', sep=',')
    upload_saved_settings(uploaded_settings)
-   st.warning("**WARNING**: Plan uploaded")
-   st.info("The information was cleared, thank you for using the PM Monitor.  Go to Plan to initiate a new project plan.")
+   st.info("The information was restored, thank you for using the PM Monitor.  Go to Plan to and add your monitoring information.")
 
 st.markdown("""---""")
 st.write("The following is a copy of the plan details sheet saved as ")
@@ -152,3 +169,7 @@ st.dataframe(df, use_container_width=True)
 #         file_name='miletstones.csv',
 #         mime='text/csv',
 #      )
+
+st.write("##")
+successmsg = f'Thank you for using The PM Monitor. https://thepmmonitor.streamlit.app '
+st.success(successmsg)

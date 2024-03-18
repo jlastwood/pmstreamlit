@@ -3,12 +3,14 @@ from PIL import Image
 from datetime import timedelta, date, datetime
 import pandas as pd
 from scripts.thepmutilities import evreport, plancomment, get_grade, gradiant_header
+from scripts.riskgenerate import get_risk_triggers
 import altair as alt
 from hugchat import hugchat
 from hugchat.login import Login
 #from streamlit_extras.app_logo import add_logo
 #from streamlit_extras.switch_page_button import switch_page
 import extra_streamlit_components as stx
+import csv
 
 st.session_state.update(st.session_state)
 ip = Image.open("assets/images/PlanImage.png")
@@ -74,6 +76,28 @@ color1t = st._config.get_option('theme.primaryColor')
 color1b = st._config.get_option('theme.secondaryBackgroundColor')
 color1c = st._config.get_option('theme.backgroundColor')
 color1d = st._config.get_option('theme.textColor')
+
+#  setup lists and tuples - tuples have round brackets
+with open('files/roles.csv', 'r') as read_obj:
+    list_reader = read_obj.read()
+    roleslist = tuple(list_reader.split('\n') )
+    read_obj.close()
+with open('files/phases.csv', 'r') as read_obj:
+    list_reader = read_obj.read()
+    phaseslist = tuple(list_reader.split('\n') )
+    read_obj.close()
+with open('files/classes.csv', 'r') as read_obj:
+    list_reader = read_obj.read()
+    classeslist = tuple(list_reader.split('\n') )
+    read_obj.close()
+with open('files/scopes.csv', 'r') as read_obj:
+    list_reader = read_obj.read()
+    scopeslist = tuple(list_reader.split('\n') )
+    read_obj.close()
+with open('files/inspections.csv', 'r') as read_obj:
+    list_reader = read_obj.read()
+    inspectionslist = tuple(list_reader.split('\n') )
+    read_obj.close()
 
 with st.sidebar:
 
@@ -142,15 +166,13 @@ with st.container():
       st.text_input ("Project Manager Identification", max_chars=30, value=setvalue('plpmname'), key='plpmname',label_visibility=labelvis, disabled=disableplan)
       st.text_input ("Product Owner or Sponsor Identification", max_chars=30, value=setvalue('plspname'), key='plspname',label_visibility=labelvis, disabled=disableplan)
 
-      phaselist = ("None", "Plan", "Design", "Build", "Inspect", "Accept", "Close")
-      phaseoptions = list(range(len(phaselist)))
+      phaseoptions = list(range(len(phaseslist)))
       col5, col6 = st.columns([1,4])
       with col5:
        st.write('Cadence')
       with col6:
        st.slider('Cadence', min_value=0, max_value=12, value=setvalue('plncadence'), help="Cadence is the frequency that the project replans and reports on progress.  In a maintenance project you should plan and report quarterly.  In active development projects when investment is higher, you should be planning and reporting weekly", key='plncadence', disabled=disableplan, label_visibility=labelvis)
       classchoice = pd.DataFrame({'Item': ['None', 'Software Build', 'Software Design', 'Brand Marketing', 'Process Automation', 'Scheduled Maintenance', 'Content Migration', 'Decommission', 'Upgrade', 'Training or Documentation'], 'Value': [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]}) 
-      classlist = ('None', 'Software Build', 'Software Design', 'Brand Marketing', 'Process Automation', 'Scheduled Maintenance', 'Content Migration', 'Decommission', 'Upgrade', 'Training or Documentation')
 
       col1, col2, col3, col4 = st.columns([1,2,1,2])
       with col1:
@@ -165,8 +187,8 @@ with st.container():
       with col1:
        st.write("Classify")
       with col2:
-       classoptions = list(range(len(classlist)))
-       selected_class = st.selectbox("Project Classification", classoptions, format_func=lambda x: classlist[x], help="The type of project will be used to determine risks, a physical build can be impacted by weather.  Changes to procedures or pipelines require more focus on communication activities", key='pllisttype', label_visibility=labelvis, disabled=disableplan )
+       classoptions = list(range(len(classeslist)))
+       selected_class = st.selectbox("Project Classification", classoptions, format_func=lambda x: classeslist[x], help="The type of project will be used to determine risks, a physical build can be impacted by weather.  Changes to procedures or pipelines require more focus on communication activities", key='pllisttype', label_visibility=labelvis, disabled=disableplan )
 
     
       cb1 = st.checkbox ("Askme for a purpose.", key='cb1', disabled=disableplan)
@@ -185,6 +207,7 @@ with st.container():
          message = chatbot.query(query) 
          st.code(message)
       del st.session_state['cb1']
+
       cb2 = st.checkbox ("Askme for three benefits.", disabled=disableplan)
       st.text_area ("Benefits", value=setvalue('plsbenefits'), key='plsbenefits',label_visibility=labelvis, disabled=disableplan)
       if cb2 and len(st.session_state.plsbenefits) < 12:
@@ -193,12 +216,13 @@ with st.container():
          st.write("Asking AI for a response", cb2, info.id, info.title, info.model, info.system_prompt, query, "The response is provided below, paste and edit in the form above")
          message = chatbot.query(query) 
          st.code(message)
+
       cb3 = st.checkbox("Askme for benchmarks.", disabled=disableplan)
       st.text_area ("Benchmarks", value=setvalue('plsbenchmarks'), key='plsbenchmarks',label_visibility=labelvis, disabled=disableplan)
-      if cb3 and len(st.session_state.plsbenchmarks) < 10:
+      if cb3 and len(st.session_state.plsbenchmarks) < 15:
          query = "Are there comparable benchmarks or services for a " + st.session_state.plpname + " project?"
          info = chatbot.get_conversation_info()
-         st.write("Asking AI for a response", cb2, info.id, info.title, info.model, info.system_prompt, query, "The response is provided below, paste and edit in the form above")
+         st.write("Asking AI for a response", cb3, info.id, info.title, info.model, info.system_prompt, query, "The response is provided below, paste and edit in the form above")
          message = chatbot.query(query) 
          st.code(message)
      # set some dates
@@ -237,37 +261,37 @@ with st.container():
        col4, col5 = st.columns(2)
        cb4 = st.checkbox("Askme for must have scope.", disabled=disableplan)
        st.text_area ("What is the must have scope?", value=setvalue('plscopemusthave'), key='plscopemusthave' ,label_visibility=labelvis, disabled=disableplan)
-       if cb4 and len(st.session_state.plscopemusthave) < 10:
+       if cb4 and len(st.session_state.plscopemusthave) < 20:
          query = "What are three must have features of a " + st.session_state.plpname + " project?"
          info = chatbot.get_conversation_info()
-         st.write("Asking AI for a response", cb2, info.id, info.title, info.model, info.system_prompt, query, "The response is provided below, paste and edit in the form above")
+         st.write("Asking AI for a response", cb4, info.id, info.title, info.model, info.system_prompt, query, "The response is provided below, paste and edit in the form above")
          message = chatbot.query(query)
          st.code(message)
 
        cb5 = st.checkbox("Askme for scope options.", disabled=disableplan)
        st.text_area ("What are some features that are negotiable or nice to have?", value=setvalue('plscopenicetohave'), key='plscopenicetohave',label_visibility=labelvis, disabled=disableplan)
-       if cb5 and len(st.session_state.plscopenicetohave) < 10:
+       if cb5 and len(st.session_state.plscopenicetohave) < 20:
          query = "What are three nice to have features in a " + st.session_state.plpname + " project?"
          info = chatbot.get_conversation_info()
-         st.write("Asking AI for a response", cb2, info.id, info.title, info.model, info.system_prompt, query, "The response is provided below, paste and edit in the form above")
+         st.write("Asking AI for a response", cb5, info.id, info.title, info.model, info.system_prompt, query, "The response is provided below, paste and edit in the form above")
          message = chatbot.query(query)
          st.code(message)
 
        cbd = st.checkbox("Askme for definitions and terms.", disabled=disableplan)
        st.text_area ("Dictionary.  Define any terms used in this product or design", value=setvalue('plscopeterms'), key='plscopeterms' , label_visibility=labelvis, disabled=disableplan)
-       if cbd and len(st.session_state.plscopeterms) < 10:
+       if cbd and len(st.session_state.plscopeterms) < 15:
          query = "What are some common terms and definitions used in a " + st.session_state.plpname + " project?"
          info = chatbot.get_conversation_info()
-         st.write("Asking AI for a response", cb2, info.id, info.title, info.model, info.system_prompt, query, "The response is provided below, paste and edit in the form above")
+         st.write("Asking AI for a response", cbd, info.id, info.title, info.model, info.system_prompt, query, "The response is provided below, paste and edit in the form above")
          message = chatbot.query(query)
          st.code(message)
 
        st.text_area ("What is out of scope?", value=setvalue('plscopeoutofscope'), key='plscopeoutofscope', label_visibility=labelvis, disabled=disableplan)
        col4, col5 = st.columns(2)
        with col5:
-        st.multiselect( label='Select non functional attributes', help='Press enter to add', options=['None', 'Security', 'Availability', 'Usability', 'Maintainability','Operating Documentation', 'Users Guides', 'Accessibility', 'Compliance', 'Robustness', 'Reliablity', 'Performance', 'Localization', 'Compatiblity', 'Portability', 'Scalability'], default=setvalue('plmlistscopelist'), key='plmlistscopelist', max_selections = 4,label_visibility=labelvis, disabled=disableplan)
+        st.multiselect( label='Select non functional attributes', help='Press enter to add', options=list(scopeslist), default=setvalue('plmlistscopelist'), key='plmlistscopelist', label_visibility=labelvis, disabled=disableplan)
        with col4:
-         st.multiselect( label='Select technical architecture attributes and resources in the scope', options=['None', 'CMS', 'Web Framework', 'Google services', 'Microsoft Services', 'Meta Services', 'ChatGPT', 'SEO', 'Search', 'Cloud Hosting', 'OnPrem Hosting', 'Automation Framework', 'ERP', 'CDN', 'CI/CD', 'Custom Theme', 'No/Low Code Framework', 'Native Mobile App', 'Process Model System', 'Database System', 'Test Framework', 'Decommission Activities', 'Data Migration Activity', 'SAAS Application'], default=setvalue('plmlistscopeoption'), key='plmlistscopeoption', max_selections = 4,label_visibility=labelvis, disabled=disableplan)
+         st.multiselect( label='Select technical architecture attributes and resources in the scope', options=['None', 'CMS', 'Web Framework', 'Google services', 'Microsoft Services', 'Meta Services', 'ChatGPT', 'SEO', 'Search', 'Cloud Hosting', 'OnPrem Hosting', 'Automation Framework', 'ERP', 'CDN', 'CI/CD', 'Custom Theme', 'No/Low Code Framework', 'Native Mobile App', 'Process Model System', 'Database System', 'Test Framework', 'Decommission Activities', 'Data Migration Activity', 'SAAS Application'], default=setvalue('plmlistscopeoption'), key='plmlistscopeoption', label_visibility=labelvis, disabled=disableplan)
        if len(scopechange) > 15:
           scopechange = f'There are scope changes. {scopechange}'
        st.session_state['thepmplanscope'] = f'Required:  \n  {st.session_state.plscopemusthave} \n\n  Options:  \n\n  {st.session_state.plscopenicetohave}  \n\n \n\n  Out of Scope:  {st.session_state.plscopeoutofscope} \n\n Change:  {scopechange}'
@@ -315,7 +339,7 @@ with st.container():
       if st.session_state.plddesigndate > date.today():
         x = 2     
       st.session_state['thepmphase'] = x
-      st.write('The current phase is ', phaselist[x], x, date.today())
+      st.write('The current phase is ', phaseslist[x], x, date.today())
       reportsinplan = 1
       if st.session_state['plncadence'] > 0:
        reportsinplan = int(weeksinplan/st.session_state['plncadence'])
@@ -327,10 +351,10 @@ with st.container():
       st.session_state['thepmheader'] = pd.DataFrame({
        "Project": [st.session_state.plpname, st.session_state.plpmname],
        "Sponsor": [st.session_state.plpnumber, st.session_state.plspname],
-       "Phase": [phaselist[x], st.session_state.pldcharterdate]
+       "Phase": [phaseslist[x], st.session_state.pldcharterdate]
         })
-      st.session_state['thepmphasename'] = phaselist[x]
-      st.session_state['thepmplannote'] = plancomment(st.session_state['pldstartdate'], st.session_state['pldenddate'], daystoday, daystoend, st.session_state['thepmtimecomplete'], 3, st.session_state['plpnumber'], st.session_state['plpname'], st.session_state['plsbenefits'], st.session_state['plncadence'], phaselist[st.session_state['thepmphase']], st.session_state['plspname'], classlist[selected_class])
+      st.session_state['thepmphasename'] = phaseslist[x]
+      st.session_state['thepmplannote'] = plancomment(st.session_state['pldstartdate'], st.session_state['pldenddate'], daystoday, daystoend, st.session_state['thepmtimecomplete'], 3, st.session_state['plpnumber'], st.session_state['plpname'], st.session_state['plsbenefits'], st.session_state['plncadence'], phaseslist[st.session_state['thepmphase']], st.session_state['plspname'], classeslist[selected_class])
       st.write("There will be ", reportsinplan, "Project manager monitoring and Status Reports")
       plancontainer.success(st.session_state.thepmplannote) 
       series = pd.DataFrame(pd.date_range(start=st.session_state.pldstartdate, end=st.session_state.pldenddate, periods=st.session_state.thepmreportsinplan, normalize=True))
@@ -411,11 +435,13 @@ with st.container():
        st.slider ("Number of Actors", value=setvalue('plnactors'), format="%i", min_value=0, max_value=10, step=1, key='plnactors', disabled=disableplan)
 with st.container():
       st.subheader("Team Monitoring")
-      col1, col2, col3, col4 = st.columns(4)
+      col1, col2, col3 = st.columns([1,1,2])
       with col1:
        st.slider ("Weeks with Full Team", value=setvalue('plnteamweeks'), format="%i", min_value=0, max_value=12, step=1, key='plnteamweeks' )
       with col2:
        st.slider ("Number of Open Roles", value=setvalue('plnopenroles'), format="%i", min_value=0, max_value=15, step=1, key='plnopenroles')
+      with col3:
+       st.multiselect( label='Select roles and skills', options=list(roleslist), default=setvalue('plmlistroles'), key='plmlistroles', label_visibility=labelvis, disabled=disableplan)
       col1, col2, col3, col4 = st.columns(4)
       with col1:
        # SAM = (Active Channel Members/ Total Channel Members)
@@ -435,11 +461,11 @@ with st.container():
       with col3:
        st.text_input ("Task Activity Source Link (URL)", value=setvalue('plpactivitylink'), key='plpactivitylink', disabled=disableplan )
        st.text_input ("Documentation Folder (URL)", value=setvalue('plpdocumentslink'), key='plpdocumentslink', disabled=disableplan )
-       st.text_input ("Live Site (URL)", value=setvalue('plplivesitelink'), key='plplivesiteink', disabled=disableplan )
+       st.text_input ("Live Site (URL)", value=setvalue('plplivesitelink'), key='plplivesitelink', disabled=disableplan )
       with col4:
        st.text_input ("Team Standup Channel Link (URL)" , value=setvalue('plpstanduplink'), key='plpstanduplink', disabled=disableplan)
        st.text_input ("Team Source Code Git Link (URL)" , value=setvalue('plpgithublink'), key='plpgithublink', disabled=disableplan)
-       st.text_input ("Stage Site (URL)", value=setvalue('plpstagesitelink'), key='plpstageiteink', disabled=disableplan )
+       st.text_input ("Stage Site (URL)", value=setvalue('plpstagesitelink'), key='plpstagesitelink', disabled=disableplan )
       with col5:
        st.text_input ("Product Owner Design Link (URL)" , value=setvalue('plpproductownerdesignlink'), key='plpproductownerdesignlink', disabled=disableplan)
        st.text_input ("User Chat Channel Link (URL)" , value=setvalue('plpstanduplinkusers'), key='plpstanduplinkusers', disabled=disableplan)
@@ -454,9 +480,11 @@ with st.container():
       with col2:
        st.text_input ("Operations Lead Name", max_chars=30, value=setvalue('plpoperationname'), key='plpoperationname', disabled=disableplan)
        st.text_input ("Inspection Lead Name", max_chars=30, value=setvalue('plpinspectorname'), key='plpinspectorname', disabled=disableplan)
+       st.text_input ("Purchasing Manager", max_chars=30, value=setvalue('plppurchasingname'), key='plppurchasingname', disabled=disableplan)
       with col3:
        st.text_input ("Account Manager Name", max_chars=30, value=setvalue('plpaccountname'), key='plpaccountname', disabled=disableplan)
        st.text_input ("Product Owner Name", max_chars=30, value=setvalue('plpmcustname'), key='plpmcustname', disabled=disableplan)
+       st.text_input ("HR Staffing", max_chars=30, value=setvalue('plpmhrname'), key='plpmhrname', disabled=disableplan)
       planchannels = (int(st.session_state['plnstakeholder']) + int(st.session_state['plnteam'])) * (int(st.session_state['plnstakeholder']) + int(st.session_state['plnteam']) - 1)
       plancommunication = f' There are {planchannels:.0f} communication channels. The team has a message forum at {st.session_state.plpstanduplink} and a task activity board at {st.session_state.plpactivitylink}.  Artefacts and documents are found {st.session_state.plpdocumentslink} and code is found {st.session_state.plpgithublink}.  The design artefacts are found at {st.session_state.plpproductownerdesignlink}'
       st.markdown('##') 
@@ -468,18 +496,18 @@ with st.container():
       st.write("Enter the Quality inspection types, attributes and dates.  When the inspector starts results will be available in the quality inspection report.  The PM monitor will determine a pass/fail score based on the results against the plan. ")
       cb6 = st.checkbox("Askme for a quality goal")
       st.text_area ("Describe Quality Goal ", value=setvalue('plsqualitygoal'), key='plsqualitygoal', disabled=disableplan)
-      if cb6 and len(st.session_state.plsqualitygoal) < 10:
+      if cb6 and len(st.session_state.plsqualitygoal) < 15:
          query = "What would make customers happey in terms of the outcome of t " + st.session_state.plpname + " project?"
          info = chatbot.get_conversation_info()
-         st.write("Asking AI for a response", cb2, info.id, info.title, info.model, info.system_prompt, query, "The response is provided below, paste and edit in the form above")
+         st.write("Asking AI for a response", cb6, info.id, info.title, info.model, info.system_prompt, query, "The response is provided below, paste and edit in the form above")
          message = chatbot.query(query)
          st.code(message)
       st.multiselect(
          label='Select types of quality inspection attributes',
-         options=['Component or by Piece Testing', 'Pre Production Testing(PPI)', 'Pre Shipment/Final Inspection(PSI)', 'Security Test', 'Regulatory/Compliance Testing', 'Code Scanner', 'None'], default=setvalue('plmlistqualitytypes'), key='plmlistqualitytypes', max_selections = 5, disabled=disableplan)
+         options=list(inspectionslist), default=setvalue('plmlistqualitytypes'), key='plmlistqualitytypes', disabled=disableplan)
 
       st.subheader("Quality Monitoring")
-      st.text_area ("Quality Report", value=setvalue('plsqualityreport'), key='plsqualityreport')
+      st.text_area ("Quality Report", value=setvalue('plsqualityreport'), key='plsqualityreport', help="The quality report is submitted by the inspector and is a summary of the quality of the product and the goals")
       col1, col2, col3 = st.columns(3)
       with col1:
        st.slider ("Number of Tests", value=setvalue('plntests'), format="%i", min_value=0, max_value=100, step=1, key="plntests" )
@@ -534,6 +562,16 @@ with st.container():
       with st.expander("Cost Information" , expanded=expander):
         st.write("Changes incur costs, and these costs are monitored to ensure that the investment is in line with the value of the change to the business.  Using feature completion, and timelines we calculate cost performance index (CPI) and schedule performance index (SPI) which are indicators if the project is in control. During planning and design, earned value will be 0, when in  execution your earned value will be realized as features are inspected and accepted")
       currchoice = pd.DataFrame({'Item': ['None', 'USD', 'CDN', 'EUR'], 'Value': [0, 1, 2, 3]})
+
+      cbc = st.checkbox ("Askme for for a sample budget plan.", disabled=disableplan)
+      st.text_area ("Costs", value=setvalue('plscostgoal'), key='plscostgoal',label_visibility=labelvis, disabled=disableplan)
+      if cbc and len(st.session_state.plscostgoal) < 12:
+         query = "What is the cost to develop a " + st.session_state.plpname + " product?"
+         info = chatbot.get_conversation_info()
+         st.write("Asking AI for a response", cbc, info.id, info.title, info.model, info.system_prompt, query, "The response is provided below, paste and edit in the form above")
+         message = chatbot.query(query)
+         st.code(message)
+
       col4, col5 = st.columns(2)
       with col4:
        selected_cur1 = st.selectbox("Income Currency", currchoice.Item, index=setvalue('pllistincomecurrency'), disabled=disableplan) 
@@ -544,7 +582,7 @@ with st.container():
       st.slider('Budget', min_value=0, max_value=200000, value=setvalue('plnbudget'), step=5000, key='plnbudget', disabled=disableplan)
       col1, col2, col3, col4 = st.columns(4)
       with col1:
-       st.slider('Estimated Work Hours', min_value=0, max_value=2000, value=setvalue('plnhours'), step=10, key='plnhours', disabled=disableplan)
+       st.slider('Estimated Work', min_value=0, max_value=2000, value=setvalue('plnhours'), step=10, key='plnhours', disabled=disableplan)
       with col2:
        st.slider('Average Rate', min_value=0, max_value=200, value=setvalue('plnavgrate'), step=5, key='plnavgrate', disabled=disableplan)
       with col3:
@@ -553,6 +591,47 @@ with st.container():
       weeksinbuild = 3
       with col4:
        st.slider('Estimate Confidence', min_value=0, max_value=100, value=setvalue('plnhoursconfidence'), step=5, key='plnhoursconficence', disabled=disableplan)
+
+      cbt = st.checkbox("Askme for a WBS or activities for this project")
+      st.text_area ("Develop a activity plan ", value=setvalue('plswbs'), key='plswbs', disabled=disableplan)
+      if cbt and len(st.session_state.plswbs) < 15:
+         query = "What are the tasks or activities for a " + st.session_state.plpname + " project?"
+         info = chatbot.get_conversation_info()
+         st.write("Asking AI for a response", cbt, info.id, info.title, info.model, info.system_prompt, query, "The response is provided below, paste and edit in the form above")
+         message = chatbot.query(query)
+         st.code(message)
+      if len(st.session_state.plswbs) > 15:
+        thisnum = []
+        thispre = []
+        thisdesc = []
+        lasti = ''
+        start = 0 
+        for i in range(1, 75):
+           txt = str(i) + '.'
+           fins = st.session_state.plswbs.find(txt, start)
+           if fins > 0:
+              end = st.session_state.plswbs.find(".", fins+3)
+              if end < 0:
+                 end = fins + 15
+              getstring = st.session_state.plswbs[fins:end]
+              thisnum.append(i)
+              thispre.append(lasti)
+              lasti = i
+              thisdesc.append(getstring)
+              start = fins + 3
+        wbsdataframe = pd.DataFrame({'Description': thisdesc, 'ac': thisnum, 'pr': thispre})
+        wbsdataframe['Assign'] = 'Team'
+        wbsdataframe['Type'] = 'Task'
+        notasks = len(wbsdataframe)
+        duration = int(st.session_state.plnhours / 6 / notasks) + (st.session_state.plnhours % (6 / notasks) > 0)
+        if st.session_state.plnhours > 10:
+          wbsdataframe['Duration'] = duration
+        else:
+          wbsdataframe['Duration'] = 5 
+        wbsdataframe['Completion Pct'] = 0
+        st.write("The following WBS is input to your task management tool and the PM Monitor WBS Activity Analysis. There are ", notasks, "tasks for a total effort of ", st.session_state.plnhours, "and estimated duration of", (duration*notasks), " days assuming sequential order ")
+        st.data_editor(wbsdataframe,num_rows="dynamic")
+
       st.subheader("Cost Monitoring")
       with st.expander("Cost monitoring and control" , expanded=expander):
        st.write("During cost monitoring, capture the actual spend, and resource hours or resource usage.") 
@@ -577,6 +656,7 @@ with st.container():
       st.markdown("{}".format(evsummary), unsafe_allow_html=True)
       st.session_state['thepmevsummary'] = evsummary
       st.table(st.session_state.thepmevm)
+      #st.write(st.session_state.thepmevm['Estimate to Complete'].iloc[0])
       #st.table(st.session_state.thepmevm, hide_index=True, use_container_width=True)
 
 with st.container():
@@ -599,10 +679,10 @@ with st.container():
        st.session_state['pldbenefitdate']  = st.date_input ("Benefit Start Date", value=setvalue('pldbenefitdate'), disabled=disableplan)
       cb12 = st.checkbox("Askme for ROI Information.", disabled=disableplan)
       st.session_state['plproigoal'] = st.text_area("ROI Goal", value=setvalue('plproigoal'), disabled=disableplan)
-      if cb12 and len(st.session_state.plproigoal) < 10:
+      if cb12 and len(st.session_state.plproigoal) < 15:
          query = "What is the ROI goal for a   " + st.session_state.plpname + " project with an investment of " + format(st.session_state.plnbudget,'.0f')
          info = chatbot.get_conversation_info()
-         st.write("Asking AI for a response", cb2, info.id, info.title, info.model, info.system_prompt, query, "The response is provided below, paste and edit in the form above")
+         st.write("Asking AI for a response", cb12, info.id, info.title, info.model, info.system_prompt, query, "The response is provided below, paste and edit in the form above")
          message = chatbot.query(query)
          st.code(message)
 
@@ -610,14 +690,17 @@ with st.container():
       roi = 0
       rateofreturn = 0
       benefitdate = st.session_state['pldbenefitdate']
+      eac = 0
       if plbudget > 0:
-        roi = (st.session_state['plnincreaseincome'] - st.session_state['plnincreaseexpense'] - plbudget) / (plbudget + etc) * 100
-        rateofreturn = (st.session_state['plnincreaseincome'] - st.session_state['plnincreaseexpense'] - (plbudget + etc)) / (plbudget + etc)
+        eac = int(st.session_state.thepmevm['Estimate at Completion'].iloc[0].replace(',',''))
+        roi = (st.session_state['plnincreaseincome'] - st.session_state['plnincreaseexpense']) / eac * 100
+        #rateofreturn = (st.session_state['plnincreaseincome'] - st.session_state['plnincreaseexpense'] - (plbudget + etc)) / (plbudget + etc)
+        rateofreturn = (st.session_state['plnincreaseincome'] - st.session_state['plnincreaseexpense']) / eac
       #st.session_state['thepmannualroi'] = (1 + rateofreturn) ^ (1 / 12 - 1)
-      st.session_state['thepmannualroi'] = 10
+      st.session_state['thepmannualroi'] = roi
      # st.write(annualroi)
-      st.session_state['thepmroisummary'] = f'The roi is {roi:.3f} with an investment of {plbudget:.0f} and a benefit of {benefitdelta:.0f} to begin {benefitdate :%B %d, %Y} '
-      st.write(st.session_state.thepmroisummary, st.session_state.thepmannualroi)
+      st.session_state['thepmroisummary'] = f'The roi is {roi:.3f} with an investment of {plbudget:.0f} and a benefit of {benefitdelta:.0f} to begin {benefitdate :%B %d, %Y}. The rate of return is {rateofreturn:.2f}.   If the project estimate to completion is growing, the roi will decrease.  EAC is now {eac:.2f}'
+      st.write(st.session_state.thepmroisummary)
 
 with st.container():
    with st.container():
@@ -631,10 +714,10 @@ with st.container():
       with col2:
        cb7 = st.checkbox("Askme for scope mitigation strategies.", disabled=disableplan)
        st.session_state['plpscopecontingency']  = st.text_area ("What are three ways to mitigate the impact of scope changes in a project?", value=setvalue('plpscopecontingency'),disabled=disableplan)
-       if cb7 and len(st.session_state.plpscopecontingency) < 10:
+       if cb7 and len(st.session_state.plpscopecontingency) < 25:
          query = "What are three strategies to reduce the impact of scope changes in a " + st.session_state.plpname + " project?"
          info = chatbot.get_conversation_info()
-         st.write("Asking AI for a response", cb2, info.id, info.title, info.model, info.system_prompt, query, "The response is provided below, paste and edit in the form above")
+         st.write("Asking AI for a response", cb7, info.id, info.title, info.model, info.system_prompt, query, "The response is provided below, paste and edit in the form above")
          message = chatbot.query(query)
          st.code(message)
 
@@ -644,10 +727,10 @@ with st.container():
       with col2:
        cb8 = st.checkbox("Askme for schedule mitigation strategies.", disabled=disableplan)
        st.session_state['plptimecontingency']  = st.text_area ("Schedule Contingency?", value=setvalue('plptimecontingency'), disabled=disableplan)
-       if cb8 and len(st.session_state.plptimecontingency) < 10:
+       if cb8 and len(st.session_state.plptimecontingency) < 20:
          query = "What are three strategies to reduce the impact of schedule issues in a " + st.session_state.plpname + " project?"
          info = chatbot.get_conversation_info()
-         st.write("Asking AI for a response", cb2, info.id, info.title, info.model, info.system_prompt, query, "The response is provided below, paste and edit in the form above")
+         st.write("Asking AI for a response", cb8, info.id, info.title, info.model, info.system_prompt, query, "The response is provided below, paste and edit in the form above")
          message = chatbot.query(query)
          st.code(message)
       col1, col2 = st.columns([1,5])
@@ -656,10 +739,10 @@ with st.container():
       with col2:
        cb9 = st.checkbox("Askme for budget mitigation strategies.", disabled=disableplan)
        st.session_state['plpbudgetcontingency']  = st.text_area ("Budget Contingency", value=setvalue('plpbudgetcontingency'),disabled=disableplan)
-       if cb9 and len(st.session_state.plpbudgetcontingency) < 10:
+       if cb9 and len(st.session_state.plpbudgetcontingency) < 25:
          query = "What are three strategies to reduce the impact of cost overruns in a " + st.session_state.plpname + " project?"
          info = chatbot.get_conversation_info()
-         st.write("Asking AI for a response", cb2, info.id, info.title, info.model, info.system_prompt, query, "The response is provided below, paste and edit in the form above")
+         st.write("Asking AI for a response", cb9, info.id, info.title, info.model, info.system_prompt, query, "The response is provided below, paste and edit in the form above")
          message = chatbot.query(query)
          st.code(message)
       col1, col2 = st.columns([1,5])
@@ -668,10 +751,10 @@ with st.container():
       with col2:
        cb10 = st.checkbox("Askme for team mitigation strategies", disabled=disableplan)
        st.session_state['plpteamcontingency']  = st.text_area ("Team Contingency", value=setvalue('plpteamcontingency'),disabled=disableplan)
-       if cb10 and len(st.session_state.plpteamcontingency) < 10:
+       if cb10 and len(st.session_state.plpteamcontingency) < 20:
          query = "What are three strategies to reduce the impact of low performing teams in a " + st.session_state.plpname + " project?"
          info = chatbot.get_conversation_info()
-         st.write("Asking AI for a response", cb2, info.id, info.title, info.model, info.system_prompt, query, "The response is provided below, paste and edit in the form above")
+         st.write("Asking AI for a response", cb10, info.id, info.title, info.model, info.system_prompt, query, "The response is provided below, paste and edit in the form above")
          message = chatbot.query(query)
          st.code(message)
       col1, col2 = st.columns([1,5])
@@ -680,10 +763,10 @@ with st.container():
       with col2:
        cb11 = st.checkbox("Askme for resource or technology mitigation strategies", disabled=disableplan)
        st.session_state['plpresourcecontingency']  = st.text_area ("Resource Contingency", value=setvalue('plpresourcecontingency'),disabled=disableplan)
-       if cb11 and len(st.session_state.plpresourcecontingency) < 10:
+       if cb11 and len(st.session_state.plpresourcecontingency) < 20:
          query = "What are three strategies to reduce the impact of resource or technology challenges in a " + st.session_state.plpname + " project?"
          info = chatbot.get_conversation_info()
-         st.write("Asking AI for a response", cb2, info.id, info.title, info.model, info.system_prompt, query)
+         st.write("Asking AI for a response", cb11, info.id, info.title, info.model, info.system_prompt, query)
          message = chatbot.query(query)
          st.code(message)
       thepmcontingencysummary = "The project contingency plans include Scope: " + st.session_state['plpscopecontingency']+ " Schedule: " + st.session_state['plptimecontingency'] + " Budget:  " + st.session_state['plpbudgetcontingency'] + " and Resource:  " + st.session_state['plpresourcecontingency']
@@ -704,14 +787,11 @@ with st.container():
 
 with st.container():
    with st.expander("Risk Trigger settings" , expanded=expander):
-     st.write("Risk trigger default values.  Currently these are for information purposes only and cannot be changed in the application.  ")
-     risktriggers = ['Inflation', 'Changes', 'Earned Value', 'Sentiment', 'Engagement', 'CPI', 'SPI', 'Inspection', 'ROI', 'Late Start', 'Climate', 'Unemployment', 'Business Climate', 'Country Risk']
-     risktriggersamber = [5,  1,  0,  70,  80,  1, 1,  3,  200, 3,  1,  8,  'B',  'B' ]
-     risktriggersred = [10,  5,  0,  50,  50,  .8, .7,  5,  120, 5,  .8,  8,  'E',  'E' ]
-     riskt = [(risktriggers[i], risktriggersamber[i], risktriggersred[i]) for i in range(0, len(risktriggers))]
-     #st.dataframe(riskt)
+     st.write("Risk trigger default values.  Currently these are for information purposes only and cannot be changed.  ")
+     riskt = get_risk_triggers()
+     st.table(riskt)
 
-     st.write("The following risk types will be removed from the stoplight report, enter values like Project,Team,Cost")
+     st.write("The following risk types will be removed from the stoplight report, enter Type values separated by comma  Project,Team,Cost")
      st.text_input ("Risk Type", help="a list of values separated by , ", key='plpnoriskreport', value=setvalue('plpnoriskreport'), disabled=disableplan, label_visibility=labelvis)
 with st.container():
 
@@ -731,3 +811,6 @@ with st.container():
                                            file_name=pmfile_name,
                                            help="Click to Download Current Settings")
 
+st.write("##")
+successmsg = f'Thank you for using The PM Monitor https://thepmmonitor.streamlit.app '
+st.success(successmsg)

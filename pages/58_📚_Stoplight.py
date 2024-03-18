@@ -5,13 +5,12 @@ from datetime import date, datetime
 import hydralit_components as hc
 import pandas as pd # bad janet! bad! don't import * 
 from scripts.thepmutilities import reporttitle, gradiant_header
-#from st_radial import st_radial
 import matplotlib.pyplot as plt
 from scripts.riskgenerate import calculate_risks_json
 import logging
 
+# RAG (dashboard)
 def color_survived(val):
-    #RAG (dashboard)
     color = 'white'
     if val == 'G' or val == 'Green':
       color = 'green' 
@@ -22,8 +21,8 @@ def color_survived(val):
     if val == 'N' or val == 'None':
       color = 'white'
     return f'background-color: {color}'
+#  value displayed based on ratio or value 
 def dashboard_rag(val):
-    #  value displayed based on ratio or value 
     if val >= 6:
        st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: #D12F2E; font-size: 100%;'>  R  </p>", unsafe_allow_html=True)      
     elif val >= 3:
@@ -36,11 +35,12 @@ def dashboard_rag(val):
        st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: #D12F2E; font-size: 100%;'>  R  </p>", unsafe_allow_html=True)      
     else:
        st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: #FFBF00; font-size: 100%;'>  A  </p>", unsafe_allow_html=True)      
-# get a list of the bullet points
+
+# get a list of the bullet points from the AI generated text
 def split(s):
     thislist = []
     start = 0
-    for i in [1,2,3,4,5,6,7,8]:
+    for i in [1,2,3,4,5,6,7,8,9,10]:
       txt = str(i) + '.'
       fins = s.find(txt, start)
       if fins > 0:
@@ -60,6 +60,8 @@ st.set_page_config(
       layout="wide",
       initial_sidebar_state="collapsed",
 )
+
+# media print for pdf
 st.markdown("""
     <style>
         @media print {
@@ -93,8 +95,6 @@ hide_table_row_index = """
             """
 
 #@st.cache
-#with st.spinner("Loading  ..."):
-    # initialize session state variables
 
 gradiant_header ('The PM Monitor Stoplight Report')
 
@@ -112,6 +112,7 @@ if "visibility" not in st.session_state:
 if "plpmreport" not in st.session_state:
   st.session_state.plpmreport = ""
   st.session_state.plpmid = ""
+
 videopmreport=st.session_state.plpmreport
 videoidreport=st.session_state.plpmid
 
@@ -125,12 +126,14 @@ if st.session_state.plncadence == 0:
  freqn = "1W"
 else:
  freqn = str(st.session_state.plncadence) + 'W'
+
 #series = pd.date_range(start=st.session_state.pldstartdate, end=st.session_state.pldenddate, periods=st.session_state.thepmreportsinplan, freq='B')
 series = pd.date_range(start=st.session_state.pldstartdate, end=st.session_state.pldenddate, freq=freqn)
 seriesdate = [datetime.strftime(d, '%Y/%m/%d') for d in series]
 serieslist = pd.DataFrame(seriesdate).astype(str)
 statuslist = []
 seriesphase = []
+
 #  todo figure out a way to generate dashboard
 for i in range (0, len(serieslist)):
       seriesvalue = st.session_state.plsplanstatus
@@ -158,22 +161,22 @@ for i in range (0, len(serieslist)):
       statuslist.append(seriesvalue)
       seriesphase.append(seriesphasev)
       # st.write(i, y, seriesvalue, seriesdate[i], st.session_state.plddesigndate.strftime('%Y/%m/%d'))
-  #if seriesdate[i] < datetime.today().strftime('%Y/%m/%d'):
-  # statuslist.append('G')
+#if seriesdate[i] < datetime.today().strftime('%Y/%m/%d'):
+# statuslist.append('G')
 serieslist['Phase'] = seriesphase
 serieslist['Status'] = statuslist
 bar_theme_2 = {'bgcolor': 'lightgrey','content_color': 'grey','progress_color': 'green'}
 
+# Starting the output
 reporttitle("Stoplight Report", st.session_state['thepmheader'])
 
-#st.markdown("---")
-st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: green ; font-size: 120%;'>Project Status by Phase</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: green ; font-size: 120%;'>Status by Project Phase</p>", unsafe_allow_html=True)
 
 seriestrans = serieslist.T
 seriestrans = seriestrans.astype(str)
 st.table(seriestrans.style.applymap(color_survived))
 
-st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: green ; font-size: 120%;'>Project Status by Knowledge Area</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: green ; font-size: 120%;'>Status by Knowledge Area</p>", unsafe_allow_html=True)
 st.write(" ")
 cola, colb, colc, cold, cole = st.columns([1,2,1,1,4])
 with cola:
@@ -258,32 +261,30 @@ with colc:
   st.write("Inspections Completed")
 with cold:
   st.write(st.session_state.plntestsrun)
-#st.markdown("---")
 
 st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: #D12F2E; font-size: 120%;'>Management Actions</p>", unsafe_allow_html=True)
 
-phasenumber = st.session_state.thepmphase
-CPI = st.session_state.thepmcpi
-SPI = st.session_state.thepmspi
-engagementscoreteam = st.session_state.plnactivesam
-sentimentscoreteam = st.session_state.plnactiveses
-retention = st.session_state.plnopenroles
-scopechange = len(st.session_state.plscopechange.split("."))
-if len(st.session_state.plscopechange) < 2:
-   scopechange = 0
-earnedvalue = st.session_state.thepmannualroi
-roi = st.session_state.thepmannualroi
-latestart = st.session_state.plnactiveses
-inspectfail = st.session_state.thepminspectflag
+#phasenumber = st.session_state.thepmphase
+#CPI = st.session_state.thepmcpi
+#SPI = st.session_state.thepmspi
+#engagementscoreteam = st.session_state.plnactivesam
+#sentimentscoreteam = st.session_state.plnactiveses
+#retention = st.session_state.plnopenroles
+#scopechange = len(st.session_state.plscopechange.split("."))
+#if len(st.session_state.plscopechange) < 2:
+#   scopechange = 0
+#earnedvalue = st.session_state.thepmannualroi
+#roi = st.session_state.thepmannualroi
+#latestart = st.session_state.plnactiveses
+#inspectfail = st.session_state.plntestsfailed
 
-(myrisks, issues, risks, totalrisks, risksummary)  = calculate_risks_json(phasenumber, SPI, CPI, engagementscoreteam, sentimentscoreteam, retention, scopechange, earnedvalue, roi, latestart, inspectfail)
+(myrisks, issues, risks, totalrisks, risksummary)  = calculate_risks_json()
 
 cols = ['riskselect', 'risktype', 'riskowner', 'riskscore', 'riskdescription']
 values = st.session_state.plpnoriskreport.split(",")
 myissues = (myrisks[myrisks['riskselect'] == 'I'])
 for value in values:
   myissues = (myissues[myissues['risktype'] != value])
-#myissues = myrisks['riskselect'].notna()j
 subissues = myissues[cols].sort_values(by=['riskselect', 'riskscore'])
 
 st.table(subissues.head(5))
@@ -304,7 +305,7 @@ else:
  with col1:
   st.video(videopmreport, format='video/mp4', start_time=0)
 
- #plot
+# plot
  plt.imshow(st.session_state.pmpvidwordcloud, interpolation='bilinear')
  plt.axis('off')
  plt.show()
@@ -326,9 +327,7 @@ with col2:
  st.write('.  \n'.join(st.session_state.plmlistscopeoption))
  st.write("Quality Reports")
  st.write('.  \n'.join(st.session_state.plmlistqualitytypes))
-st.write("##")
-successmsg = f'The PM Monitor Stoplight report presented by {st.session_state.plpmname} on {st.session_state.pldcharterdate}.  Thank you for using The PM Monitor. thepmmonitor.streamlit.app. '
+
+#  footer
+successmsg = f'The PM Monitor Stoplight report presented by {st.session_state.plpmname} on {st.session_state.pldcharterdate}.  Thank you for using The PM Monitor https://thepmmonitor.streamlit.app '
 st.success(successmsg)
-#df[(df['date'] > '2013-01-01') & (df['date'] < '2013-02-01')]
-#final_table_columns = ['id', 'name', 'year']
-#pandas_df = pandas_df[ pandas_df.columns.intersection(final_table_columns)]

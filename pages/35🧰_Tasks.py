@@ -113,8 +113,7 @@ if 'thepmheader' not in st.session_state:
 
 reporttitle("Task Analysis", st.session_state['thepmheader'])
 
-st.write("The PM monitor activity analysis is not intended as a replacement to your task management system.  Instead it is used to analyse the information to provide insight into potential issues with top down planning. In top down planning, management or sales create a detailed list of activities and decisions about timeline, features and cost/effort.  In bottom up planning, there is a goal however activity definintion and decisions are left to the team.   However you plan, remember to not try to be too detailed, and remember to plan for change.  ")
-
+st.write("The PM monitor activity analysis is not intended as a replacement to your task management system.  Instead it is used to analyse the information to provide insight into potential issues with top down planning. In top down planning, managers or sales create a detailed list of activities and decisions about timeline, features and cost/effort.  In bottom up planning, there is a goal however activity definintion and decisions are left to the team.   However you plan, remember to not try to be too detailed, and remember to plan for change.  ")
 
 st.subheader('Gantt and WBS (Work Breakdown Structure)')
 
@@ -125,13 +124,17 @@ if uploaded_file is not None:
     Tasks=pd.read_csv(uploaded_file, quotechar='"', delimiter=',', skipinitialspace=True, keep_default_na=False)
     st.warning('WBS loading from file')
 else:
-    Tasks = pd.read_csv('files/tasks.csv', sep=',')
+    Tasks = pd.read_csv('files/taskssimple.csv', sep=',')
+
 
 # fix missing values
 values = {'pr': 'Start', 'Duration': int(1), 'Assign': 'Team', 'Completion Pct': 0}
 Tasks.fillna(value=values, inplace=True)
 #new_df = df.drop_duplicates(subset='ORDER ID')
 Tasks = Tasks.astype({'Duration':'int'})
+Tasks = Tasks.astype({'ac':'str'})
+Tasks = Tasks.astype({'pr':'str'})
+st.write(Tasks)
 
 # map the people to columns
 assigned = Tasks.Assign.unique().tolist()
@@ -255,19 +258,6 @@ conditions = [
 values = ['NotStarted', 'InProgress', 'Completed']
 Project_dates['Status'] = np.select(conditions, values)
 
-st.subheader("Mindmap Critical path")
-
-st.write("The critical path can change in a project, monitoring the critical path is essential to verify that the end date is feasible.  Using the critical path and the estimate to complete, verify that the end date has not changed" )
-    # Create a graphlib graph object
-graph = graphviz.Graph()
-graph.attr('edge', shape='box', style='filled', color='lightgrey')
-for index, row in Tasks.iterrows():
-  dep = str(row['pr']).split()
-  for xdep in dep:
-    graph.node(str(row['ac']), shape = "box", fillcolor = "lightgrey", style = "filled")
-    graph.edge(xdep, str(row['ac']), label=str(row['Duration']))
-st.graphviz_chart(graph)
-
 st.subheader("Late start tasks")
 st.write("Show 5 tasks that are late, percentage complete is 0 and start date is less than the report date")
     #st.dataframe(Tasks[(Tasks["Start"] < pd.to_datetime(todaydate)) & (Tasks["Status"] == 'NotStarted')][['ac', 'Duration', 'Assign', 'Start']])
@@ -328,5 +318,22 @@ heatmap = alt.Chart(Project_dates.dropna()).mark_rect().encode(
 st.altair_chart(heatmap, use_container_width=True)
 st.write("The total hours committed and when are displayed")
 
-st.write(Project_dates)
+st.subheader("Project Tasks Detail")
+columns = ['ac', 'Duration','Assign', 'Description']
+st.write(Project_dates[columns])
 
+st.subheader("Mindmap Critical path")
+# Create a graphlib graph object
+graph = graphviz.Graph()
+graph.attr('edge', shape='box', style='filled', color='lightgrey')
+for index, row in Tasks.iterrows():
+  dep = str(row['pr']).split() 
+  for xdep in dep:
+    graph.node(str(row['ac']), shape = "box", fillcolor = "lightgrey", style = "filled")
+    graph.edge(xdep, str(row['ac']), label=str(row['Duration']))
+st.graphviz_chart(graph)
+st.write("The critical path can change in a project, monitoring the critical path is essential to verify that the end date is feasible.  Using the critical path and the estimate to complete, verify that the end date has not changed" )
+
+st.write("##")
+successmsg = f'The PM Monitor project charter presented by {st.session_state.plpmname} on {st.session_state.pldcharterdate}.  Thank you for using The PM Monitor https://thepmmonitor.streamlit.app '
+st.success(successmsg)

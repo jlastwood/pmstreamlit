@@ -48,26 +48,26 @@ if 'thepmheader' not in st.session_state:
 reporttitle("Risk Analysis", st.session_state['thepmheader'])
 
 # get values for profile
-phasenumber = st.session_state.thepmphase
-CPI = st.session_state.thepmcpi
-SPI = st.session_state.thepmspi
-engagementscoreteam = st.session_state.plnactivesam
-sentimentscoreteam = st.session_state.plnactiveses
+# phasenumber = st.session_state.thepmphase
+# CPI = st.session_state.thepmcpi
+# SPI = st.session_state.thepmspi
+# engagementscoreteam = st.session_state.plnactivesam
+# sentimentscoreteam = st.session_state.plnactiveses
 # open roles or weeks with full team less than 3
-retention = st.session_state.plnopenroles
-scopechange = len(st.session_state.plscopechange.split("."))
-if len(st.session_state.plscopechange) < 6:
-   scopechange = 0
-earnedvalue = st.session_state.plnactiveses
-roi = st.session_state.thepmannualroi
-latestart = st.session_state.plnactiveses
-inspectfail = st.session_state.thepminspectflag
+# retention = st.session_state.plnopenroles
+# scopechange = len(st.session_state.plscopechange.split("."))
+# if len(st.session_state.plscopechange) < 6:
+#    scopechange = 0
+# earnedvalue = st.session_state.plnactiveses
+# roi = st.session_state.thepmannualroi
+# latestart = st.session_state.plnactiveses
+# inspectfail = st.session_state.plntestsfailed
 
 with st.container():
 
 #     startrisks = getrisks()
 #     startframe = pd.DataFrame.from_dict(startrisks, orient="columns")
-     (myrisks, issues, risks, totalrisks, risksummary)  = calculate_risks_json(phasenumber, SPI, CPI, engagementscoreteam, sentimentscoreteam, retention, scopechange, earnedvalue, roi, latestart, inspectfail)
+     (myrisks, issues, risks, totalrisks, risksummary)  = calculate_risks_json()
      dataframe = pd.DataFrame.from_dict(myrisks, orient="columns")
      groupscore = dataframe.groupby(['riskimpact', 'risktype']).size().groupby(level=1).max()
      #st.header("Risk Detail")
@@ -130,6 +130,7 @@ with st.container():
        color=alt.Color('riskimpact', title="Impact")
      )
      st.altair_chart(c, use_container_width=True)
+     st.write("Impact and Probability determine the score, high, medium and low")
 
      st.subheader("Risk by Owner and Score")
      d = alt.Chart(dataframe.dropna()).mark_bar().encode(
@@ -138,19 +139,18 @@ with st.container():
        color=alt.Color('riskscore', title="Score")
      )
      st.altair_chart(d, use_container_width=True)
-     st.write("The project manager owns and monitors most risks, but some are owned by other in the team such as the product owner, team or sponsor to monitor and inform the project manager when the risk becomes an issue.  ")
+     st.write("The project manager owns and monitors most project risks, but some are owned by other in the team such as the product owner, team or sponsor to monitor and inform the project manager when the risk becomes an issue.  ")
 
      st.subheader("Risk by Class and Timeline")
-     st.write("Risks are closed when the project advances to later phases as they no longer are applicable")
      d = alt.Chart(dataframe.dropna()).mark_bar().encode(
        x=alt.X('riskclassification', title="Classification"),
        y='count(risktimeline)',
        color=alt.Color('risktimeline', title="Timeline")
      )
      st.altair_chart(d, use_container_width=True)
+     st.write("Risks are closed when the project advances to later phases as they no longer are applicable")
 
      st.subheader("Risk by Response and Trigger")
-     st.write("Using triggers risks in the current phase will be flagged as issues ", phasenumber, SPI, CPI, engagementscoreteam, sentimentscoreteam, retention, scopechange, earnedvalue, roi, latestart, inspectfail)
      f = alt.Chart(dataframe.dropna()).mark_bar().encode(
        x=alt.X('riskresponse', title="Response"),
        y=alt.Y('count(risktrigger)'),
@@ -159,20 +159,20 @@ with st.container():
      st.altair_chart(f, use_container_width=True)
 
      st.subheader("Risk by Response and Score")
-     st.write("Avoid risks by defining strategies to avoid or mitigate to reduce the risk, such as POC, or regular change control meetings. ")
      e = alt.Chart(dataframe.dropna()).mark_bar().encode(
-       x='riskresponse',
+       x=alt.X('riskresponse', title="Response"),
        y='count(riskscore)',
-       color='riskprobability'
+       color=alt.Color('riskprobability', title="Probability")
      )
      st.altair_chart(e, use_container_width=True)
+     st.write("Avoid risks by defining strategies to avoid or mitigate to reduce the risk, such as POC, or regular change control meetings. ")
 
      st.subheader("Risk by Classification and Trigger")
      st.write("The triggers are the fact based information that results in a risk becoming an issue ")
      e = alt.Chart(dataframe.dropna()).mark_bar().encode(
-       x='riskclassification',
+       x=alt.X('riskclassification', title="Classification"),
        y='count(riskscore)',
-       color='risktrigger'
+       color=alt.Color('risktrigger', title="Trigger")
      )
      st.altair_chart(e, use_container_width=True)
 
@@ -194,7 +194,9 @@ with st.container():
      f = heatmap + points
      st.altair_chart(f, use_container_width=True)
 
-     #st.header("Risk Detail")
-     #st.dataframe(dataframe, hide_index=True)
+     st.header("Risk Detail")
+     st.dataframe(dataframe)
  
-
+st.write("##")
+successmsg = f'The PM Monitor project charter presented by {st.session_state.plpmname} on {st.session_state.pldcharterdate}.  Thank you for using The PM Monitor https://thepmmonitor.streamlit.app '
+st.success(successmsg)

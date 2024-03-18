@@ -1,0 +1,173 @@
+DateTime,text,User
+03/19/20 10:30 AM,yes,Anna
+05/27/20 07:42 AM,@Miguel as I see the current is 7.69,Anna
+05/27/20 07:50 AM,@Miguel I think I know a problem. There is a 7.59 version on the Updates Instance. And on the status report too,Anna
+05/27/20 07:55 AM,At the time of updating,Anna
+03/18/20 11:39 AM,@Sarah no,Anna
+03/18/20 12:11 PM,@Miguel when I run jenkins on the stage,Anna
+04/30/20 03:16 PM,@Paul ok,Anna
+03/02/20 12:40 PM,yes,Anna
+03/02/20 02:50 PM,works,Anna
+04/10/20 08:13 AM,@SarahÂ could you create tickets for theÂ <http://www.intakom.com|www.intakom.com>,Anna
+04/29/20 09:44 AM,[People Portal] @Sarah Is the git repository at the documentation right? If yes,Anna
+04/29/20 04:30 PM,I want to merge it first to the stage and if it'll be ok to the master,Anna
+04/09/20 03:56 PM,@Sarah I need the db dump of the IHK - Duales Studium project,Anna
+03/20/20 01:17 PM,yes I have,Anna
+04/24/20 11:49 AM,I'll test the dev now,Anna
+04/24/20 01:02 PM,@Sarah yes,Anna
+04/24/20 01:22 PM,the qa isn't down,Anna
+05/25/20 02:46 PM,@Sarah [LWB] I have checked the live. As I said early the stage was not up to date with live. There were some updates,Anna
+04/28/20 09:18 AM,yes,Anna
+03/31/20 10:03 AM,ok,Anna
+04/23/20 07:46 AM,It is looks like an issue at dev environment,Anna
+03/11/20 09:19 AM,Hello @Miguel,Anna
+03/11/20 10:33 AM,@Miguel thanks,Anna
+03/11/20 11:37 AM,@Miguel I tested on the Stage Environment,Anna
+04/15/20 07:23 AM,Hello,Anna
+04/15/20 03:18 PM,if I have already pushed to the dev and Jenkins build was successful. Is it sense to use the update branch now? Maybe for this project,Anna
+03/10/20 04:24 PM,@Sarah @Margaret so,Anna
+05/19/20 07:40 AM,@Sarah ok,Anna
+03/30/20 06:01 PM,@Sarah @Miguel @Don [-MEG-] Jenkins was run successfully on the dev,Anna
+03/25/20 10:57 AM,nope,Barry
+05/20/20 11:13 AM,we need to try solve it manually,Barry
+02/28/20 03:34 PM,thanks,Barry
+03/05/20 03:32 PM,@Sarah I need more time for my RUP project. On the project,Barry
+03/05/20 03:33 PM,For now,Barry
+05/01/20 01:31 PM,ah,Barry
+03/03/20 08:59 AM,ok,Barry
+03/03/20 01:41 PM,I think I need credentials from another project,Barry
+03/03/20 01:46 PM,I found credentials at the bottom,Barry
+03/03/20 03:58 PM,ok,Barry
+04/27/20 10:58 AM,Boian helped me a few mins ago,Barry
+03/18/20 09:26 AM,ok,Barry
+03/18/20 11:59 AM,no,Barry
+04/26/20 12:17 PM,cool,Barry
+03/02/20 11:02 AM,Please check,Barry
+03/02/20 12:38 PM,hmm,Barry
+03/02/20 12:51 PM,cool,Barry
+03/02/20 03:13 PM,@Sarah ok we already have access to all tasks,Barry
+05/28/20 08:15 AM,@Miguel @Paul please grant access for me,Barry
+05/28/20 09:00 AM,@Paul strange,Barry
+05/28/20 09:02 AM,ah,Barry
+05/28/20 10:12 AM,yes,Barry
+05/12/20 09:07 PM,@Miguel @Paul please check my access to project/Project repo on the GitHub,Barry
+05/04/20 09:19 AM,ok,Barry
+05/08/20 08:51 AM,ok,Barry
+04/28/20 01:04 PM,@Paul @Miguel @Sarah someone please check my access to the company repository,Barry
+04/28/20 01:22 PM,thanks,Barry
+05/13/20 12:17 PM,yes,Barry
+05/13/20 12:35 PM,@Paul please check <http://cicd.company.ca/job/dealer.Project.ch/job/updates/changes>. I have pushed my updates to branch âupdatesâ and I can see my commit on the GitHub but in Jenkins,Barry
+05/13/20 12:38 PM,ok,Barry
+05/13/20 12:56 PM,ok,Barry
+03/31/20 12:51 PM,I have DB from stage,Barry
+03/31/20 01:03 PM,hm,Barry
+05/18/20 09:13 AM,yes,Barry
+05/18/20 11:44 AM,I think yes,Barry
+03/11/20 10:27 AM,thanksâ¦yeah,Barry
+03/11/20 10:33 AM,yes,Barry
+03/11/20 12:32 PM,hm,Barry
+03/11/20 01:41 PM,*includes/<https://api.drupal.org/api/drupal/includes%21entity.inc/7.x|entity.inc>,Barry
+03/11/20 04:16 PM,I think itâs not a good idea,Barry
+03/11/20 04:40 PM,I have dump,Barry
+06/05/20 02:48 PM,no,Barry
+06/05/20 02:51 PM,yes,Barry
+05/19/20 07:28 AM,ok,Barry
+04/16/20 10:13 AM,whenever we are having the updates . say drupal updates,Bobby
+03/25/20 10:45 AM,yep,Don
+02/13/20 12:47 PM,@p2006.Tom if you have a problem with updates for Sun Bank,Don
+03/18/20 11:49 AM,nope,Don
+03/17/20 08:26 AM,I've checked,Don
+04/24/20 08:14 AM,ok,Don
+02/17/20 02:06 PM,@p2006.Tom then do it locally,Don
+03/11/20 02:46 PM,@Miguel restored a database and site works again,Don
+02/13/20 12:21 PM,David got his keys on the server,Janice
+05/01/20 05:19 AM,you can use the stage key for testing but you have to fix the call back address for logon,Janice
+04/07/20 06:59 AM,Team,Janice
+04/03/20 09:43 AM,Devops:  you can put live dumps in stage (if it is support only site),Janice
+08/19/19 08:46 AM,Yes,Janice
+08/19/19 08:48 AM,Sure why not.  I is bad from a security point of view and our committment to the customer,Janice
+04/02/20 12:15 PM,I booked meeting for tomorrow,Janice
+04/02/20 12:18 PM,Andrew,Janice
+04/02/20 12:24 PM,If you need access,Janice
+04/02/20 12:25 PM,Everyone...feel free to propose a better way to move faster,Janice
+03/13/20 11:54 AM,Hi @Anna,Jerry
+03/03/20 09:54 AM,credentials sent for both,Jerry
+04/27/20 10:57 AM,Hello Serhii,Jerry
+03/02/20 12:57 PM,Alright,Jerry
+03/02/20 02:50 PM,I copied,Jerry
+04/02/20 12:19 PM,This is done,Jerry
+08/19/19 08:32 AM,@sebastian idk,Julia  
+08/19/19 08:34 AM,@sebastian I'm only two days in the office,Julia  
+03/09/20 04:13 PM,Depending on what the amazee-file has,Margaret
+03/13/20 12:36 PM,i suspect they're dead as well,Margaret
+03/13/20 12:39 PM,well,Margaret
+03/13/20 01:00 PM,nope,Margaret
+03/05/20 12:57 PM,But if you guys say so,Margaret
+03/05/20 12:57 PM,just let me tell ya: If you wanna update Konsumgoettinnen,Margaret
+08/27/19 11:20 AM,I don't really like that Idea. We should at least have some sort of stage where the customer can test his stuff. If he doesn't,Margaret
+08/27/19 11:48 AM,I did update project,Margaret
+03/03/20 11:36 AM,Database... Yeah. Either via ssh,Margaret
+03/03/20 12:45 PM,okay,Margaret
+03/03/20 01:38 PM,nice. anywhere other people can access that as well? so I don't need to write down twice,Margaret
+02/18/20 10:18 AM,If any other questions come up,Margaret
+03/19/20 10:28 AM,The real question is if you installed backup_migrate... if you did that,Margaret
+03/19/20 10:31 AM,well there we go :smile: @Miguel you tell nico,Margaret
+02/17/20 02:04 PM,Guess who's back! yes,Margaret
+08/19/19 08:41 AM,If we do the updates continuously,Margaret
+08/19/19 08:47 AM,But you're right. All those communication stuff after the update,Margaret
+03/11/20 01:14 PM,Right,Margaret
+03/11/20 01:28 PM,For that I guess the development-team has to tell the devops team where to check that,Margaret
+03/11/20 02:03 PM,@Don you checked in the repo,Margaret
+03/10/20 12:12 PM,nope,Margaret
+04/01/20 11:31 AM,yes,Miguel
+04/16/20 01:00 PM,for MEG its seems the infra and branch is set,Miguel
+05/21/20 07:50 AM,@Barry I will try it today,Miguel
+03/19/20 10:23 AM,shortly after your message the site was reported in maintanance mode,Miguel
+03/19/20 02:54 PM,nope,Miguel
+05/27/20 06:52 AM,@Anna Hi,Miguel
+05/27/20 07:56 AM,yes,Miguel
+03/19/20 05:52 AM,remind me to export backup for you,Miguel
+04/30/20 04:23 PM,@Barry here,Miguel
+05/12/20 12:12 PM,there is custom server for that,Miguel
+05/13/20 12:53 PM,it will take me some time,Miguel
+03/31/20 03:03 PM,request devops to do it,Miguel
+05/18/20 09:10 AM,yes,Miguel
+03/11/20 10:33 AM,@Anna great,Miguel
+03/11/20 04:34 PM,I can,Miguel
+04/15/20 09:52 AM,for that Jenkins job,Miguel
+03/26/20 05:40 PM,@Don please assist when you have some time,Miguel
+03/26/20 05:42 PM,@Anton Shloma is the developer there,Miguel
+04/15/20 10:33 AM,No,Norman
+04/15/20 03:39 PM,Would be nice,Norman
+05/01/20 09:19 AM,Works for me,Paul
+05/01/20 09:34 AM,I thought its in lagoon,Paul
+03/24/20 04:14 PM,I initially thought there will be bastion like other accounts,Paul
+04/30/20 03:17 PM,For legacy,Paul
+04/26/20 07:45 AM,For access & db dump,Paul
+04/29/20 08:02 AM,MEGS update instance issue resolved. After following the steps shared by Serhii,Paul
+04/29/20 02:24 PM,FYI @Tom,Paul
+04/29/20 04:34 PM,Yes,Paul
+04/24/20 12:32 PM,I don't think that's a problem,Paul
+04/28/20 09:02 AM,I got access,Paul
+04/28/20 03:25 PM,@Sarah if the project is in Amazee legacy but no updates instance present,Paul
+04/28/20 03:37 PM,@Bobby Is this for LWB ? Its already in progress,Paul
+04/28/20 03:45 PM,For EFT,Paul
+04/28/20 03:47 PM,Yes Serhii shared some steps,Paul
+03/31/20 10:02 AM,@Anna From your first output,Paul
+05/08/20 01:51 AM,@Barry @Anna  @Sarah we have a list of projects hosted on Amazee that are using dblog module and Amazee is asking to switch to lagoon_logs,Richard
+03/31/20 09:27 AM,If you say that your changes didnât get on the server,Richard
+03/31/20 09:32 AM,try to push an empty commit to dev now,Richard
+03/31/20 01:06 PM,I asked amazee support team,Richard
+03/31/20 02:26 PM,@Sarah how should we manage these kind of requests,Richard
+03/31/20 02:26 PM,also thereâs another issue with a project from @Anna that needs someone to look at,Richard
+03/25/20 07:22 PM,@Anna ok,Sarah
+03/13/20 11:35 AM,@Anna what's the live address,Sarah
+03/13/20 11:48 AM,yes,Sarah
+03/13/20 11:48 AM,@Jerry is already here,Sarah
+03/13/20 12:32 PM,@Anna can you please update on <https://pm.company.ca/browse/ABS-4>,Sarah
+03/13/20 12:56 PM,ok,Sarah
+03/13/20 12:59 PM,then it's a good idea and you can include it in your list. If there is any ticket,Sarah
+03/13/20 01:58 PM,@Anna You need to leave both of these projects for now until we have their Dev,Sarah
+03/13/20 02:07 PM,ok,Sarah
+03/05/20 12:49 PM,@Anna Estimation is good to proceed,Sarah
+04/01/20 11:42 AM,@Anna lets Pause on MEG also,Sarah
