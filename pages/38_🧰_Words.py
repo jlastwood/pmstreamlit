@@ -39,11 +39,12 @@ if 'thepmheader' not in st.session_state:
      st.stop()
 reporttitle("The PM Monitor Word Analysis", st.session_state['thepmheader'])
 
-st.write("Analysis of the written team channels, or spoken word provides insight to engagement, sentiment and context.  Using your team communication channel messages, and your video report, analysis of the sentiment, word density to see what they are talking about, and get engagement score. There are two input files, a message channel logfile and a video.    The format of the input is DateTime, User, and text ") 
+st.write("Analysis of the written team channels, or spoken word provides insight to engagement, sentiment and context.  Using your team communication channel messages, and your video report, analysis of the sentiment, word density to see what they are talking about, and get engagement score. There are two input files, a message channel logfile and a video.    The format of the input is a CSV file with the following headers  ts, user, and text.  You can analyse X customer feed, git comments, your task comments, or a message channel.  ") 
 
+#   https://github.com/apache-superset/examples-data/blob/master/datasets/examples/slack/messages.csv
 uploaded_file = st.file_uploader("Message history", type=['csv'])
 st.write("---")
-st.write("The project manager supplies a video report with the reports")
+st.write("The project manager supplies a video report on youtube and this will be included in the stoplight report")
 col3, col4 = st.columns(2) 
 with col3:
        st.text_input ("PM report (youtube)", key='plpmreport')
@@ -51,26 +52,35 @@ with col4:
        videoidreport = st.text_input ("PM report ID",  key='plpmid')
 
 if uploaded_file is not None:
-    messages=pd.read_csv(uploaded_file, quotechar='"',  delimiter=',', skipinitialspace=True)
+    mesin=pd.read_csv(uploaded_file, quotechar='"',  delimiter=',', skipinitialspace=True)
     #messages['Date'] = pd.to_datetime(messages.DateTime, format='%Y-%m-%d')
-    messages['Date'] = pd.to_datetime(messages.DateTime, format='mixed')
-    messages['Week'] = messages['Date'].dt.strftime('%y%U')
+    if 'ts' in mesin.columns:
+     mesin['Date'] = pd.to_datetime(mesin.ts, format='mixed')
+    if 'date' in mesin.columns:
+     mesin['Date'] = pd.to_datetime(mesin.date, format='mixed')
+    mesin['Week'] = mesin['Date'].dt.strftime('%y%U')
+    if 'user' in mesin.columns:
+     mesin['User'] = mesin['user']
+    if 'user_name' in mesin.columns:
+      mesin['User'] = mesin['user_name']
     #messages['mentions'] = re.findall("(^|[^@\w])@(\w{1,15})", messages['text'])
     #messages['text'] = re.sub(r"(?:\@|http?\://|https?\://|www)\S+", "", messages['text'])
     #st.dataframe(messages)
-    st.success("success")
+    msg1 = mesin[(mesin['text'] > " ")]
+    messages = msg1[msg1["text"].str.contains('has joined the channel')==False]
+    st.write("Success reading input file", len(mesin), len(msg1), len(messages))
 
     allmessages = ". ".join(map(str, messages['text']))
+
     # get mentions from text
     # text = '@username1: some tweet here, http://www.url.com, aaaaa @username2'
     # processed_text = re.sub(r"(?:\@|http?\://|https?\://|www)\S+", "", allmessages)
     # processed_text = " ".join(processed_text.split())
     # get emotions from text
 
-    st.write(allmessages)
+    # st.write(allmessages)
 
     output = messages.groupby('User')['Week'].describe()
-    #st.write(output)
     #st.line_chart(output, x='top', y='count') #using line_chart st call to plot polarity for each 
     output2 = messages.groupby('Week')['User'].describe()
     output2['week'] = output2.index
@@ -106,8 +116,12 @@ if uploaded_file is not None:
     sentimentTotal = entireText.sentiment
     st.write("The sentiment of the overall text shown in the graph above.  Graph below 0 is negative sentiment and above the line is positive. ")
     st.write(sentimentTotal)
+    st.write("If polarity is greater than 0, the text sentiment is positive, if it is near 0, the text is neutral, and if the polarity is below 0, the sentiment is negative. Subjectivity score, on the other hand, goes from 0 to 1. If it's close to 1, it means the sentence has a lot of personal opinion instead of just facts.  ")
     #wordtoken = word_tokenize(sents)
     stopwords = nltk.corpus.stopwords.words('english')
+    stopwords.append('using')
+    stopwords.append('would')
+    stopwords.append('https')
     wordcloud = WordCloud().generate(allmessages)
     wordcloud = WordCloud(min_word_length = 5,
                       background_color='white', stopwords=stopwords, max_words=10)

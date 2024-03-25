@@ -7,6 +7,7 @@ import pandas as pd # bad janet! bad! don't import *
 from scripts.thepmutilities import reporttitle, gradiant_header
 import matplotlib.pyplot as plt
 from scripts.riskgenerate import calculate_risks_json
+from scripts.cssscripts import page_media_print
 import logging
 
 # RAG (dashboard)
@@ -62,30 +63,7 @@ st.set_page_config(
 )
 
 # media print for pdf
-st.markdown("""
-    <style>
-        @media print {
-            /* Hide the Streamlit menu and other elements you don't want to print */
-            [data-testid="stSidebar"] {
-                display: none !important;
-            }
-
-            .main {
-                max-width: 8in !important;
-            }
-
-            span, p, div, textarea, input {
-                color: #000 !important;
-            }
-            
-            .stMarkdown, .stCodeBlock, [data-testid="caption"], [data-testid="stMarkdownContainer"], [data-testid="stImage"], [data-baseweb="textarea"] {
-                max-width: 8in !important;
-                word-break: break-all;
-            }
-
-        }
-    </style>
-""", unsafe_allow_html=True)
+page_media_print()
 
 hide_table_row_index = """
             <style>
@@ -281,10 +259,7 @@ st.markdown("<p style='text-align: center; vertical-align: bottom; color: white;
 (myrisks, issues, risks, totalrisks, risksummary)  = calculate_risks_json()
 
 cols = ['riskselect', 'risktype', 'riskowner', 'riskscore', 'riskdescription']
-values = st.session_state.plpnoriskreport.split(",")
 myissues = (myrisks[myrisks['riskselect'] == 'I'])
-for value in values:
-  myissues = (myissues[myissues['risktype'] != value])
 subissues = myissues[cols].sort_values(by=['riskselect', 'riskscore'])
 
 st.table(subissues.head(5))
@@ -315,7 +290,7 @@ else:
   st.write(st.session_state.pmpvidsummary)
 
 st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: green; font-size: 120%;'>Deliverables</p>", unsafe_allow_html=True)
-col1, col2 = st.columns(2)
+col1, col2, col3 = st.columns(3)
 with col1:
  st.write("Requirements")
  st.write('.  \n'.join(split(st.session_state.plscopemusthave)))
@@ -325,7 +300,8 @@ with col2:
  st.write("Environment and Non-Functional")
  st.write('.  \n'.join(st.session_state.plmlistscopelist))
  st.write('.  \n'.join(st.session_state.plmlistscopeoption))
- st.write("Quality Reports")
+with col3:
+ st.write("Quality and Inspection Reports")
  st.write('.  \n'.join(st.session_state.plmlistqualitytypes))
 
 #  footer

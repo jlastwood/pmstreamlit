@@ -308,11 +308,11 @@ gantt = alt.Chart(Project_dates.dropna()).mark_rect().encode(
     ) 
 st.altair_chart(gantt, use_container_width=True)
 
+#       y2=alt.Y2('monthdate(EF_date):O'),
 st.subheader("Resource Committment Matrix")
 heatmap = alt.Chart(Project_dates.dropna()).mark_rect().encode(
        y=alt.Y('Assign', title="Resource"),
        x=alt.X('monthdate(ES_date):O', axis=alt.Axis(tickCount=4)),
-       x2=alt.X2('monthdate(EF_date):O'),
        color=alt.Color('sum(D)', scale=alt.Scale(scheme='redyellowblue'))
     ) 
 st.altair_chart(heatmap, use_container_width=True)

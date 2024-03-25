@@ -6,7 +6,23 @@ from PIL import Image
 from streamlit_elements import elements, dashboard
 from scripts.thepmutilities import reporttitle, gradiant_header, reporttitleonly
 from streamlit_extras.grid import grid
+from streamlit_extras.stylable_container import stylable_container
+from streamlit_extras.add_vertical_space import add_vertical_space
 import colorsys
+
+def showcontainer(color): 
+   with stylable_container(
+        key="container_with_border",
+        css_styles="""
+            {
+                border: 1px solid rgba(49, 51, 63, 0.2);
+                border-radius: 0.5rem;
+                background: color;
+                padding: calc(1em - 1px)
+            }
+            """,
+    ):
+        c1, c2, c3, c4 = st.columns(4)
 
 def get_first(s):
   # get first sentence in string
@@ -70,6 +86,9 @@ st.markdown("""
             [data-testid="stHeader"] { display: none !important; }
             [data-testid="stDecoration"] { display: none !important; }
             [data-testid="stToolbar"] { display: none !important; }
+            [data-testid="stToolbarActions"] { display: none !important; }
+            [data-testid="stDeployButton"] { display: none !important; }
+            [data-testid="stMainMenu"] { display: none !important; }
             .css-1iyw2u1 { display: none; }
             .css-15yd9pf { display: none; }
             .css-fblp2m { display: none; }
@@ -90,8 +109,8 @@ st.markdown("""
                 display: block;
                 break-inside: avoid;
             }
-            #MainMenu{visibility: hidden;} footer{visibility: hidden;} header {visibility: hidden;}
-            #root>div:nth-child(1)>div>div>div>div>section>div{padding-top: .2rem;
+            MainMenu{visibility: hidden;} footer{visibility: hidden;} header {visibility: hidden;}
+            root>div:nth-child(1)>div>div>div>div>section>div{padding-top: .2rem;
         }
     </style>
 """, unsafe_allow_html=True)
@@ -125,11 +144,17 @@ def fancy_box(wch_colour_box, wch_colour_font, iconname, sline, i):
   lnk = '<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css" crossorigin="anonymous">'
  
   # convert colors to HSV
- 
-  aspect = "4 / 3"
-  #if len(sline) > 300:
-  #  aspect = "1 / 1"
-  # st.write(len(sline), padding, i)
+
+  # use aspect ratio for 3 and 4 wide and aspect ratio 4/3 for 2 up 
+  # if team poster using 4/3 and if business set 4/3 for green boxes
+  aspect = "0.5"
+  if layoutposter == "Team Poster":
+    aspect = "4 / 3"
+  if wch_colour_box == colorgh:
+    aspect = "4 / 3"
+  padding = "8px"
+  pline = sline.ljust(400, " ")  
+  leng = len(pline)
   htmlstr = f"""<p style='background-color: rgb({wch_colour_box});
                         color: rgb({wch_colour_font};
                         font-size: {fontsize}px;
@@ -137,7 +162,7 @@ def fancy_box(wch_colour_box, wch_colour_font, iconname, sline, i):
                         padding-left: 8px;
                         padding-top: 8px;
                         padding-right: 8px;
-                        padding-bottom: 8px;
+                        padding-bottom: {padding};
                         aspect-ratio: {aspect};
                         line-height:25px;'>
                         <i class='{iconname} fa-2x'></i> {i}
@@ -226,7 +251,7 @@ my_grid = grid(4, 3, 2, 2, 3, 1,  vertical_align="top")
 if layoutposter == "Team Poster":
   my_grid = grid(2, 2, 2, 2, 2, 2, 2, 1,  vertical_align="bottom")
 
-
+# showcontainer(colorbh)
 p1intro = "<br>Project Introduction"
 p1summary = "<sup>" + p1intro + "</sup><br><br>" + st.session_state['thepmplannote'].replace('\n', '<br />')   
 

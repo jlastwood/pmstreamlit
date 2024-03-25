@@ -49,10 +49,30 @@ st.markdown("""
 
 gradiant_header ('The PM Monitor Project Management Information')
 
+st.write("In this section you can find starting points and information about how to use the product, contribute, or report an error") 
 st.markdown("### Project Management Goal")
 
 st.write("The goal and objective of a project manager is to communicate, mitigate risks, control the budget, manage stakeholder expectations, and ensure there is alignment between the business goals and the project goals.  The Project Manager and The PM monitor application collaborate planning, monitoring and control of projects. ")
 
+st.write("Basic tasks")
+
+colt = st.columns(3)
+colt[0].write('<a href="#chapterh1">Print a Charter</a>', unsafe_allow_html = True)
+colt[0].write('<a href="#chapter2">Scope</a>', unsafe_allow_html = True)
+colt[0].write('<a href="#chapter3">Definitions and Terms</a>', unsafe_allow_html = True)
+
+st.markdown("### Project Management Areas")
+
+st.write("The PM monitor focuses on the follwing areas of project management, risk planning and monitoring, communication planning and monitoring, schedule planning and monitoring.")
+
+st.subheader("Print a Charter", anchor="chapterh1")
+video_file_name = "assets/images/printcharter.webm"
+colsd = st.columns(2)
+video_file = open(video_file_name, "rb")
+video_bytes = video_file.read()
+colsd[0].write("** Print Charter ** uses the link Charter, view the report then choose browser print.  If the text is cutoff, then adjust the width of the browser to 1024.")
+colsd[1].video(video_bytes)
+#st.video("localhost:8501/assets/videohelp/printcharter.webm", format="video/webm")
 st.markdown("### About the App and Developer")
 
 st.markdown("#### Git")
@@ -67,6 +87,9 @@ button(username="thepmmonitor", floating=False)
 
 st.markdown("#### Credits")
 st.write(" a lot, get from source, streamlit, the python community")
+
+st.markdown("#### Cheche-pm")
+st.write(" Thank you to the developer of the python module to calculate critical path,  https://medium.com/@luisfernandopa1212/efficient-project-scheduling-with-python-the-critical-path-method-19a3f8235f91")
 
 st.markdown("##### PMBOK Design")
 st.write("This project was born from project management templates and forms using sheets https://docs.google.com/spreadsheets/d/1ubIRBmCT3wflP2_MozgJV-Tny7aZfcWBuo1kLx1vVgI/edit?usp=sharing  and the PMBOK list of forms  https://www.wiley.com/en-ca/A+Project+Manager's+Book+of+Forms:+A+Companion+to+the+PMBOK+Guide,+3rd+Edition-p-9781119393986")

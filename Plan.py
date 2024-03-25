@@ -22,7 +22,13 @@ il = Image.open("assets/images/MonitorImage.png")
 def signonhugchat():
   hf_email = st.secrets['EMAIL']
   hf_pass = st.secrets['PASS']
-  sign = Login(hf_email, hf_pass)
+  failedconnect =  False 
+  try: 
+    sign = Login(hf_email, hf_pass)
+  except:
+    st.write("cannot connect to chat")
+    failedconnect = True
+    return()
   cookies = sign.login()
   cookie_path_dir = "./cookies_snapshot"
   sign.saveCookiesToDir(cookie_path_dir)
@@ -99,45 +105,77 @@ with open('files/inspections.csv', 'r') as read_obj:
     inspectionslist = tuple(list_reader.split('\n') )
     read_obj.close()
 
-with st.sidebar:
 
-  #cyclelist = ["None", "Planning", "Execution/Control", "Close"]
-  #cycleoptions = list(range(len(cyclelist)))
-  #val = stx.stepper_bar(steps=cyclelist)
-  #st.info(f"Phase #{val}")
-  #st.session_state['thepmcycle'] = val
   #thepmcycle = st.selectbox('Project Phase (planning or monitoring?)', cycleoptions, format_func=lambda x: cyclelist[x], key='thepmcycle', help="The phase of the project will determine which risks are higher or may be closed.  In the early phases of the project you have higher technology and cost risks and in later phases you can have engagement and resource risks. A project has 4 phases, Initiation, Planning, Execution and Control and Closure.  A product has 6 phases.   0 Initiation, 1 plan, 2 design, 3 build, 4 inspect, 5 accept and  6 close")
-
-  want_plan = st.toggle("Planning or Control")
-  if want_plan:
-        val = 2 
-  else:
-        val = 1 
-  st.session_state['thepmcycle'] = val
-
-  st.date_input ("Report Date", setvalue('pldcharterdate'), key='pldcharterdate', help="Enter the date that this report is updated.")
-  want_help = st.toggle("Inline Help")
-  if want_help:
-        labelvis="visible"
-        expander=True
-  else:
-        labelvis="collapsed"
-        expander=False
-
-  #want_to_contribute = st.button("Help")
-  #if want_to_contribute:
-  #      switch_page("Help")
 
 theme_scope = {'bgcolor': '#f9f9f9','title_color': 'orange','content_color': 'orange','icon_color': 'orange', 'icon': 'fa fa-check-circle'}
 font_fmt = {'font-class':'h4','font-size':'50%'}
 mySep = ","
 
+st.session_state['thepmcycle'] = 1
 if st.session_state.thepmcycle > 1:
   gradiant_header ('The PM Monitor Project Monitoring') 
 else:
   gradiant_header ('The PM Monitor Project Planning') 
 
+##  Navigation
+st.write("The Project Planning form is broken down in the following chapters and sections.  All sections should be completed in the planning phase.  In monitoring and control, there is a subset of information to update.")
+st.subheader("Sections Planning", anchor='toc', help="overview", divider="rainbow")
+colt = st.columns(3)
+colt[0].write('<a href="#chapter1">Project Overview</a>', unsafe_allow_html = True)
+colt[0].write('<a href="#chapter2">Scope</a>', unsafe_allow_html = True)
+colt[0].write('<a href="#chapter3">Definitions and Terms</a>', unsafe_allow_html = True)
+colt[0].write('<a href="#chapter4">Requirements</a>', unsafe_allow_html = True)
+colt[0].write('<a href="#chapterroi">Return on Investment</a>', unsafe_allow_html = True)
+colt[1].write('<a href="#chapter5">Change Management</a>', unsafe_allow_html = True)
+colt[1].write('<a href="#chapter6">Quality and Grade</a>', unsafe_allow_html = True)
+colt[1].write('<a href="#chapter7">Stakeholders</a>', unsafe_allow_html = True)
+colt[1].write('<a href="#chapter8">Communication Plan</a>', unsafe_allow_html = True)
+colt[1].write('<a href="#chapter9">Tools and Links</a>', unsafe_allow_html = True)
+colt[2].write('<a href="#chapter10">Financial Information</a>', unsafe_allow_html = True)
+colt[2].write('<a href="#chapter11">Team</a>', unsafe_allow_html = True)
+colt[2].write('<a href="#chapterwb">WBS</a>', unsafe_allow_html = True)
+colt[2].write('<a href="#chapter12">Risk and Contingency Plans</a>', unsafe_allow_html = True)
+colt[2].write('<a href="#chapters">Save</a>', unsafe_allow_html = True)
+st.subheader("Sections Monitoring", help="overview", divider="rainbow")
+colx = st.columns(3)
+with colx[0]:
+  st.write('<a href="#chapter8">Communication Monitoring</a>', unsafe_allow_html = True)
+  st.write('<a href="#chapter5">Change Monitoring</a>', unsafe_allow_html = True)
+with colx[1]:
+  st.write('<a href="#chapter11m">Team Monitoring</a>', unsafe_allow_html = True)
+  st.write('<a href="#chapter6m">Quality Monitoring</a>', unsafe_allow_html = True)
+with colx[2]:
+  st.write('<a href="#chaptercm">Cost Monitoring</a>', unsafe_allow_html = True)
+  st.write('<a href="#chapters">Save</a>', unsafe_allow_html = True)
+st.subheader("Reports", help="overview", divider="rainbow")
+colx = st.columns(3)
+colx[0].page_link("pages/53_📚_Charter.py", label="Project Charter", icon=None, help=None, disabled=False, use_container_width=None)
+colx[1].page_link("pages/33_Risks.py", label="Risk Monitoring", icon=None, help=None, disabled=False, use_container_width=None)
+colx[2].page_link("pages/55_📚_Canvas.py", label="Project Canvas", icon=None, help=None, disabled=False, use_container_width=None)
 ##  Introduction to Planning
+#thepmcycle = st.selectbox('Project Phase (planning or monitoring?)', cycleoptions, format_func=lambda x: cyclelist[x], key='thepmcycle', help="The phase of the project will determine which risks are higher or may be closed.  In the early phases of the project you have higher technology and cost risks and in later phases you can have engagement and resource risks. A project has 4 phases, Initiation, Planning, Execution and Control and Closure.  A product has 6 phases.   0 Initiation, 1 plan, 2 design, 3 build, 4 inspect, 5 accept and  6 close")
+
+colsh = st.columns(3)
+want_plan = colsh[0].toggle("Planning or Control")
+if want_plan:
+       val = 2
+else:
+       val = 1
+st.session_state.thepmcycle = val
+
+want_help = colsh[1].toggle("Inline Help")
+if want_help:
+      labelvis="visible"
+      expander=True
+else:
+      labelvis="collapsed"
+      expander=False
+
+colsh[2].date_input ("Report Date", setvalue('pldcharterdate'), label_visibility=labelvis, key='pldcharterdate', help="Enter the date that this report is updated.")
+  #want_to_contribute = st.button("Help")
+  #if want_to_contribute:
+  #      switch_page("Help")
 
 with st.container():
   with st.expander("Playbook Information", expanded=expander):
@@ -154,6 +192,8 @@ with st.container():
       st.write("5.  Book your calendar to monitor project progress and generate status updates and stoplight report.    ")
 
      ##  The basic intro information 
+st.subheader("Project Information", anchor='chapter1')
+st.write('<a href="#toc">Back to Top</a>', unsafe_allow_html = True)
 with st.container():
       with st.expander("Project Information", expanded=expander):
         st.write("A project is finite, has a start and and end timeframe and is unique. A project is undertaken to reach a goal, implement change, deliver a new product, service or process.  The Project Plan outlines the timeline and the benefits, scope and contingency plans.  The plan provides the necessary information for the project manager and The PM Monitor to report on the progress of the project, manage risks and identify issues.")
@@ -243,16 +283,19 @@ with st.container():
       ndays = st.session_state['plncadence']*7
      #  Scope section 
 
+st.subheader("Change Management Plan", anchor='chapter5')
+st.write('<a href="#toc">Back to Top</a>', unsafe_allow_html = True)
 with st.container():
-       st.subheader("Change")
        with st.expander("Change information", expanded=expander):
           st.write("Change information is collected during control and monitoring.  Capture changes to the scope, schedule, cost or quality goals and make a note of who reviewed and approved the change.")
+       changeplan = st.text_area ("Describe the change management plan in place for this project, how do teams and stakeholders submit changes and who approves? ", value=setvalue('plschangeplan'), key='plschangeplan')
        scopechange = st.text_area ("What scope has been added or removed after the start of this project? ", value=setvalue('plscopechange'), key='plscopechange')
        otherchange = st.text_area ("What other changes have been made to this project? schedule, cost, quality ", value=setvalue('plsotherchange'), key='plsotherchange')
        approvalchange = st.text_area ("Describe the change, who presented the change, why, when and who approved. ", value=setvalue('plsapprovalchange'), key='plsapprovalchange')
 
+st.subheader("Scope Management Plan", anchor='chapter2')
+st.write('<a href="#toc">Back to Top</a>', unsafe_allow_html = True)
 with st.container():
-       st.subheader("Scope")
        with st.expander("Scope Information", expanded=expander):
          st.write("The scope information outlines the features that the product should have. Scope also clarifies what is not planned and what may be negotiable.  When monitoring the project, identify any scope changes.  It is important to track out of scope items.  ")
 
@@ -277,6 +320,8 @@ with st.container():
          message = chatbot.query(query)
          st.code(message)
 
+       st.subheader("Terms", anchor='chapter3')
+       st.write('<a href="#toc">Back to Top</a>', unsafe_allow_html = True)
        cbd = st.checkbox("Askme for definitions and terms.", disabled=disableplan)
        st.text_area ("Dictionary.  Define any terms used in this product or design", value=setvalue('plscopeterms'), key='plscopeterms' , label_visibility=labelvis, disabled=disableplan)
        if cbd and len(st.session_state.plscopeterms) < 15:
@@ -297,14 +342,27 @@ with st.container():
        st.session_state['thepmplanscope'] = f'Required:  \n  {st.session_state.plscopemusthave} \n\n  Options:  \n\n  {st.session_state.plscopenicetohave}  \n\n \n\n  Out of Scope:  {st.session_state.plscopeoutofscope} \n\n Change:  {scopechange}'
        st.success(st.session_state['thepmplanscope'])
 
+st.subheader("Requirements", anchor='chapter4')
+st.write('<a href="#toc">Back to Top</a>', unsafe_allow_html = True)
+with st.container():
+       st.text_input ("What is the use case?", value=setvalue('plpusecase'), key='plpusecase', label_visibility=labelvis, disabled=disableplan)
+       cbu = st.checkbox("Askme for use case steps", disabled=disableplan)
+       st.text_area ("Define use case or process steps", value=setvalue('plsusecase'), key='plsusecase' , label_visibility=labelvis, disabled=disableplan)
+       if cbu and len(st.session_state.plsusecase) < 15:
+         query = "Describe the process steps or use cases for a  " + st.session_state.plpusecase + " product"
+         info = chatbot.get_conversation_info()
+         st.write("Asking AI for a response", cbd, info.id, info.title, info.model, info.system_prompt, query, "The response is provided below, paste and edit in the form above")
+         message = chatbot.query(query)
+         st.code(message)
 
 ##  Schedule
+st.subheader("Communication Plan", anchor='chapter8')
+st.write('<a href="#toc">Back to Top</a>', unsafe_allow_html = True)
 with st.container():
       milestonestatus = {0: "Not started", 1: "In Progress", 2: "On Hold", 3: "Complete"}
-      st.subheader("Life Cycle Plan and Status")
       with st.expander("Schedule and Status Product delivery", expanded=expander):
         st.write("The life cycle of a product defines the phases of the product.   A project must complete the product planning phase, and can be executing more than one phase concurrently.  Phases have activities defined in the WBS. ")
-        st.write("When monitoring, choose a status value RAG (Green - Phase is on track,  Amber - Phase has missed some targets but overall end date and budget is not at risk,  Red - Product development is likely to deliver over budget or late.  There will be management action items in the stoplight report. ")
+        st.write("When monitoring, choose a status value RAG (Green - Phase is on track,  Amber - Phase has missed some targets but overall end date and budget is not at risk,  Red - Product development is likely to deliver over budget or late.  There will be management action items in the stoplight report.  The phase milestones and the project reporting cadence determine the plan for communication to the stakeholders ")
 
       statusoptions = (['None', 'Red', 'Amber', 'Green'])
       cola, colb, cold = st.columns([1,3,3])
@@ -418,9 +476,10 @@ with st.container():
 
       # st.write(oseries)
 
+st.subheader("Team Size and Roles", anchor='chapter11')
+st.write('<a href="#toc">Back to Top</a>', unsafe_allow_html = True)
 with st.container():
    with st.container():
-      st.subheader("Team Information")
       with st.expander("Describe the team" , expanded=expander):
         st.write("Projects are executed and implemented by people, the team, the stakeholders and are implemented to provide benefit to users or customers.  The complexity communication, controlling  and establishing trust between the team and the stakeholders is a factor of the size of the team, and how long they have been working together.  Trust is earned, not given, and as trust increases, performance will improve and quality will follow.  Typically engagement and team sentiment is high at the beginning of the project and decreases over time, and engagement of the stakeholders follows the opposite pattern  ")
         st.write("Describe the size of the team, number of users, actors and stakeholders")
@@ -433,15 +492,15 @@ with st.container():
        st.slider ("Number of Users", value=setvalue('plnusers'), format="%i", min_value=0, max_value=100000, step=10000, key='plnusers', disabled=disableplan)
       with col4:
        st.slider ("Number of Actors", value=setvalue('plnactors'), format="%i", min_value=0, max_value=10, step=1, key='plnactors', disabled=disableplan)
+   st.multiselect( label='Select roles and skills', options=list(roleslist), default=setvalue('plmlistroles'), key='plmlistroles', label_visibility=labelvis, disabled=disableplan)
+st.subheader("Team monitoring and changes", anchor='chapter11m')
+st.write('<a href="#toc">Back to Top</a>', unsafe_allow_html = True)
 with st.container():
-      st.subheader("Team Monitoring")
       col1, col2, col3 = st.columns([1,1,2])
       with col1:
        st.slider ("Weeks with Full Team", value=setvalue('plnteamweeks'), format="%i", min_value=0, max_value=12, step=1, key='plnteamweeks' )
       with col2:
        st.slider ("Number of Open Roles", value=setvalue('plnopenroles'), format="%i", min_value=0, max_value=15, step=1, key='plnopenroles')
-      with col3:
-       st.multiselect( label='Select roles and skills', options=list(roleslist), default=setvalue('plmlistroles'), key='plmlistroles', label_visibility=labelvis, disabled=disableplan)
       col1, col2, col3, col4 = st.columns(4)
       with col1:
        # SAM = (Active Channel Members/ Total Channel Members)
@@ -454,8 +513,10 @@ with st.container():
        st.slider ("Active User Score (Engagement)", value=setvalue('plnactivesamuser'), format="%i", min_value=0, max_value=100, step=5, key='plnactivesamuser' )
       with col4:
        st.slider ("Active User Score (Sentiment)", value=setvalue('plnactivesesuser'), format="%i", min_value=0, max_value=100, step=5, key='plnactivesesuser' )
+
+st.subheader("Tools", anchor='chapter9')
+st.write('<a href="#toc">Back to Top</a>', unsafe_allow_html = True)
 with st.container():
-      st.subheader("Tools and Links")
       st.write("Location of the cloud tools, the team WBS and their communication channel")
       col3, col4, col5 = st.columns(3)
       with col3:
@@ -470,8 +531,11 @@ with st.container():
        st.text_input ("Product Owner Design Link (URL)" , value=setvalue('plpproductownerdesignlink'), key='plpproductownerdesignlink', disabled=disableplan)
        st.text_input ("User Chat Channel Link (URL)" , value=setvalue('plpstanduplinkusers'), key='plpstanduplinkusers', disabled=disableplan)
       st.write("---")
+
+
+st.subheader("Stakeholders, Key Decision Makers and Contacts", anchor='chapter7')
+st.write('<a href="#toc">Back to Top</a>', unsafe_allow_html = True)
 with st.container():
-      st.subheader("Key Decision makers and contacts")
       st.write("Contact information of the team leads, architect and account manager, and key stakeholders")
       col1, col2, col3 = st.columns(3)
       with col1:
@@ -490,14 +554,15 @@ with st.container():
       st.markdown('##') 
       st.success(plancommunication)
 
+st.subheader("Quality and Grade", anchor='chapter6')
+st.write('<a href="#toc">Back to Top</a>', unsafe_allow_html = True)
 with st.container():
    with st.container():
-      st.subheader("Quality Planning")
       st.write("Enter the Quality inspection types, attributes and dates.  When the inspector starts results will be available in the quality inspection report.  The PM monitor will determine a pass/fail score based on the results against the plan. ")
       cb6 = st.checkbox("Askme for a quality goal")
       st.text_area ("Describe Quality Goal ", value=setvalue('plsqualitygoal'), key='plsqualitygoal', disabled=disableplan)
       if cb6 and len(st.session_state.plsqualitygoal) < 15:
-         query = "What would make customers happey in terms of the outcome of t " + st.session_state.plpname + " project?"
+         query = "What would make customers happy in terms of the outcome of t " + st.session_state.plpname + " project?"
          info = chatbot.get_conversation_info()
          st.write("Asking AI for a response", cb6, info.id, info.title, info.model, info.system_prompt, query, "The response is provided below, paste and edit in the form above")
          message = chatbot.query(query)
@@ -506,6 +571,8 @@ with st.container():
          label='Select types of quality inspection attributes',
          options=list(inspectionslist), default=setvalue('plmlistqualitytypes'), key='plmlistqualitytypes', disabled=disableplan)
 
+      st.subheader("Quality Monitoring and Report", anchor='chapter6m')
+      st.write('<a href="#toc">Back to Top</a>', unsafe_allow_html = True)
       st.subheader("Quality Monitoring")
       st.text_area ("Quality Report", value=setvalue('plsqualityreport'), key='plsqualityreport', help="The quality report is submitted by the inspector and is a summary of the quality of the product and the goals")
       col1, col2, col3 = st.columns(3)
@@ -557,8 +624,10 @@ with st.container():
       nonfunctlist = ' '.join(st.session_state.plmlistscopelist)
       st.session_state['thepmgrade'] = f'A product with {st.session_state.plnscopenumber} features has a grade of {grade}.  The number of actors or personas is {st.session_state.plnactors} increasing actors will increase cost however will improve grade.  Delivery of nice to have features or high quality non-functional attributes will also improve the grade.  The non-functional attributes are {nonfunctlist}' 
       st.success(st.session_state.thepmgrade) 
+
+st.subheader("Cost Management Plan", anchor='chapter10')
+st.write('<a href="#toc">Back to Top</a>', unsafe_allow_html = True)
 with st.container():
-      st.subheader("Cost Planning")
       with st.expander("Cost Information" , expanded=expander):
         st.write("Changes incur costs, and these costs are monitored to ensure that the investment is in line with the value of the change to the business.  Using feature completion, and timelines we calculate cost performance index (CPI) and schedule performance index (SPI) which are indicators if the project is in control. During planning and design, earned value will be 0, when in  execution your earned value will be realized as features are inspected and accepted")
       currchoice = pd.DataFrame({'Item': ['None', 'USD', 'CDN', 'EUR'], 'Value': [0, 1, 2, 3]})
@@ -592,6 +661,8 @@ with st.container():
       with col4:
        st.slider('Estimate Confidence', min_value=0, max_value=100, value=setvalue('plnhoursconfidence'), step=5, key='plnhoursconficence', disabled=disableplan)
 
+      st.subheader("WBS", anchor='chapterwb')
+      st.write('<a href="#toc">Back to Top</a>', unsafe_allow_html = True)
       cbt = st.checkbox("Askme for a WBS or activities for this project")
       st.text_area ("Develop a activity plan ", value=setvalue('plswbs'), key='plswbs', disabled=disableplan)
       if cbt and len(st.session_state.plswbs) < 15:
@@ -630,9 +701,10 @@ with st.container():
           wbsdataframe['Duration'] = 5 
         wbsdataframe['Completion Pct'] = 0
         st.write("The following WBS is input to your task management tool and the PM Monitor WBS Activity Analysis. There are ", notasks, "tasks for a total effort of ", st.session_state.plnhours, "and estimated duration of", (duration*notasks), " days assuming sequential order ")
-        st.data_editor(wbsdataframe,num_rows="dynamic")
+        st.data_editor(wbsdataframe,num_rows="dynamic", use_container_width=True )
 
-      st.subheader("Cost Monitoring")
+      st.subheader("Cost Monitoring", anchor='chaptercm')
+      st.write('<a href="#toc">Back to Top</a>', unsafe_allow_html = True)
       with st.expander("Cost monitoring and control" , expanded=expander):
        st.write("During cost monitoring, capture the actual spend, and resource hours or resource usage.") 
       col4, col5 = st.columns(2)
@@ -659,6 +731,8 @@ with st.container():
       #st.write(st.session_state.thepmevm['Estimate to Complete'].iloc[0])
       #st.table(st.session_state.thepmevm, hide_index=True, use_container_width=True)
 
+st.subheader("Return on Investment", anchor='chapterroi')
+st.write('<a href="#toc">Back to Top</a>', unsafe_allow_html = True)
 with st.container():
       st.subheader("Return on Investment")
      #https://www.investopedia.com/articles/basics/10/guide-to-calculating-roi.asp
@@ -702,8 +776,14 @@ with st.container():
       st.session_state['thepmroisummary'] = f'The roi is {roi:.3f} with an investment of {plbudget:.0f} and a benefit of {benefitdelta:.0f} to begin {benefitdate :%B %d, %Y}. The rate of return is {rateofreturn:.2f}.   If the project estimate to completion is growing, the roi will decrease.  EAC is now {eac:.2f}'
       st.write(st.session_state.thepmroisummary)
 
+st.subheader("Risk", anchor='chapter12')
+st.write('<a href="#toc">Back to Top</a>', unsafe_allow_html = True)
 with st.container():
    with st.container():
+      st.subheader("Risk Management Plan")
+      st.write("The following risk types will be removed from the stoplight report, enter Type values separated by comma  Project,Team,Cost")
+      st.text_input ("Risks Transferred to a Third Party ", help="a list of values separated by , for risks that we will TRANSFER ", key='plpriskreporttransfer', value=setvalue('plpriskreporttransfer'), disabled=disableplan, label_visibility=labelvis)
+      st.text_input ("Risks Accepted ", help="a list of values separated by , for risks that we will ACCEPT.  We will continue with the project, add resources, increase budget or add time to complete the change ", key='plpriskreportaccept', value=setvalue('plpriskreportaccept'), disabled=disableplan, label_visibility=labelvis)
       st.subheader("Environment and Constraints")
       with st.expander('What constraints impact time, scope, quality or cost?' , expanded=expander):
         st.write("What constraints impact time, scope, quality or cost. Little to no flexibility in time, cost or scope is normally a risk but can be a constraint when the probability of risks are almost certain.  Environmental issues are risks that are expected to occur in a project such as weather events, or limits of people and resources, when plans are not clear or finalized they become a constraint.")
@@ -791,8 +871,8 @@ with st.container():
      riskt = get_risk_triggers()
      st.table(riskt)
 
-     st.write("The following risk types will be removed from the stoplight report, enter Type values separated by comma  Project,Team,Cost")
-     st.text_input ("Risk Type", help="a list of values separated by , ", key='plpnoriskreport', value=setvalue('plpnoriskreport'), disabled=disableplan, label_visibility=labelvis)
+st.subheader("Save", anchor='chapters')
+st.write('<a href="#toc">Back to Top</a>', unsafe_allow_html = True)
 with st.container():
 
 # 1. Download Settings Button convert dataframe to list there is a pandas problem with data serialization set to legacy

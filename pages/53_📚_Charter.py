@@ -5,6 +5,7 @@ import pandas as pd
 from scripts.thepmutilities import reporttitle, gradiant_header
 import re
 from scripts.riskgenerate import calculate_risks_json
+from scripts.cssscripts import page_media_print
 import altair as alt
 
 # get a list of the bullet points 
@@ -36,48 +37,15 @@ st.set_page_config(
 #  get the theme colors
 #  https://blog.streamlit.io/accessible-color-themes-for-streamlit-apps/
 
-#  hide_decoration_bar_style = '''
-#    <style>
-#        header {visibility: hidden;}
-#    </style>
+#hide_decoration_bar_style = '''
+#   <style>
+#       header {visibility: hidden;}
+#   </style>
 #'''
 #st.markdown(hide_decoration_bar_style, unsafe_allow_html=True)
 
 #  create media print
-st.markdown("""
-    <style>
-        @media print {
-            @page {size: A4 landscape; margin: 27mm 16mm 27mm 16mm; }
-            body { margin: 0; padding: 0; }
-            header {display: none !important;}
-            /* Hide the Streamlit menu and other elements you don't want to print */
-            [data-testid="stSidebar"] { display: none !important; }
-            [data-testid="stHeader"] { display: none !important; }
-            [data-testid="stDecoration"] { display: none !important; }
-            [data-testid="stToolbar"] { display: none !important; }
-            .css-1iyw2u1 { display: none; }
-            .css-15yd9pf { display: none; }
-            .css-fblp2m { display: none; }
-            .main {
-                max-width: 100% !important;
-            }
-            .stHeadingContainer {
-              page-break-before: always;
-            }
-            span, p, div, textarea, input {
-                color: #textcolor !important;
-            }
-
-            .stMarkdown, .stCodeBlock, [data-testid="caption"], [data-testid="stMarkdownContainer"], [data-testid="stImage"], [data-baseweb="textarea"] {
-                max-width: 100% !important;
-                word-break: break-all;
-                break-inside: avoid;
-            }
-            #MainMenu{visibility: hidden;} footer{visibility: hidden;} header {visibility: hidden;}
-            #root>div:nth-child(1)>div>div>div>div>section>div{padding-top: .2rem;
-        }
-    </style>
-""", unsafe_allow_html=True)
+page_media_print()
 
 if 'thepmheader' not in st.session_state:
  st.warning("Plan is missing.  Please enter or import a plan")
@@ -85,14 +53,29 @@ if 'thepmheader' not in st.session_state:
 
 with st.spinner("Preparing Charter Report ..."):
 
-    gradiant_header ('The PM Monitor Project Charter')
+#    gradiant_header ('The PM Monitor Project Charter')
 
     st.markdown("<br><br><p style='text-align: center; vertical-align: bottom; font-size: 200%;'>" + st.session_state.plpname + "</p><br><br>",  unsafe_allow_html=True)
     st.markdown("<br><br><p style='text-align: center; vertical-align: bottom; font-size: 200%;'>Project Manager: " + st.session_state.plpmname + "</p><br><br>",  unsafe_allow_html=True)
     st.markdown("<br><br><p style='text-align: center; vertical-align: bottom; font-size: 200%;'>Sponsor: " + st.session_state.plspname + "</p><br><br>",  unsafe_allow_html=True)
     st.markdown("<br><br><p style='text-align: center; vertical-align: bottom; font-size: 200%;'>Report Date:  " + st.session_state.pldplandate.strftime('%d-%m-%Y') + "</p><br><br>",  unsafe_allow_html=True)
 
-    st.header(":classical_building: Project Information", anchor=False, help="overview", divider="rainbow")
+
+    st.header("Table of Contents", anchor='toc', help="overview", divider="rainbow")
+    st.write('<a href="#chapter1">Project Overview</a>', unsafe_allow_html = True)
+    st.write('<a href="#chapter2">Scope</a>', unsafe_allow_html = True)
+    st.write('<a href="#chapter3">Definitions and Terms</a>', unsafe_allow_html = True)
+    st.write('<a href="#chapter4">Requirements</a>', unsafe_allow_html = True)
+    st.write('<a href="#chapter5">Change Management</a>', unsafe_allow_html = True)
+    st.write('<a href="#chapter6">Quality and Grade</a>', unsafe_allow_html = True)
+    st.write('<a href="#chapter7">Stakeholders</a>', unsafe_allow_html = True)
+    st.write('<a href="#chapter8">Communication Plan</a>', unsafe_allow_html = True)
+    st.write('<a href="#chapter9">Tools and Links</a>', unsafe_allow_html = True)
+    st.write('<a href="#chapter10">Financial Information</a>', unsafe_allow_html = True)
+    st.write('<a href="#chapter11">Team and WBS</a>', unsafe_allow_html = True)
+    st.write('<a href="#chapter12">Risk and Contingency Plans</a>', unsafe_allow_html = True)
+
+    st.header("Overview and Benefits", anchor='chapter1', help="overview", divider="rainbow")
     st.write(
             """
 The PM Monitor charter describes the plan, goals, objectives of the project.     
@@ -103,17 +86,22 @@ The PM Monitor charter describes the plan, goals, objectives of the project.
 
     st.write("##### Objectives")
     st.write(st.session_state.plspurpose)
+    st.markdown("<h6></h6>", unsafe_allow_html=True)
 
     st.write("##### Benefits")
     st.write(st.session_state.plsbenefits)
+
+    st.markdown("<h6></h6>", unsafe_allow_html=True)
     st.write("##### Return on Investment")
     st.write(st.session_state.thepmroisummary)
     st.write(st.session_state.plproigoal)
 
-    st.header(":classical_building: Scope", anchor=False, help="overview", divider="rainbow")
+    st.header("Scope", anchor='chapter2', help="overview", divider="rainbow")
     st.write("#### Product Scope")
     st.write("##### Must have Scope")
     st.write(st.session_state.plscopemusthave)
+    if len(st.session_state.plscopemusthave) > 1000:
+      st.markdown("<h6></h6>", unsafe_allow_html=True)
     st.write("##### Optional or Nice to have Scope")
     st.write(st.session_state.plscopenicetohave)
     st.write("##### Out of Scope")
@@ -123,18 +111,24 @@ The PM Monitor charter describes the plan, goals, objectives of the project.
     st.write("Technology deliverables - ",', '.join(st.session_state.plmlistscopeoption))
     st.write("#### Benchmarks")
     st.write(st.session_state.plsbenchmarks)
-    st.write("#### Definitions and Terms")
+
+    st.header("Definitions and Terms", anchor='chapter3', help="overview", divider="rainbow")
     st.write(st.session_state.plscopeterms)
     
-    st.header(":classical_building: Change", anchor=False, help="overview", divider="rainbow")
-    st.write("### Change ")
+    st.header("Requirements", anchor='chapter4', help="overview", divider="rainbow")
+    st.write("#### Use Case or Process Steps")
+    st.write(st.session_state.plsusecase)
+
+    st.header("Change Management Plan", anchor='chapter5', help="overview", divider="rainbow")
+    st.write("#### Change Management Plan")
+    st.write(st.session_state.plschangeplan)
     st.write("The following changes have occurred.  A change is usually recorded to correct, mitigate or avoid a risk or issue.")
     st.write(st.session_state.plscopechange)
     st.write(st.session_state.plsotherchange)
     st.write("Approval and Justification:")
     st.write(st.session_state.plsapprovalchange)
 
-    st.header(":classical_building: Quality and Grade", anchor=False, help="overview", divider="rainbow")
+    st.header("Quality and Grade", anchor='chapter6', help="overview", divider="rainbow")
     st.write("**Goal**")
     st.write(st.session_state.plsqualitygoal)
     st.write("**Quality**")
@@ -145,7 +139,7 @@ The PM Monitor charter describes the plan, goals, objectives of the project.
     st.write(', '.join(st.session_state.plmlistqualitytypes))
     st.write(st.session_state.plsqualityreport)
 
-    st.header(":classical_building: Stakeholders", anchor=False, help="overview", divider="rainbow")
+    st.header("Stakeholders", anchor='chapter7', help="overview", divider="rainbow")
     st.write("The following people are contributors, interested parties and collaborators.")
     col1, col2 = st.columns(2)
     with col1:
@@ -171,14 +165,14 @@ The PM Monitor charter describes the plan, goals, objectives of the project.
      v=f"**Purchasing Manager::** {st.session_state.plppurchasingname}"
      st.markdown(v)
 
-    st.header(":classical_building: Product Life Cycle", anchor=False, help="overview", divider="rainbow")
-    st.write("The following chart shows the project status reports and the product milestones")
+    st.header("Communication Plan", anchor='chapter8', help="overview", divider="rainbow")
+    st.write("The following chart shows the project status reports and the product milestones.  The project manager reports activity to the stakeholders at regular intervals and at milestones using the Stoplight report")
     chart = alt.Chart(st.session_state.thepmmilestones).mark_line(point = True).encode(
           alt.X('yearmonthdate(reportdate):O', title='Report Date'),
           alt.Y('yearmonthdate(plandate):O', title='Plan Date', scale=alt.Scale(reverse=True)),
           color="Milestone", text="Milestone")
     st.altair_chart(chart, use_container_width=True)
-    st.header(":classical_building: Project Tools", anchor=False, help="overview", divider="rainbow")
+    st.header("Project Tools", anchor='chapter9', help="overview", divider="rainbow")
     col1, col2 = st.columns(2)
     with col1:
      v=f"**Live Site:** {st.session_state.plplivesitelink}"
@@ -199,7 +193,7 @@ The PM Monitor charter describes the plan, goals, objectives of the project.
      v=f"**Chat/message team:** {st.session_state.plpstanduplink}"
      st.markdown(v)
 
-    st.header(":classical_building: Financials", anchor=False, help="overview", divider="rainbow")
+    st.header("Financials", anchor='chapter10', help="overview", divider="rainbow")
     st.write("The planned investment in Product Design and Delivery is ", st.session_state.plnbudget)
     st.write("Cost Summary: ", st.session_state.plscostgoal)
 
@@ -207,16 +201,17 @@ The PM Monitor charter describes the plan, goals, objectives of the project.
     st.write(st.session_state.thepmevsummary)
     st.table(st.session_state.thepmevm)
     #st.dataframe(st.session_state.thepmevm, hide_index=True, use_container_width=True)
-    st.header(":classical_building: Team", anchor=False, help="overview", divider="rainbow")
+    st.header("Team", anchor='chapter11', help="overview", divider="rainbow")
     st.write("***Team Information***")
     st.write(st.session_state.thepmteam, " The team consists of the following roles: ", ' '.join(st.session_state.plmlistroles))
     st.write("***Tasks***")
-    st.write(st.session_state.plswbs)
+    st.markdown(st.session_state.plswbs, unsafe_allow_html=True)
     st.write("***Team Contingency Plans***")
-    st.write(st.session_state.plsteamcontingency)
+    st.write(st.session_state.plpteamcontingency)
 
     impactlist = ['High','Very Low', 'Low', 'Moderate', 'High', 'Very High']
-    st.header(":classical_building: Risks and Contingency Plans", anchor=False, help="overview", divider="rainbow")
+    st.header("Risks and Contingency Plans", anchor='chapter12', help="overview", divider="rainbow")
+    st.write("The risk register is pre-popluated with the PM monitor risks.  The team has set the impact of risks by area as follows, and identified mitigation strategies.  The risk owners are asked to review risks and issues each reporting period and to alert the Project Manager when risks become issues")
     v=f"**Scope Impact** {st.session_state.plnscoperange}-{impactlist[st.session_state.plnscoperange]}"
     st.write(v)
     st.write(st.session_state.plpscopecontingency)
@@ -270,5 +265,8 @@ The PM Monitor charter describes the plan, goals, objectives of the project.
     st.altair_chart(f, use_container_width=True)
 
 st.write("##")
-successmsg = f'The PM Monitor project charter presented by {st.session_state.plpmname} on {st.session_state.pldcharterdate}.  Thank you for using The PM Monitor https://thepmmonitor.streamlit.app '
-st.success(successmsg)
+st.markdown("### Blank Page", unsafe_allow_html=True)
+st.markdown("<footer> my footer </footer>", unsafe_allow_html=True)
+#st.markdown(str(foot), unsafe_allow_html=True)
+#successmsg = f'The PM Monitor project charter presented by {st.session_state.plpmname} on {st.session_state.pldcharterdate}.  Thank you for using The PM Monitor '
+#st.success(successmsg)
