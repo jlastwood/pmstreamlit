@@ -1,0 +1,309 @@
+,0,1
+0,plschangeplan,"Changes to this project are submitted to the homeowner and approved by the homeowner after assessment and the impact to the cost, timeline or quality. "
+1,thepmroisummary,"The roi is 33.333 with an investment of 15000 and a benefit of 5000 to begin September 02, 2024. The rate of return is 0.33.   If the project estimate to completion is growing, the roi will decrease.  EAC is now 15000.00"
+2,plpscopecontingency,plpscopecontingency
+3,plnteam,3
+4,thepmbudgetcomplete,3
+5,thepmheader,"                                     Project            Sponsor       Phase
+0  Home Energy Audit and Energy Improvements                 V1      Design
+1                   Janet (Project Manager)   Janet (Homeowner)  2024-03-26"
+6,thepmphasename,Design
+7,plsplanstatus,None
+8,plnopenroles,0
+9,plncadence,4
+10,plspurpose,"The purpose of a home energy audit is to identify areas in a house where energy is being wasted, as well as potential safety issues related to heating equipment and ventilation. This assessment can help homeowners understand how much energy their homes use and where they can make improvements to increase efficiency, reduce utility bills, and improve comfort and indoor air quality.
+
+During a home energy audit, a trained professional will typically perform a series of tests and inspections to evaluate various aspects of the home's energy performance. These may include:
+
+* Checking for adequate insulation levels in walls, attics, and crawl spaces
+* Examining windows and doors for air leaks and assessing their overall energy efficiency
+* Inspecting HVAC (heating, ventilation, and cooling) systems for proper operation and maintenance
+* Evaluating lighting and appliances for energy-efficient models and usage habits
+* Assessing water heater efficiency and checking for any plumbing leaks or other water waste
+
+Based on the results of the audit, the auditor may recommend specific energy improvement projects such as adding insulation, sealing air leaks, upgrading HVAC equipment, installing energy-efficient light bulbs, or implementing behavioral changes like turning off lights when not in use. Implementing these recommendations can lead to significant cost savings over time while also making the home more comfortable and reducing its environmental impact."
+11,plnscoperange,5
+12,plnactiveses,0
+13,plswbs,"A Home Energy Audit and Energy Improvement Project typically consists of several tasks and activities to ensure a comprehensive evaluation of the home's energy efficiency, followed by targeted improvements to reduce energy consumption, save money, and enhance overall comfort. Although specific activities might vary depending on the situation, here are some common tasks involved in a typical Home Energy Audit and Energy Improvements project:
+
+1. Initial Consultation: Schedule an appointment with the homeowner to discuss their expectations, concerns, and priorities regarding energy efficiency. Explain the process, timeline, and anticipated outcomes.
+
+2. Data Collection: Collect information about the home, including age, size, location, type, and condition of windows, doors, insulation, HVAC system, appliances, and lighting. Use questionnaires, visual inspections, and diagnostic tools such as blower doors, infrared cameras, and combustion analyzers.
+
+3. Preliminary Analysis: Based on collected data, analyze the home's energy performance, identify obvious issues, and estimate potential energy savings. Share preliminary findings with the homeowner and gather feedback.
+
+4. Advanced Modeling: Create detailed simulations of the home's energy consumption patterns using sophisticated modeling software. Fine-tune input variables, incorporate historical weather data, and run sensitivity analyses to determine optimal solutions.
+
+5. Recommendations Report: Compile findings into a concise yet informative report detailing suggested improvements, projected savings, available rebates, and financing options. Ensure the language is easily understood by laypeople and emphasize quick wins alongside longer-term projects.
+
+6. Presentation: Present the final report to the homeowner, explaining the rationale behind recommendations and answering questions. Offer additional consultation services if needed.
+
+7. Contractor Selection: Help the homeowner select qualified contractors familiar with the chosen energy efficiency measures. Verify licenses, insurance coverage, references, and warranties before hiring.
+
+8. Construction Oversight: Monitor the progress of selected improvement projects, ensuring compliance with plans, codes, and best practices. Coordinate inspections, arrange access to utility meters, and review invoices for accuracy.
+
+9. Post-Construction Evaluation: Confirm completed work meets expectations, addresses original concerns, and achieves stated goals. Validate actual energy savings against predictions using utility bill analysis and compare results with pre-construction baselines.
+
+10. Continuous Support: Maintain open lines of communication with the homeowner after project completion, offering advice on maintaining newly installed systems, responding to emerging issues, and exploring future enhancement possibilities. Encourage participation in community events focused on energy efficiency education and awareness raising.
+
+Remember, every home and family is unique; thus, no two Home Energy Audit and Energy Improvement Projects will look identical. However, following these general steps allows professionals to thoroughly assess the situation, propose meaningful actions, guide clients through the decision-making process, and ultimately realize tangible benefits arising from wise investments in energy efficiency measures."
+14,pldcharterdate,2024-03-26
+15,plpresourcecontingency,plpresourcecontingency
+16,pldbenefitdate,2024-09-02
+17,plscopechange,plscopechange
+18,pllistincomecurrency,2
+19,plspname,Janet (Homeowner)
+20,plnhoursused,0
+21,plnspend,499
+22,plpstagesitelink,plpstagesitelink
+23,plpnumber,V1
+24,plmlistroles,"['Project Manager', 'Financial Manager', 'Building Architect', 'General Manager']"
+25,plpactivitylink,plpactivitylink
+26,plsinspectstatus,None
+27,plmlistscopelist,"['Accessibility', 'Performance', 'Maintainability']"
+28,plpdocumentslink,plpdocumentslink
+29,plddesigndate,2024-04-22
+30,plpstanduplink,plpstanduplink
+31,plmlistscopeoption,['None']
+32,pldinspectdate,2024-06-17
+33,plnincreaseincome,0
+34,plpbudgetcontingency,"The homeowner has a fixed budget, and will make decisions about scope to keep the budget in control.  "
+35,plnresourcerange,5
+36,plscostgoal,"The cost of the project includes:
+-  home energy audit report ($600)
+-  appliances replace or upgrade
+-  systems replace or upgrade (eg. hvac)
+-  materials replace or upgrade (eg. insulation, windows, weatherstripping)
+
+The cost of the project can be offset by loans, grants and tax credits.  These will be supplied by the auditor."
+37,plnactivesesuser,0
+38,plntestscritical,0
+39,plnestimatecomplete,0
+40,thepmtimecomplete,32
+41,pldenddate,2024-07-08
+42,plplivesitelink,plplivesitelink
+43,plscopeterms,"Familiarizing oneself with commonly employed terminology and concepts facilitates understanding of home energy audits and energy improvements projects. Listed below are explanations of some prevalent terms encountered in the field:
+
+1. Air Changes Per Hour (ACH): Represents the number of times the entire volume of air inside a structure exchanges with outdoor air per hour. Measured under controlled conditions, ACH indicates the degree of air tightness or leakiness of a dwelling.
+2. Blower Door Test: Employs a calibrated fan mounted within an adjustable frame fitted within an exterior doorway to depressurize or pressurize the interior space, revealing locations where air infiltrates or escapes. Quantitative measurements enable identification of specific weak points requiring attention.
+3. Combustion Safety Testing: Ensures safe operation of combustion appliances by verifying acceptable concentrations of flue gases and confirming adequate dilution of exhaust fumes with ambient air. Also checks for backdrafting scenarios where hazardous combustion byproducts spill into living spaces due to negative pressure imbalances.
+4. Duct Sealing & Insulation: Addresses leakages along supply and return ductwork and enhances thermal resistance by applying sealants and wrapping ducts with insulative material. Optimal duct performance reduces energy loss, boosts system efficiency, and maintains intended temperature settings.
+5. Heat Loss Calculations: Determines the amount of heat lost from a building envelope during winter months owing to conduction, convection, radiation, and air infiltration. Accurate quantification informs remediation efforts aimed at mitigating unwanted heat transfer and increasing occupant comfort.
+6. Heating Seasonal Performance Factor (HSPF): Describes the steady-state coefficient of performance (COP) exhibited by electrically driven heat pumps during heating mode operations. Higher HSPF ratings signify superior energy efficiency and lower operational expenditures.
+7. Home Energy Score (HES): Provides a relative comparison of a property's estimated annual energy consumption against similarly sized dwellings nationwide. Developed by DOE, HES employs standard assumptions about household demographics, behaviors, and local climatic data to produce normalized metrics reflecting energy performance disparities among structures.
+8. Insulation R-Value: Characterizes the thermal resistance offered by various types of insulation materials. Specified in units of square feet × inches × degrees Fahrenheit per British Thermal Unit (ft²·in·°F/BTU), R-value represents the capacity of an insulator to impede heat flow. Greater R-values equate to heightened insulating capabilities and diminished heat transmission.
+9. Light Emitting Diode (LED): Denotes solid-state semiconductor lamps generating visible illumination via electroluminescence. LEDs excel in longevity, durability, and energy efficiency compared to conventional incandescent and compact fluorescent alternatives, rendering them increasingly popular choices for general and task lighting applications.
+10. Weatherstripping: Refers to compressible foam, metal, rubber, or plastic strips affixed around movable joints (doors, operable windows) to limit ingress/egress of external air intrusions. Effective installation curtails undesired drafts, improves thermal comfort, and lowers auxiliary heating/cooling demands.
+
+Understanding these fundamental terms empowers stakeholders to engage confidently in discussions surrounding home energy audits and energy improvements projects, promoting informed dialogue and collaborative endeavors toward achieving enhanced sustainability and occupant satisfaction."
+44,plsbenefits,"There are numerous benefits to conducting a home energy audit and implementing recommended energy improvements. Here are three key advantages:
+
+1. Lower Utility Bills: One major benefit of improving your home's energy efficiency is that it can result in lower monthly utility bills. By identifying areas where energy is being wasted, you can take steps to address those issues and reduce your energy consumption. For example, by properly insulating your home, sealing air leaks, and using energy-efficient appliances, you could see significant reductions in your heating and cooling costs.
+2. Increased Comfort: A more energy-efficient home often means improved temperature control and greater overall comfort. Properly sealed and insulated walls, floors, and ceilings can prevent drafts and maintain consistent temperatures throughout the house. Similarly, efficient HVAC systems can provide better climate control without cycling on and off frequently, which can create hot and cold spots in different rooms.
+3. Environmental Impact: Reducing energy consumption has positive implications for the environment. Burning less fossil fuel to generate electricity leads to fewer greenhouse gas emissions and helps combat climate change. Additionally, many energy-efficient products have reduced resource requirements during manufacturing, leading to further environmental benefits.
+
+By investing in a home energy audit and subsequent improvements, homeowners can enjoy long-term financial savings, increased comfort, and a smaller carbon footprint."
+45,plsotherchange,plsotherchange
+46,plppurchasingname,plppurchasingname
+47,plnteamrange,2
+48,plpfinancename,plpfinancename
+49,thepminspectionwarning,Inspection planned or passed.
+50,plsbuildstatus,None
+51,plpname,Home Energy Audit and Energy Improvements
+52,thepmevsummary,"**Behind Schedule and Over Budget**   The project has a current Earned Value of 0 of a total spend to date of 499.  32% of the time has elapsed in the schedule.   Planned Value or the total cost of work that should have been done based on the schedule is 4,800   Schedule Variance -4,800 is negative . and Schedule Performance Index is 0.00% less than  1. The project is behind  schedule.   Cost Variance is -499 Cost Variance monitors budget.  The work can be ahead of schedule but over budget.  Cost Performance Index 0.00% provides a guide as to the relative amount of the variance. The project is over budget.   Project Estimate at Completion is now 15,000 Estimate To Complete 14,501."
+53,thepmmilestones,"                  reportdate            plandate  Milestone
+0 2024-02-05 00:00:00.000000 2024-02-05 00:00:00   Baseline
+1 2024-03-06 19:12:00.000000 2024-03-06 19:12:00   Baseline
+2 2024-04-06 14:24:00.000000 2024-04-06 14:24:00   Baseline
+3 2024-05-07 09:36:00.000000 2024-05-07 09:36:00   Baseline
+4 2024-06-07 04:48:00.000000 2024-06-07 04:48:00   Baseline
+5 2024-07-08 00:00:00.000000 2024-07-08 00:00:00   Baseline
+0 2024-06-24 00:00:00.000000 2024-07-01 00:00:00   5-Accept
+1 2024-07-01 00:00:00.000000 2024-07-01 00:00:00   5-Accept
+0 2024-06-17 00:00:00.000000 2024-06-24 00:00:00  4-Inspect
+1 2024-06-24 00:00:00.000000 2024-06-24 00:00:00  4-Inspect
+0 2024-04-22 00:00:00.000000 2024-06-17 00:00:00    3-Build
+1 2024-06-17 00:00:00.000000 2024-06-17 00:00:00    3-Build
+0 2024-04-08 00:00:00.000000 2024-04-22 00:00:00   2-Design
+1 2024-04-22 00:00:00.000000 2024-04-22 00:00:00   2-Design
+0 2024-04-01 00:00:00.000000 2024-04-08 00:00:00     1-Plan
+1 2024-04-08 00:00:00.000000 2024-04-08 00:00:00     1-Plan
+0 2024-03-26 14:08:12.666295 2024-04-08 00:00:00      Today
+1 2024-03-26 14:08:12.666295 2024-07-08 00:00:00      Today"
+54,thepmteam,"The team is composed of 3  members and have collaborated together for 0 weeks.  
+
+   The solution architect is plpsolutionname. The Operations Lead is plpoperationname. The inspector is plpinspectorname.  There are currently 0 open roles. "
+55,plpinspectorname,plpinspectorname
+56,thepmspi,0.0
+57,plpteamcalendar,plpteamcalendar
+58,plpaccountname,plpaccountname
+59,plnscopenumberwish,0
+60,plnincreaseexpense,-5000
+61,plptimecontingency,There is no significant impact of schedule delays.    The homeowner will accept schedule risks.  
+62,pldstartdate,2024-02-05
+63,thepmphase,2
+64,plntestsrun,0
+65,plsdesignstatus,None
+66,plscopenicetohave,There are no scope options at this time.  
+67,newdate,2024-03-26
+68,plpdocumentsprivatelink,plpdocumentsprivatelink
+69,plpriskreporttransfer,plpriskreporttransfer
+70,pldbuilddate,2024-06-17
+71,plnbudgetrange,5
+72,plproigoal,"Setting realistic Return on Investment (ROI) goals for a Home Energy Audit and Energy Improvements project depends on various factors, such as the current energy consumption pattern, potential energy savings, the scale and complexity of planned improvements, and prevailing market conditions. Given an investment of $15,000, aiming for an ambitious but achievable ROI range of 20% - 30% over five years is reasonable. This translates to recouping the initial investment within 3.3 to 5 years, excluding any applicable tax credits, rebates, or grants that might accelerate payback periods.
+
+To illustrate, let us assume the following scenario:
+
+* Current annual utility spending: $3,000
+* Planned improvements expected to reduce energy consumption by 25%, yielding $750 in annual savings ($3,000 x 0.25 = $750)
+* Total project cost: $15,000
+* Desired ROI: 25% per annum
+* Payback period: 4 years
+
+Applying the above numbers, we can calculate the expected cash flows and net present value (NPV) as follows:
+
+| Year | Annual Savings ($) | Cash Flow ($) | Discount Factor @ 25% | NPV ($) | Cumulative NPV ($) |
+| --- | --- | --- | --- | --- | --- |
+| 1 | 750 | +750 - 15000 | 0.78125 | -14262.5 | -14262.5 |
+| 2 | 750 | +750 | 0.60938 | -13512.5 | -6050 |
+| 3 | 750 | +750 | 0.48682 | -6107.5 | -294.5 |
+| 4 | 750 | +750 + 3750 | 0.39556 | 1256.25 | 961.75 |
+| 5 | 750 | +750 + 7500 | 0.32768 | 5784.375 | 6746.125 |
+
+As shown in the table, despite experiencing negative cumulative NPV until year four, the investment reaches breakeven point by then, subsequently accruing a profit of approximately $6,746 by the end of the fifth year. Note that these calculations simplify reality, omitting taxes, inflation, maintenance costs, and possible variations in energy prices. Nonetheless, they serve as useful reference points guiding sensible expectations concerning ROI targets linked to $15,000 worth of investments directed towards residential energy efficiency improvements."
+73,plpmname,Janet (Project Manager) 
+74,plntestsfailallow,0
+75,plnscopenumber,0
+76,thepmreportsinplan,6
+77,thepmgrade,A product with 0 features has a grade of None.  The number of actors or personas is 4 increasing actors will increase cost however will improve grade.  Delivery of nice to have features or high quality non-functional attributes will also improve the grade.  The non-functional attributes are Accessibility Performance Maintainability
+78,thepmcpi,0.0
+79,plmlistqualitytypes,['None']
+80,plpsolutionname,plpsolutionname
+81,plnhours,220
+82,thepmcycle,1
+83,plpmcustname,plpmcustname
+84,plsapprovalchange,plsapprovalchange
+85,plnactivesamuser,0
+86,plntestsfailed,0
+87,plnschedulerange,2
+88,plscopeoutofscope,There are no out of scope items at this time. 
+89,plsqualityreport,plsqualityreport
+90,thepmplanscope,"Required:  
+  When undertaking a home energy audit and ensuing energy improvements project, certain essential elements should be prioritized to maximize effectiveness, reliability, and value. Three critical features of a successful home energy audit and energy improvements project include:
+
+1. Professional Assessment: Engaging a qualified, experienced energy auditor is crucial to ensuring accurate findings and appropriate recommendations. Look for professionals who hold relevant certifications from organizations such as RESNET, BPI, or PHIUS. Such individuals possess the requisite expertise to identify weaknesses and opportunities within your residence accurately, enabling informed decision-making regarding energy investments. They employ standardized methodologies and specialized tools to pinpoint problematic areas, quantify energy losses, and formulate tailored solutions.
+2. Comprehensive Scope: Conducting a thorough examination of all facets of your home's energy profile is vital to uncovering hidden deficiencies and optimizing overall efficiency. Key components of a comprehensive home energy audit generally comprise:
+	* Inspection of exterior surfaces, roof, foundation, and drainage systems
+	* Analysis of wall, ceiling, and floor insulation levels
+	* Identification and addressing of air leakages via blower door testing and thermographic imaging
+	* Evaluation of HVAC systems, including furnaces, boilers, heat pumps, central AC units, and distribution networks
+	* Review of domestic hot water production and delivery systems
+	* Appraisal of electrical systems, particularly focusing on outdated wiring, improper grounding, and circuit protection devices
+	* Investigation of lighting fixtures and controls, plus plug load analysis
+	* Ventilation and moisture management considerations
+3. Follow-Through and Verification: After completing the initial assessment and developing a customized plan for energy improvements, executing the proposed measures efficiently and effectively requires careful planning and execution. Successful follow-through entails:
+	* Prioritizing identified tasks according to budget constraints, return on investment, health and safety concerns, and immediate needs
+	* Selecting reputable contractors with experience in energy-efficient renovation work, ideally holding similar certifications mentioned previously
+	* Establishing clear lines of communication between the homeowner, auditor, and contractor(s) to facilitate seamless coordination and collaboration
+	* Periodic post-implementation inspection and validation of installed measures to verify satisfactory completion and desired performance outcomes
+
+Incorporating these core elements into your home energy audit and energy improvements project guarantees a meticulous approach, yielding substantial returns in terms of enhanced comfort, reduced operating expenses, and minimized ecological impacts. Moreover, engaging competent professionals and utilizing established protocols bolsters confidence in the resulting recommendations, fostering sound decisions backed by credible data and expert insights. 
+
+  Options:  
+
+  There are no scope options at this time.    
+
+ 
+
+  Out of Scope:  There are no out of scope items at this time.  
+
+ Change:  plscopechange"
+91,plsacceptstatus,None
+92,plnscopenumbercomp,0
+93,plnhoursconficence,0
+94,plnactors,4
+95,plpusecase,"Ongoing use cases include, paying the monthly utility bills, monitoring the comfort of the home, and reducing environmental impact"
+96,plpproductownerdesignlink,plpproductownerdesignlink
+97,plnactivesam,0
+98,thepmevm,"  Budget at Completion  Planned Value (PV)  ...  Variance at Completion  Estimate to Complete
+0               15,000                4800  ...                       0                14,501
+
+[1 rows x 11 columns]"
+99,plsqualitygoal,"Customers derive immense satisfaction from realizing tangible benefits stemming from a successfully executed home energy audit and energy improvements project. Several favorable outcomes contribute significantly towards customer happiness:
+
+1. **Noticeably Reduced Monthly Expenses:** As a direct consequence of targeted interventions, customers appreciate observing marked decreases in their utility bills attributable to reduced energy consumption. Savvy implementation of recommended improvements translates into measurable economic relief for households striving to contain escalating operational costs.
+
+2. **Improved Indoor Environment Quality (IEQ):** Upgraded insulation, elimination of drafts, effective filtration, and controlled humidity collectively enhance IEQ parameters, culminating in a cleaner, quieter, and more comfortable living atmosphere. Occupants revel in the augmented thermal consistency, acoustic isolation, and respiratory compatibility engendered by judicious intervention.
+
+3. **Extended Equipment Longevity:** Well-engineered modifications incorporating cutting-edge technologies and robust designs promote prolonged lifespans for mechanical systems, thereby obviating untimely replacements and alleviating unexpected breakdowns. Predictive maintenance schedules predicated upon actionable intelligence gathered during auditing processes instill consumer trust and reinforce brand loyalty.
+
+4. **Enhanced Property Value:** Documented evidence substantiating the efficacy of implemented measures serves as compelling marketing collateral when listing real estate assets for sale or rental purposes. Highlighting eco-conscious attributes attracts discerning clientele valuing sustainability and functional aesthetics, potentially commanding premium pricing and expediting transaction closures.
+
+5. **Empowerment Through Knowledge Acquisition:** Gaining access to user-friendly educational content streamlined specifically for lay audiences emboldens customers to embrace proactive roles in managing their habitats responsibly. Armed with practical tips, DIY guidance, and accessible diagnostic tools, consumers become self-reliant advocates committed to perpetuating resource conservation and responsible stewardship.
+
+6. **Environmental Stewardship Recognition:** Demonstrating corporate social responsibility by embracing energy efficiency mandates resonates positively with socially conscious consumers desiring harmonious coexistence between industrial progress and ecosystem preservation. Public acknowledgement of laudable achievements incentivizes continued pursuit of lofty goals aligned with broader societal aspirations.
+
+Achieving these sought-after objectives necessitates holistic approaches integrating technical mastery, business acumen, and human connectivity to craft bespoke experiences catering uniquely to individual preferences. Delivering exceptional outcomes hinges on delivering personalized solutions anchored in mutual respect, open communication, and shared accountability amongst all parties invested in transformational journeys geared towards unlocking latent potential embedded within built environments ripe for reinvention."
+100,thepmdelivery,0
+101,plsbenchmarks,"Yes, there are several organizations and standards that offer comparative benchmarking and guidelines for home energy audits and energy improvement projects. Some notable examples include:
+
+1. Home Energy Rating System (HERS): Developed by the Residential Energy Services Network (RESNET), this rating system evaluates a home's energy efficiency based on factors such as insulation, air leakage, ductwork, and HVAC systems. Homes with lower scores indicate higher energy efficiency. A certified HERS rater performs the evaluation, providing an objective measurement of the home's energy performance.
+2. ENERGY STAR Certification: Administered by the U.S. Environmental Protection Agency (EPA), the ENERGY STAR program offers certification for new homes, existing homes, and commercial buildings. To earn ENERGY STAR certification, a home must meet strict energy efficiency criteria established by the EPA. An independent third party conducts testing and verification to ensure compliance.
+3. Leadership in Energy and Environmental Design (LEED): LEED is a widely recognized certification program developed by the U.S. Green Building Council (USGBC). It focuses on sustainable building practices across multiple categories, including site development, water management, materials selection, and energy efficiency. While primarily designed for commercial properties, LEED includes residential components, allowing single-family homes and multifamily buildings to pursue certification.
+4. Passive House Institute US (PHIUS): PHIUS promotes passive housing principles—ultra-low energy consumption through high insulation values, thermal bridge reduction, advanced window technology, and airtight construction techniques. PHIUS provides training, certification programs, and resources for architects, builders, and homeowners seeking to implement passive house design strategies.
+5. Building Performance Institute (BPI): BPI offers certifications for professionals involved in whole-home energy assessments, retrofitting, and quality assurance. Their rigorous certification process ensures technicians possess the necessary knowledge and skills to diagnose and resolve common energy efficiency issues within residences. Many utilities, government agencies, and weatherization assistance programs require contractors to hold BPI credentials before participating in their initiatives.
+
+These comparative benchmarks and service providers establish industry best practices, ensuring that home energy audits and subsequent energy improvement projects adhere to uniform standards and deliver reliable outcomes. Utilizing these resources enables homeowners and professionals alike to achieve optimal energy efficiency gains and associated benefits."
+102,plnbudget,15000
+103,pldplandate,2024-04-08
+104,pldacceptdate,2024-07-01
+105,thepmannualroi,33.33333333333333
+106,plsusecase,"1.   Monthly energy usage and utility cost is reduced
+2.   Air quality and comfort is improved
+3.   Appliance reliability and maintenance
+4.   Environmental impact is lower
+6.   Property value is increasing or remaining constant
+
+"
+107,plpteamcontingency,
+108,plpmhrname,plpmhrname
+109,plpgithublink,plpgithublink
+110,plpriskreportaccept,plpriskreportaccept
+111,plnavgrate,0
+112,plnbenefitperiod,7
+113,plnteamweeks,0
+114,thepmusers,The product owner is Janet (Homeowner). There are 0 users and 4 actors or user roles. The product inspector is plpinspectorname.   
+115,thepmquality,There are 8  tests planned.  The inspector is plpinspectorname.  The inspection report is planned on 2024-06-17  Pass to fail rate is 0%. Test coverage is 0%.  plsqualityreport . 
+116,plnstakeholder,3
+117,plnhrsweek,0
+118,thepminspectflag,0
+119,plpstanduplinkusers,plpstanduplinkusers
+120,plnusers,0
+121,plpprocowner,plpprocowner
+122,plpoperationname,plpoperationname
+123,pllisttype,11
+124,pllistexpensecurrency,2
+125,pldinspectdateplan,2024-06-24
+126,thepmplannote,"Project Home Energy Audit and Energy Improvements (V1) sponsored by Janet (Homeowner) is a Building Construction project.  Project was initiated on 2024-02-05 and is currently in the Design phase with planned completion in 22 week(s) on 2024-07-08 . Project management reports are delivered every 4 week(s).  
+  
+ "
+127,plntests,8
+128,plscopemusthave,"When undertaking a home energy audit and ensuing energy improvements project, certain essential elements should be prioritized to maximize effectiveness, reliability, and value. Three critical features of a successful home energy audit and energy improvements project include:
+
+1. Professional Assessment: Engaging a qualified, experienced energy auditor is crucial to ensuring accurate findings and appropriate recommendations. Look for professionals who hold relevant certifications from organizations such as RESNET, BPI, or PHIUS. Such individuals possess the requisite expertise to identify weaknesses and opportunities within your residence accurately, enabling informed decision-making regarding energy investments. They employ standardized methodologies and specialized tools to pinpoint problematic areas, quantify energy losses, and formulate tailored solutions.
+2. Comprehensive Scope: Conducting a thorough examination of all facets of your home's energy profile is vital to uncovering hidden deficiencies and optimizing overall efficiency. Key components of a comprehensive home energy audit generally comprise:
+	* Inspection of exterior surfaces, roof, foundation, and drainage systems
+	* Analysis of wall, ceiling, and floor insulation levels
+	* Identification and addressing of air leakages via blower door testing and thermographic imaging
+	* Evaluation of HVAC systems, including furnaces, boilers, heat pumps, central AC units, and distribution networks
+	* Review of domestic hot water production and delivery systems
+	* Appraisal of electrical systems, particularly focusing on outdated wiring, improper grounding, and circuit protection devices
+	* Investigation of lighting fixtures and controls, plus plug load analysis
+	* Ventilation and moisture management considerations
+3. Follow-Through and Verification: After completing the initial assessment and developing a customized plan for energy improvements, executing the proposed measures efficiently and effectively requires careful planning and execution. Successful follow-through entails:
+	* Prioritizing identified tasks according to budget constraints, return on investment, health and safety concerns, and immediate needs
+	* Selecting reputable contractors with experience in energy-efficient renovation work, ideally holding similar certifications mentioned previously
+	* Establishing clear lines of communication between the homeowner, auditor, and contractor(s) to facilitate seamless coordination and collaboration
+	* Periodic post-implementation inspection and validation of installed measures to verify satisfactory completion and desired performance outcomes
+
+Incorporating these core elements into your home energy audit and energy improvements project guarantees a meticulous approach, yielding substantial returns in terms of enhanced comfort, reduced operating expenses, and minimized ecological impacts. Moreover, engaging competent professionals and utilizing established protocols bolsters confidence in the resulting recommendations, fostering sound decisions backed by credible data and expert insights."

@@ -78,7 +78,7 @@ st.set_page_config(
 st.markdown("""
     <style>
         @media print {
-            @page {size: A4 landscape; margin: 27mm 16mm 27mm 16mm; }
+            @page {size: 11in 28in; margin: 100mm 16mm 27mm 16mm; }
             body { margin: 0; padding: 0; -webkit-print-color-adjust: exact !important; }
             header {display: none !important;}
             /* Hide the Streamlit menu and other elements you don't want to print */
@@ -96,17 +96,19 @@ st.markdown("""
                 width: 100vw;
                 max-width: 100% !important;
                 overflow: visible !important;
+                display: inline; 
             }
 
             span, p, div, textarea, input {
                 color: #textcolor !important;
                 word-break: break-all;
+                overflow: visible !important;
+                padding-right: 30px;
             }
 
             .stMarkdown, .stCodeBlock, [data-testid="caption"], [data-testid="stMarkdownContainer"], [data-testid="stImage"], [data-baseweb="textarea"] {
                 max-width: 11in !important;
                 word-break: break-all;
-                display: block;
                 break-inside: avoid;
             }
             MainMenu{visibility: hidden;} footer{visibility: hidden;} header {visibility: hidden;}
@@ -269,6 +271,7 @@ fancy_box (colorbh, "0,0,0,.75", "fas fa-gavel", get_first(p4summary), "Benchmar
 riskintro = "<br>Which uncertain events, if they were to occur, would jeopardize or inspire the success of the project? Events that can be influenced are to be considered as ENVIRONMENTAL conditions.  In your risk plan these would be classified as Avoid assuming you have plans in place."
 risklist = '.  \n'.join(split(st.session_state.plpresourcecontingency)) 
 risksummary = "<sup>" + riskintro + "</sup><br><br>" + risklist.replace('\n', '<br />')  
+
 fancy_box (colorrh, "0,0,0,.75", "fas fa-crosshairs", risksummary, "Risks and Opportunities")
 flexintro = "<br>Which characteristics of the project do you consider to be the most flexible?  Projects that have flexibilty to adjust to constraints or unexpected issues are more successful.  When risks are high it is important to have contingency plans. "
 impactlist = ['High','Very Low', 'Low', 'Moderate', 'High', 'Very High']

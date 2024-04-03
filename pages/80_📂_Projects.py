@@ -39,7 +39,7 @@ def plan_start_date():
    st.session_state.pldinspectdate = st.session_state.pldinspectdate + timedelta(days = dayschanged)
    st.session_state.pldinspectdateplan = st.session_state.pldinspectdateplan + timedelta(days = dayschanged)
    st.session_state.pldplandate = st.session_state.pldplandate + timedelta(days = dayschanged)
-   st.write("adjusted dates by", dayschanged)
+   st.write("Adjusted start date by", dayschanged, newdate)
    #if saved_settings.iloc[i, 1].startswith('pld') and len(saved_settings.iloc[i, 2]) > 6:
    #       datetime1 = saved_settings.iloc[i, 2]
    #       if len(datetime1) > 9:
@@ -124,7 +124,7 @@ uploaded_file = col1.file_uploader(label="Select a Plan to be uploaded.  This is
 if uploaded_file is not None:
         uploaded_settings = pd.read_csv(uploaded_file)
         upload_saved_settings(uploaded_settings)
-        st.warning("**WARNING**: Plan uploaded")
+        st.warning("Plan restored from backup and uploaded")
 #        switch_page("Plan")
 #else:
 
@@ -157,7 +157,6 @@ button_download = col3.download_button(label="Save Plan",
 
 catalog = pd.read_csv('files/projects.csv')
 
-st.dataframe(catalog, use_container_width=True)
 projects = catalog['Project Title'].tolist()
 files = catalog['File'].tolist()
 Selected = st.selectbox("Project", projects, index=None)
@@ -168,14 +167,20 @@ if Selected:
   if file > " ":
    uploaded_settings = pd.read_csv(file, sep=',')
    upload_saved_settings(uploaded_settings)
-   st.info("The plan was loaded.  Thank you for using the PM Monitor.  Go to Plan to and add your monitoring information.")
+   plan_start_date()
+   st.info("The plan was loaded from template and start date changed to today.   Thank you for using the PM Monitor.  Go to Plan to and add your monitoring information.")
 
 st.markdown("""---""")
 st.write("Change the plan start date")
 st.date_input("New Date", key='newdate', on_change=plan_start_date)
 
+
 st.markdown("""---""")
-st.write("The following is a copy of the plan details sheet saved as ")
+st.write("Project catalog list")
+st.dataframe(catalog, use_container_width=True)
+
+st.markdown("""---""")
+st.write("The following is a copy of the plan form saved as ")
 st.dataframe(df, use_container_width=True)
 
 # with open("milestones.csv", "rb") as file:

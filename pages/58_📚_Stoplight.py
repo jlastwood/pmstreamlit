@@ -29,7 +29,7 @@ def dashboard_rag(val):
     elif val >= 3:
        st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: #FFBF00; font-size: 100%;'>  A  </p>", unsafe_allow_html=True)      
     elif val == 0:
-       st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: green; font-size: 100%;'>  G  </p>", unsafe_allow_html=True)      
+       st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: #FFBF00; font-size: 100%;'>  A  </p>", unsafe_allow_html=True)      
     elif val >= 1.0:
        st.markdown("<p style='text-align: center; vertical-align: bottom; color: white; background: green; font-size: 100%;'>  G  </p>", unsafe_allow_html=True)      
     elif val < 0.8:

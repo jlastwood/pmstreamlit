@@ -69,8 +69,8 @@ with st.spinner("Preparing Charter Report ..."):
     st.write('<a href="#chapter5">Change Management</a>', unsafe_allow_html = True)
     st.write('<a href="#chapter6">Quality and Grade</a>', unsafe_allow_html = True)
     st.write('<a href="#chapter7">Stakeholders</a>', unsafe_allow_html = True)
-    st.write('<a href="#chapter8">Communication Plan</a>', unsafe_allow_html = True)
-    st.write('<a href="#chapter9">Tools and Links</a>', unsafe_allow_html = True)
+    st.write('<a href="#chapter8">Milestones</a>', unsafe_allow_html = True)
+    st.write('<a href="#chapter9">Communication Plan</a>', unsafe_allow_html = True)
     st.write('<a href="#chapter10">Financial Information</a>', unsafe_allow_html = True)
     st.write('<a href="#chapter11">Team and WBS</a>', unsafe_allow_html = True)
     st.write('<a href="#chapter12">Risk and Contingency Plans</a>', unsafe_allow_html = True)
@@ -151,6 +151,8 @@ The PM Monitor charter describes the plan, goals, objectives of the project.
      st.markdown(v)
      v=f"**Product Owner:** {st.session_state.plpmcustname}"
      st.markdown(v)
+     v=f"**Process Owner:** {st.session_state.plpprocowner}"
+     st.markdown(v)
      v=f"**Staffing Manager::** {st.session_state.plpmhrname}"
      st.markdown(v)
     with col2:
@@ -165,14 +167,15 @@ The PM Monitor charter describes the plan, goals, objectives of the project.
      v=f"**Purchasing Manager::** {st.session_state.plppurchasingname}"
      st.markdown(v)
 
-    st.header("Communication Plan", anchor='chapter8', help="overview", divider="rainbow")
+    st.header("Milestones", anchor='chapter8', help="overview", divider="rainbow")
     st.write("The following chart shows the project status reports and the product milestones.  The project manager reports activity to the stakeholders at regular intervals and at milestones using the Stoplight report")
     chart = alt.Chart(st.session_state.thepmmilestones).mark_line(point = True).encode(
           alt.X('yearmonthdate(reportdate):O', title='Report Date'),
           alt.Y('yearmonthdate(plandate):O', title='Plan Date', scale=alt.Scale(reverse=True)),
           color="Milestone", text="Milestone")
     st.altair_chart(chart, use_container_width=True)
-    st.header("Project Tools", anchor='chapter9', help="overview", divider="rainbow")
+    st.header("Communication Plan and Media links", anchor='chapter9', help="overview", divider="rainbow")
+    st.write("The project manager will report project status using the Stoplight report at regular intervals.  Information about the project, artefacts and the calendar are available at the following locations.")
     col1, col2 = st.columns(2)
     with col1:
      v=f"**Live Site:** {st.session_state.plplivesitelink}"
@@ -180,6 +183,8 @@ The PM Monitor charter describes the plan, goals, objectives of the project.
      v=f"**Design Board:** {st.session_state.plpproductownerdesignlink}"
      st.markdown(v)
      v=f"**Documents:** {st.session_state.plpdocumentslink}"
+     st.markdown(v)
+     v=f"**Documents (private):** {st.session_state.plpdocumentsprivatelink}"
      st.markdown(v)
      v=f"**Chat/message Users:** {st.session_state.plpstanduplinkusers}"
      st.markdown(v)
@@ -191,6 +196,8 @@ The PM Monitor charter describes the plan, goals, objectives of the project.
      v=f"**Source Code:** {st.session_state.plpgithublink}"
      st.markdown(v)
      v=f"**Chat/message team:** {st.session_state.plpstanduplink}"
+     st.markdown(v)
+     v=f"**Calendar team:** {st.session_state.plpteamcalendar}"
      st.markdown(v)
 
     st.header("Financials", anchor='chapter10', help="overview", divider="rainbow")
