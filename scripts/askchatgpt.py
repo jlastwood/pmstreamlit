@@ -23,7 +23,7 @@ tokenizer = AutoTokenizer.from_pretrained(model_name)
 
 nlp = pipeline('question-answering', model=model, tokenizer=tokenizer)
 
-model_engine = "text-davinci-003"
+model_engine = "gpt-3.5-turbo-instruct"
 #openai.api_key =  st.secrets.openai
 API_TOKEN = st.secrets.huggingface
 
