@@ -2,7 +2,7 @@ import streamlit as st
 import json
 import requests
 #import openai
-from transformers import AutoModelForQuestionAnswering, AutoTokenizer, pipeline
+from transformers import AutoModelForQuestionAnswering, AutoTokenizer, pipeline, GPT2TokenizerFast, GPT2LMHeadModel
 from langchain.utilities import WikipediaAPIWrapper
 #import wikipedia
 
@@ -17,13 +17,13 @@ from langchain.utilities import WikipediaAPIWrapper
 #wikipedia = WikipediaAPIWrapper()
 # Load the question answering model and tokenizer
 #model_name = "deepset/roberta-base-squad2"
-model_name = "deepset/gbert-large"
-model = AutoModelForQuestionAnswering.from_pretrained(model_name)
-tokenizer = AutoTokenizer.from_pretrained(model_name)
+model_name = "Xenova/gpt-3.5-turbo"
+model = GPT2LMHeadModel.from_pretrained(model_name)
+tokenizer = GPT2TokenizerFast.from_pretrained(model_name)
 
 nlp = pipeline('question-answering', model=model, tokenizer=tokenizer)
 
-model_engine = "gpt-3.5-turbo-instruct"
+model_engine = "gpt-3.5-turbo"
 #openai.api_key =  st.secrets.openai
 API_TOKEN = st.secrets.huggingface
 
@@ -35,8 +35,8 @@ do_sample=False
 
 headers = {"Authorization": f"Bearer {API_TOKEN}"}
 #API_URL = "https://api-inference.huggingface.co/models/deepset/roberta-base-squad2"
-model_name = "https://api-inference.huggingface.co/models/microsoft/DialoGPT-large"
-model_name = "https://api-inference.huggingface.co/models/deepset/xlm-roberta-large-squad2"
+#model_name = "https://api-inference.huggingface.co/models/microsoft/DialoGPT-large"
+model_name = "https://api-inference.huggingface.co/models/Xenova/gpt-3.5-turbo-16k
 
 def query(payload):
     data = json.dumps(payload)
