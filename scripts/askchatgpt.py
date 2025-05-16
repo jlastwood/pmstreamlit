@@ -38,7 +38,7 @@ headers = {"Authorization": f"Bearer {API_TOKEN}"}
 #model_name = "https://api-inference.huggingface.co/models/microsoft/DialoGPT-large"
 #url = "https://api-inference.huggingface.co/models/meta-llama/Meta-Llama-3-8B-Instruct"
 #model_url = "https://huggingface.co/api/models/Xenova/gpt-3.5-turbo-16k"
-url = "https://router.huggingface.co/hf-inference/models/openai-community/gpt2"
+#url = "https://router.huggingface.co/hf-inference/models/openai-community/gpt2"
 
 #url = "https://api-inference.huggingface.co/models/gpt2"
 #headers = {
@@ -51,12 +51,12 @@ url = "https://router.huggingface.co/hf-inference/models/openai-community/gpt2"
 #response = requests.post(url, headers=headers, json=data)
 #print(response.json()[0]['generated_text'])
 
-def querynone(payload):
-    data = json.dumps(payload)
-    response = requests.request("POST", url, headers=headers, data=data)
+#def querynone(payload):
+#    data = json.dumps(payload)
+#    response = requests.request("POST", url, headers=headers, data=data)
 #    response = requests.request("POST", MODELS[model_name]["url"], headers=headers, data=data)
-    st.write(response)
-    return json.loads(response.content.decode("utf-8"))
+#    st.write(response)
+ #   return json.loads(response.content.decode("utf-8"))
 
 def query(question, context):
     # Tokenize the question and context
