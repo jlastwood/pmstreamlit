@@ -38,7 +38,7 @@ headers = {"Authorization": f"Bearer {API_TOKEN}"}
 #model_name = "https://api-inference.huggingface.co/models/microsoft/DialoGPT-large"
 #url = "https://api-inference.huggingface.co/models/meta-llama/Meta-Llama-3-8B-Instruct"
 #model_url = "https://huggingface.co/api/models/Xenova/gpt-3.5-turbo-16k"
-url = "https://router.huggingface.co/hf-inference/models/facebook/bart-large-mnli"
+url = "https://router.huggingface.co/hf-inference/models/openai-community/gpt2"
 
 #url = "https://api-inference.huggingface.co/models/gpt2"
 #headers = {
