@@ -36,11 +36,12 @@ do_sample=False
 headers = {"Authorization": f"Bearer {API_TOKEN}"}
 #API_URL = "https://api-inference.huggingface.co/models/deepset/roberta-base-squad2"
 #model_name = "https://api-inference.huggingface.co/models/microsoft/DialoGPT-large"
-model_name = "https://api-inference.huggingface.co/models/Xenova/gpt-3.5-turbo-16k"
+url = "https://api-inference.huggingface.co/models/meta-llama/Meta-Llama-3-8B-Instruct"
+model_url = "https://huggingface.co/api/models/Xenova/gpt-3.5-turbo-16k"
 
 def query(payload):
     data = json.dumps(payload)
-    response = requests.request("POST", model_name, headers=headers, data=data)
+    response = requests.request("POST", url, headers=headers, data=data)
 #    response = requests.request("POST", MODELS[model_name]["url"], headers=headers, data=data)
     st.write(response)
     return json.loads(response.content.decode("utf-8"))
