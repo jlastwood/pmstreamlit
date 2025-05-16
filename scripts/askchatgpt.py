@@ -36,8 +36,19 @@ do_sample=False
 headers = {"Authorization": f"Bearer {API_TOKEN}"}
 #API_URL = "https://api-inference.huggingface.co/models/deepset/roberta-base-squad2"
 #model_name = "https://api-inference.huggingface.co/models/microsoft/DialoGPT-large"
-url = "https://api-inference.huggingface.co/models/meta-llama/Meta-Llama-3-8B-Instruct"
-model_url = "https://huggingface.co/api/models/Xenova/gpt-3.5-turbo-16k"
+#url = "https://api-inference.huggingface.co/models/meta-llama/Meta-Llama-3-8B-Instruct"
+#model_url = "https://huggingface.co/api/models/Xenova/gpt-3.5-turbo-16k"
+
+url = "https://api-inference.huggingface.co/models/gpt2"
+#headers = {
+#    "Authorization": f"Bearer {os.environ.get('HUGGINGFACE_API_KEY')}"
+#}
+#data = {
+#    "inputs": "Once upon a time in a land far away,"
+#}
+
+#response = requests.post(url, headers=headers, json=data)
+#print(response.json()[0]['generated_text'])
 
 def query(payload):
     data = json.dumps(payload)
