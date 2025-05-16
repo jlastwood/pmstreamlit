@@ -51,12 +51,30 @@ url = "https://router.huggingface.co/hf-inference/models/openai-community/gpt2"
 #response = requests.post(url, headers=headers, json=data)
 #print(response.json()[0]['generated_text'])
 
-def query(payload):
+def querynone(payload):
     data = json.dumps(payload)
     response = requests.request("POST", url, headers=headers, data=data)
 #    response = requests.request("POST", MODELS[model_name]["url"], headers=headers, data=data)
     st.write(response)
     return json.loads(response.content.decode("utf-8"))
+
+def query(question, context):
+    # Tokenize the question and context
+    inputs = tokenizer.encode_plus(question, context, add_special_tokens=True, return_tensors="pt")
+
+    # Get the model's outputs
+    outputs = model(**inputs)
+    start_logits = outputs.start_logits
+    end_logits = outputs.end_logits
+
+    # Find the start and end indices of the answer
+    start_index = torch.argmax(start_logits)
+    end_index = torch.argmax(end_logits)
+
+    # Convert token indices to answer text
+    answer = tokenizer.convert_tokens_to_string(tokenizer.convert_ids_to_tokens(inputs["input_ids"][0][start_index:end_index + 1]))
+
+    return answer
 
 def process(text: str,
             model_name: str,
@@ -82,7 +100,7 @@ def process(text: str,
         }
     }
     st.write(payload)
-    return query(payload)
+    return query(text, "Project Planning")
 
 def askme(question_input):
     # Extract keywords from the question input
