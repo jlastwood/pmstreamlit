@@ -11,6 +11,9 @@ from hugchat.login import Login
 #from streamlit_extras.switch_page_button import switch_page
 import extra_streamlit_components as stx
 import csv
+import google.generativeai as ai
+
+# https://medium.com/@BenjaminExplains/build-an-ai-chatbot-in-python-easy-and-free-8667b7b4232c
 
 st.session_state.update(st.session_state)
 ip = Image.open("assets/images/PlanImage.png")
@@ -19,6 +22,16 @@ il = Image.open("assets/images/MonitorImage.png")
 # Log in to huggingface and grant authorization to huggingchat
 # Save cookies to the local directory
 @st.cache_resource
+def signongoogle():
+  # API Key
+  API_KEY = st.secrets['googleai']
+  # Configure the API
+  ai.configure(api_key=API_KEY)
+  # Create a new model
+  model = ai.GenerativeModel("gemini-pro")
+  chat = model.start_chat()
+  return chat
+
 def signonhugchat():
   hf_email = st.secrets['EMAIL']
   hf_pass = st.secrets['PASS']
@@ -75,7 +88,7 @@ st.set_page_config(
       initial_sidebar_state="collapsed",
 )
 
-chatbot = signonhugchat()
+chatbot = signongoogle()
 
 #  get the theme colors
 color1t = st._config.get_option('theme.primaryColor')
