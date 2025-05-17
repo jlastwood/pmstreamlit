@@ -32,13 +32,13 @@ def signongoogle():
   chat = model.start_chat()
   return chat
 
-def getchat(chatbot, message):
+def getchat(message):
     # Get user input
     # End chat if 'bye' is entered
     if message.lower() == 'bye':
         return ('Chatbot: Goodbye!')
     # Send message to AI and print the response
-    response = chatbot.send_message(message)
+    response = chat.send_message(message)
     return (response.text)
 
 def signonhugchat():
@@ -270,7 +270,7 @@ with st.container():
          query = "What is the purpose of a " + st.session_state.plpname + " project?"
          #info = chatbot.get_conversation_info()
          st.write("Asking AI for a response", query, "The response is provided below, paste and edit in the form above")
-         message = getchat(chatbot, query) 
+         message = getchat(query) 
          st.code(message)
       del st.session_state['cb1']
 
@@ -280,7 +280,7 @@ with st.container():
          query = "What are three benefits of " + st.session_state.plpname + " project?"
          # info = chatbot.get_conversation_info()
          st.write("Asking AI for a response", cb2, query, "The response is provided below, paste and edit in the form above")
-         message = getchat(chatbot, query) 
+         message = getchat(query) 
          st.code(message)
 
       cb3 = st.checkbox("Askme for benchmarks.", disabled=disableplan)
