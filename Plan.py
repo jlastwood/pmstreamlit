@@ -28,7 +28,7 @@ def signongoogle():
   # Configure the API
   ai.configure(api_key=API_KEY)
   # Create a new model
-  MODEL = st.secrets('googlemodel')
+  MODEL = st.secrets['googlemodel']
   model = ai.GenerativeModel(MODEL)
   chat = model.start_chat()
   return chat
