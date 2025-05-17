@@ -1,6 +1,7 @@
 import streamlit as st
 import json
 import requests
+import torch
 #import openai
 from transformers import AutoModelForQuestionAnswering, AutoTokenizer, pipeline, GPT2TokenizerFast, GPT2LMHeadModel
 from langchain.utilities import WikipediaAPIWrapper
@@ -17,9 +18,11 @@ from langchain.utilities import WikipediaAPIWrapper
 #wikipedia = WikipediaAPIWrapper()
 # Load the question answering model and tokenizer
 #model_name = "deepset/roberta-base-squad2"
-model_name = "Xenova/gpt-3.5-turbo"
-model = GPT2LMHeadModel.from_pretrained(model_name)
-tokenizer = GPT2TokenizerFast.from_pretrained(model_name)
+#model_name = "Xenova/gpt-3.5-turbo"
+#model = GPT2LMHeadModel.from_pretrained(model_name)
+#tokenizer = GPT2TokenizerFast.from_pretrained(model_name)
+tokenizer = AutoTokenizer.from_pretrained("deepset/roberta-base-squad2")
+model = AutoModelForQuestionAnswering.from_pretrained("deepset/roberta-base-squad2")
 
 nlp = pipeline('question-answering', model=model, tokenizer=tokenizer)
 
@@ -56,7 +59,7 @@ headers = {"Authorization": f"Bearer {API_TOKEN}"}
 #    response = requests.request("POST", url, headers=headers, data=data)
 #    response = requests.request("POST", MODELS[model_name]["url"], headers=headers, data=data)
 #    st.write(response)
- #   return json.loads(response.content.decode("utf-8"))
+#   return json.loads(response.content.decode("utf-8"))
 
 def query(question, context):
     # Tokenize the question and context
@@ -99,7 +102,7 @@ def process(text: str,
             "use_cache": True,
         }
     }
-    st.write(payload)
+    st.write(text)
     return query(text, "Project Planning")
 
 def askme(question_input):
