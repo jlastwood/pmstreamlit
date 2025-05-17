@@ -38,7 +38,7 @@ def getchat(message):
     if message.lower() == 'bye':
         return ('Chatbot: Goodbye!')
     # Send message to AI and print the response
-    response = chat.send_message(message)
+    response = chatbot.send_message(message)
     return (response.text)
 
 def signonhugchat():
