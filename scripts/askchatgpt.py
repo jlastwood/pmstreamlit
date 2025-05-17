@@ -61,7 +61,17 @@ headers = {"Authorization": f"Bearer {API_TOKEN}"}
 #    st.write(response)
 #   return json.loads(response.content.decode("utf-8"))
 
-def query(question, context):
+def query(question)
+    message = question
+    # End chat if 'bye' is entered
+    if message.lower() == 'bye':
+        print('Chatbot: Goodbye!')
+        break
+    # Send message to AI and print the response
+    response = chatbot.send_message(message)
+    return (response.text)
+
+def queryhugchat2(question, context):
     # Tokenize the question and context
     inputs = tokenizer.encode_plus(question, context, add_special_tokens=True, return_tensors="pt")
 
