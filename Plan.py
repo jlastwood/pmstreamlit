@@ -289,8 +289,8 @@ with st.container():
       if cb3 and len(st.session_state.plsbenchmarks) < 15:
          query = "Are there comparable benchmarks or services for a " + st.session_state.plpname + " project?"
          info = chatbot.get_conversation_info()
-         st.write("Asking AI for a response", cb3, info.id, info.title, info.model, info.system_prompt, query, "The response is provided below, paste and edit in the form above")
-         message = chatbot.query(query) 
+         st.write("Asking AI for a response", cb3, query, "The response is provided below, paste and edit in the form above")
+         message = getchat(query) 
          st.code(message)
      # set some dates
       week  = timedelta(days = 7)
@@ -334,8 +334,8 @@ with st.container():
        if cb4 and len(st.session_state.plscopemusthave) < 20:
          query = "What are three must have features of a " + st.session_state.plpname + " project?"
          info = chatbot.get_conversation_info()
-         st.write("Asking AI for a response", cb4, info.id, info.title, info.model, info.system_prompt, query, "The response is provided below, paste and edit in the form above")
-         message = chatbot.query(query)
+         st.write("Asking AI for a response", cb4,  query, "The response is provided below, paste and edit in the form above")
+         message = getchat(query)
          st.code(message)
 
        cb5 = st.checkbox("Askme for scope options.", disabled=disableplan)
@@ -343,8 +343,8 @@ with st.container():
        if cb5 and len(st.session_state.plscopenicetohave) < 20:
          query = "What are three nice to have features in a " + st.session_state.plpname + " project?"
          info = chatbot.get_conversation_info()
-         st.write("Asking AI for a response", cb5, info.id, info.title, info.model, info.system_prompt, query, "The response is provided below, paste and edit in the form above")
-         message = chatbot.query(query)
+         st.write("Asking AI for a response", cb5,  query, "The response is provided below, paste and edit in the form above")
+         message = getchat(query)
          st.code(message)
 
        st.text_area ("What is out of scope?", value=setvalue('plscopeoutofscope'), key='plscopeoutofscope', label_visibility=labelvis, disabled=disableplan)
@@ -362,8 +362,8 @@ with st.container():
        if cbd and len(st.session_state.plscopeterms) < 15:
          query = "What are some common terms and definitions used in a " + st.session_state.plpname + " project?"
          info = chatbot.get_conversation_info()
-         st.write("Asking AI for a response", cbd, info.id, info.title, info.model, info.system_prompt, query, "The response is provided below, paste and edit in the form above")
-         message = chatbot.query(query)
+         st.write("Asking AI for a response", cbd,  query, "The response is provided below, paste and edit in the form above")
+         message = getchat(query)
          st.code(message)
 
 
@@ -381,8 +381,8 @@ with st.container():
        if cbu and len(st.session_state.plsusecase) < 15:
          query = "Describe the process steps or use cases for a  " + st.session_state.plpusecase + " product"
          info = chatbot.get_conversation_info()
-         st.write("Asking AI for a response", cbd, info.id, info.title, info.model, info.system_prompt, query, "The response is provided below, paste and edit in the form above")
-         message = chatbot.query(query)
+         st.write("Asking AI for a response", cbd, query, "The response is provided below, paste and edit in the form above")
+         message = getchat(query)
          st.code(message)
 
 ##  Schedule
@@ -596,8 +596,8 @@ with st.container():
       if cb6 and len(st.session_state.plsqualitygoal) < 15:
          query = "What would make customers happy in terms of the outcome of t " + st.session_state.plpname + " project?"
          info = chatbot.get_conversation_info()
-         st.write("Asking AI for a response", cb6, info.id, info.title, info.model, info.system_prompt, query, "The response is provided below, paste and edit in the form above")
-         message = chatbot.query(query)
+         st.write("Asking AI for a response", cb6,  query, "The response is provided below, paste and edit in the form above")
+         message = getchat(query)
          st.code(message)
       st.multiselect(
          label='Select types of quality inspection attributes',
@@ -669,8 +669,8 @@ with st.container():
       if cbc and len(st.session_state.plscostgoal) < 12:
          query = "What is the cost to develop a " + st.session_state.plpname + " product?"
          info = chatbot.get_conversation_info()
-         st.write("Asking AI for a response", cbc, info.id, info.title, info.model, info.system_prompt, query, "The response is provided below, paste and edit in the form above")
-         message = chatbot.query(query)
+         st.write("Asking AI for a response", cbc, query, "The response is provided below, paste and edit in the form above")
+         message = getchat(query)
          st.code(message)
 
       col4, col5 = st.columns(2)
@@ -700,8 +700,8 @@ with st.container():
       if cbt and len(st.session_state.plswbs) < 15:
          query = "What are the tasks or activities for a " + st.session_state.plpname + " project?"
          info = chatbot.get_conversation_info()
-         st.write("Asking AI for a response", cbt, info.id, info.title, info.model, info.system_prompt, query, "The response is provided below, paste and edit in the form above")
-         message = chatbot.query(query)
+         st.write("Asking AI for a response", cbt,  query, "The response is provided below, paste and edit in the form above")
+         message = getchat(query)
          st.code(message)
       if len(st.session_state.plswbs) > 15:
         thisnum = []
@@ -787,8 +787,8 @@ with st.container():
       if cb12 and len(st.session_state.plproigoal) < 15:
          query = "What is the ROI goal for a   " + st.session_state.plpname + " project with an investment of " + format(st.session_state.plnbudget,'.0f')
          info = chatbot.get_conversation_info()
-         st.write("Asking AI for a response", cb12, info.id, info.title, info.model, info.system_prompt, query, "The response is provided below, paste and edit in the form above")
-         message = chatbot.query(query)
+         st.write("Asking AI for a response", cb12, query, "The response is provided below, paste and edit in the form above")
+         message = getchat(query)
          st.code(message)
 
       benefitdelta = (st.session_state['plnincreaseincome'] - st.session_state['plnincreaseexpense'])
@@ -828,8 +828,8 @@ with st.container():
        if cb7 and len(st.session_state.plpscopecontingency) < 25:
          query = "What are three strategies to reduce the impact of scope changes in a " + st.session_state.plpname + " project?"
          info = chatbot.get_conversation_info()
-         st.write("Asking AI for a response", cb7, info.id, info.title, info.model, info.system_prompt, query, "The response is provided below, paste and edit in the form above")
-         message = chatbot.query(query)
+         st.write("Asking AI for a response", cb7, query, "The response is provided below, paste and edit in the form above")
+         message = getchat(query)
          st.code(message)
 
       col1, col2 = st.columns([1,5])
@@ -841,8 +841,8 @@ with st.container():
        if cb8 and len(st.session_state.plptimecontingency) < 20:
          query = "What are three strategies to reduce the impact of schedule issues in a " + st.session_state.plpname + " project?"
          info = chatbot.get_conversation_info()
-         st.write("Asking AI for a response", cb8, info.id, info.title, info.model, info.system_prompt, query, "The response is provided below, paste and edit in the form above")
-         message = chatbot.query(query)
+         st.write("Asking AI for a response", cb8,  query, "The response is provided below, paste and edit in the form above")
+         message = getchat(query)
          st.code(message)
       col1, col2 = st.columns([1,5])
       with col1:
@@ -853,8 +853,8 @@ with st.container():
        if cb9 and len(st.session_state.plpbudgetcontingency) < 25:
          query = "What are three strategies to reduce the impact of cost overruns in a " + st.session_state.plpname + " project?"
          info = chatbot.get_conversation_info()
-         st.write("Asking AI for a response", cb9, info.id, info.title, info.model, info.system_prompt, query, "The response is provided below, paste and edit in the form above")
-         message = chatbot.query(query)
+         st.write("Asking AI for a response", cb9, query, "The response is provided below, paste and edit in the form above")
+         message = getchat(query)
          st.code(message)
       col1, col2 = st.columns([1,5])
       with col1:
@@ -865,8 +865,8 @@ with st.container():
        if cb10 and len(st.session_state.plpteamcontingency) < 20:
          query = "What are three strategies to reduce the impact of low performing teams in a " + st.session_state.plpname + " project?"
          info = chatbot.get_conversation_info()
-         st.write("Asking AI for a response", cb10, info.id, info.title, info.model, info.system_prompt, query, "The response is provided below, paste and edit in the form above")
-         message = chatbot.query(query)
+         st.write("Asking AI for a response", cb10,  query, "The response is provided below, paste and edit in the form above")
+         message = getchat(query)
          st.code(message)
       col1, col2 = st.columns([1,5])
       with col1:
@@ -877,8 +877,8 @@ with st.container():
        if cb11 and len(st.session_state.plpresourcecontingency) < 20:
          query = "What are three strategies to reduce the impact of resource or technology challenges in a " + st.session_state.plpname + " project?"
          info = chatbot.get_conversation_info()
-         st.write("Asking AI for a response", cb11, info.id, info.title, info.model, info.system_prompt, query)
-         message = chatbot.query(query)
+         st.write("Asking AI for a response", cb11,  query)
+         message = getchat(query)
          st.code(message)
       thepmcontingencysummary = "The project contingency plans include Scope: " + st.session_state['plpscopecontingency']+ " Schedule: " + st.session_state['plptimecontingency'] + " Budget:  " + st.session_state['plpbudgetcontingency'] + " and Resource:  " + st.session_state['plpresourcecontingency']
       st.markdown("{}".format(thepmcontingencysummary), unsafe_allow_html=True)
