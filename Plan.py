@@ -36,8 +36,7 @@ def getchat(chatbot, message):
     # Get user input
     # End chat if 'bye' is entered
     if message.lower() == 'bye':
-        print('Chatbot: Goodbye!')
-        break
+        return ('Chatbot: Goodbye!')
     # Send message to AI and print the response
     response = chatbot.send_message(message)
     return (response.text)
