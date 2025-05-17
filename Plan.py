@@ -32,6 +32,16 @@ def signongoogle():
   chat = model.start_chat()
   return chat
 
+def getchat(chatbot, message):
+    # Get user input
+    # End chat if 'bye' is entered
+    if message.lower() == 'bye':
+        print('Chatbot: Goodbye!')
+        break
+    # Send message to AI and print the response
+    response = chatbot.send_message(message)
+    return (response.text)
+
 def signonhugchat():
   hf_email = st.secrets['EMAIL']
   hf_pass = st.secrets['PASS']
@@ -251,17 +261,17 @@ with st.container():
       cb1 = st.checkbox ("Askme for a purpose.", key='cb1', disabled=disableplan)
       st.text_area ("Purpose or Goal?", value=setvalue('plspurpose'), key='plspurpose', label_visibility=labelvis,disabled=disableplan)
       if cb1 and len(st.session_state.plspurpose) < 12:
-         conversation_list = chatbot.get_conversation_list()
-         models = chatbot.get_available_llm_models()
-# Switch model to the given index
+         # conversation_list = chatbot.get_conversation_list()
+         # models = chatbot.get_available_llm_models()
+         # Switch model to the given index
          # Create a new conversation
-         id = chatbot.new_conversation()
-         chatbot.change_conversation(id)
+         #id = chatbot.new_conversation()
+         #chatbot.change_conversation(id)
          #chatbot.delete_all_conversations()
          query = "What is the purpose of a " + st.session_state.plpname + " project?"
-         info = chatbot.get_conversation_info()
-         st.write("Asking AI for a response", cb1, info.id, info.title, info.model, info.system_prompt, query, "The response is provided below, paste and edit in the form above")
-         message = chatbot.query(query) 
+         #info = chatbot.get_conversation_info()
+         st.write("Asking AI for a response", query, "The response is provided below, paste and edit in the form above")
+         message = getchat(chatbot, query) 
          st.code(message)
       del st.session_state['cb1']
 
@@ -269,9 +279,9 @@ with st.container():
       st.text_area ("Benefits", value=setvalue('plsbenefits'), key='plsbenefits',label_visibility=labelvis, disabled=disableplan)
       if cb2 and len(st.session_state.plsbenefits) < 12:
          query = "What are three benefits of " + st.session_state.plpname + " project?"
-         info = chatbot.get_conversation_info()
-         st.write("Asking AI for a response", cb2, info.id, info.title, info.model, info.system_prompt, query, "The response is provided below, paste and edit in the form above")
-         message = chatbot.query(query) 
+         # info = chatbot.get_conversation_info()
+         st.write("Asking AI for a response", cb2, query, "The response is provided below, paste and edit in the form above")
+         message = getchat(chatbot, query) 
          st.code(message)
 
       cb3 = st.checkbox("Askme for benchmarks.", disabled=disableplan)
