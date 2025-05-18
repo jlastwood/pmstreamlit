@@ -288,7 +288,7 @@ with st.container():
       st.text_area ("Benchmarks", value=setvalue('plsbenchmarks'), key='plsbenchmarks',label_visibility=labelvis, disabled=disableplan)
       if cb3 and len(st.session_state.plsbenchmarks) < 15:
          query = "Are there comparable benchmarks or services for a " + st.session_state.plpname + " project?"
-         info = chatbot.get_conversation_info()
+         # info = chatbot.get_conversation_info()
          st.write("Asking AI for a response", cb3, query, "The response is provided below, paste and edit in the form above")
          message = getchat(query) 
          st.code(message)
@@ -333,7 +333,7 @@ with st.container():
        st.text_area ("What is the must have scope?", value=setvalue('plscopemusthave'), key='plscopemusthave' ,label_visibility=labelvis, disabled=disableplan)
        if cb4 and len(st.session_state.plscopemusthave) < 20:
          query = "What are three must have features of a " + st.session_state.plpname + " project?"
-         info = chatbot.get_conversation_info()
+         # info = chatbot.get_conversation_info()
          st.write("Asking AI for a response", cb4,  query, "The response is provided below, paste and edit in the form above")
          message = getchat(query)
          st.code(message)
@@ -342,7 +342,7 @@ with st.container():
        st.text_area ("What are some features that are negotiable or nice to have?", value=setvalue('plscopenicetohave'), key='plscopenicetohave',label_visibility=labelvis, disabled=disableplan)
        if cb5 and len(st.session_state.plscopenicetohave) < 20:
          query = "What are three nice to have features in a " + st.session_state.plpname + " project?"
-         info = chatbot.get_conversation_info()
+         # info = chatbot.get_conversation_info()
          st.write("Asking AI for a response", cb5,  query, "The response is provided below, paste and edit in the form above")
          message = getchat(query)
          st.code(message)
@@ -361,7 +361,7 @@ with st.container():
        st.text_area ("Dictionary.  Define any terms used in this product or design", value=setvalue('plscopeterms'), key='plscopeterms' , label_visibility=labelvis, disabled=disableplan)
        if cbd and len(st.session_state.plscopeterms) < 15:
          query = "What are some common terms and definitions used in a " + st.session_state.plpname + " project?"
-         info = chatbot.get_conversation_info()
+         # info = chatbot.get_conversation_info()
          st.write("Asking AI for a response", cbd,  query, "The response is provided below, paste and edit in the form above")
          message = getchat(query)
          st.code(message)
@@ -380,7 +380,7 @@ with st.container():
        st.text_area ("Define or describe the use cases or process steps in this product, what does the user do?", value=setvalue('plsusecase'), key='plsusecase' , label_visibility=labelvis, disabled=disableplan)
        if cbu and len(st.session_state.plsusecase) < 15:
          query = "Describe the process steps or use cases for a  " + st.session_state.plpusecase + " product"
-         info = chatbot.get_conversation_info()
+         # info = chatbot.get_conversation_info()
          st.write("Asking AI for a response", cbd, query, "The response is provided below, paste and edit in the form above")
          message = getchat(query)
          st.code(message)
@@ -595,7 +595,7 @@ with st.container():
       st.text_area ("Describe Quality Goal ", value=setvalue('plsqualitygoal'), key='plsqualitygoal', disabled=disableplan)
       if cb6 and len(st.session_state.plsqualitygoal) < 15:
          query = "What would make customers happy in terms of the outcome of t " + st.session_state.plpname + " project?"
-         info = chatbot.get_conversation_info()
+         # info = chatbot.get_conversation_info()
          st.write("Asking AI for a response", cb6,  query, "The response is provided below, paste and edit in the form above")
          message = getchat(query)
          st.code(message)
@@ -668,7 +668,7 @@ with st.container():
       st.text_area ("Costs", value=setvalue('plscostgoal'), key='plscostgoal',label_visibility=labelvis, disabled=disableplan)
       if cbc and len(st.session_state.plscostgoal) < 12:
          query = "What is the cost to develop a " + st.session_state.plpname + " product?"
-         info = chatbot.get_conversation_info()
+         # info = chatbot.get_conversation_info()
          st.write("Asking AI for a response", cbc, query, "The response is provided below, paste and edit in the form above")
          message = getchat(query)
          st.code(message)
@@ -699,7 +699,7 @@ with st.container():
       st.text_area ("Develop a activity plan ", value=setvalue('plswbs'), key='plswbs', disabled=disableplan)
       if cbt and len(st.session_state.plswbs) < 15:
          query = "What are the tasks or activities for a " + st.session_state.plpname + " project?"
-         info = chatbot.get_conversation_info()
+         # info = chatbot.get_conversation_info()
          st.write("Asking AI for a response", cbt,  query, "The response is provided below, paste and edit in the form above")
          message = getchat(query)
          st.code(message)
@@ -786,7 +786,7 @@ with st.container():
       st.session_state['plproigoal'] = st.text_area("ROI Goal", value=setvalue('plproigoal'), disabled=disableplan)
       if cb12 and len(st.session_state.plproigoal) < 15:
          query = "What is the ROI goal for a   " + st.session_state.plpname + " project with an investment of " + format(st.session_state.plnbudget,'.0f')
-         info = chatbot.get_conversation_info()
+         # info = chatbot.get_conversation_info()
          st.write("Asking AI for a response", cb12, query, "The response is provided below, paste and edit in the form above")
          message = getchat(query)
          st.code(message)
@@ -827,7 +827,7 @@ with st.container():
        st.session_state['plpscopecontingency']  = st.text_area ("What are three ways to mitigate the impact of scope changes in a project?", value=setvalue('plpscopecontingency'),disabled=disableplan)
        if cb7 and len(st.session_state.plpscopecontingency) < 25:
          query = "What are three strategies to reduce the impact of scope changes in a " + st.session_state.plpname + " project?"
-         info = chatbot.get_conversation_info()
+         # info = chatbot.get_conversation_info()
          st.write("Asking AI for a response", cb7, query, "The response is provided below, paste and edit in the form above")
          message = getchat(query)
          st.code(message)
@@ -840,7 +840,7 @@ with st.container():
        st.session_state['plptimecontingency']  = st.text_area ("Schedule Contingency?", value=setvalue('plptimecontingency'), disabled=disableplan)
        if cb8 and len(st.session_state.plptimecontingency) < 20:
          query = "What are three strategies to reduce the impact of schedule issues in a " + st.session_state.plpname + " project?"
-         info = chatbot.get_conversation_info()
+         # info = chatbot.get_conversation_info()
          st.write("Asking AI for a response", cb8,  query, "The response is provided below, paste and edit in the form above")
          message = getchat(query)
          st.code(message)
@@ -852,7 +852,7 @@ with st.container():
        st.session_state['plpbudgetcontingency']  = st.text_area ("Budget Contingency", value=setvalue('plpbudgetcontingency'),disabled=disableplan)
        if cb9 and len(st.session_state.plpbudgetcontingency) < 25:
          query = "What are three strategies to reduce the impact of cost overruns in a " + st.session_state.plpname + " project?"
-         info = chatbot.get_conversation_info()
+         # info = chatbot.get_conversation_info()
          st.write("Asking AI for a response", cb9, query, "The response is provided below, paste and edit in the form above")
          message = getchat(query)
          st.code(message)
@@ -864,7 +864,7 @@ with st.container():
        st.session_state['plpteamcontingency']  = st.text_area ("Team Contingency", value=setvalue('plpteamcontingency'),disabled=disableplan)
        if cb10 and len(st.session_state.plpteamcontingency) < 20:
          query = "What are three strategies to reduce the impact of low performing teams in a " + st.session_state.plpname + " project?"
-         info = chatbot.get_conversation_info()
+         # info = chatbot.get_conversation_info()
          st.write("Asking AI for a response", cb10,  query, "The response is provided below, paste and edit in the form above")
          message = getchat(query)
          st.code(message)
@@ -876,7 +876,7 @@ with st.container():
        st.session_state['plpresourcecontingency']  = st.text_area ("Resource Contingency", value=setvalue('plpresourcecontingency'),disabled=disableplan)
        if cb11 and len(st.session_state.plpresourcecontingency) < 20:
          query = "What are three strategies to reduce the impact of resource or technology challenges in a " + st.session_state.plpname + " project?"
-         info = chatbot.get_conversation_info()
+         # info = chatbot.get_conversation_info()
          st.write("Asking AI for a response", cb11,  query)
          message = getchat(query)
          st.code(message)
